@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODSApi", "ODSApi.csproj", "{8E6F21BF-F5E5-482F-B94D-F31ABC340A92}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E6F21BF-F5E5-482F-B94D-F31ABC340A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E6F21BF-F5E5-482F-B94D-F31ABC340A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E6F21BF-F5E5-482F-B94D-F31ABC340A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E6F21BF-F5E5-482F-B94D-F31ABC340A92}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AC2BA84-CC0B-4182-B331-3915ED1D1599}
+	EndGlobalSection
+EndGlobal
