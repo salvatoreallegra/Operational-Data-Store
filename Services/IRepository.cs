@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.Entities
+namespace ODSApi.Services
 {
-    public class PredictiveModel
+    public interface IRepository
     {
-        public int Id { get; set; }
-
     }
 }
