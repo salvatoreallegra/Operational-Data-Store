@@ -13,7 +13,7 @@ namespace ODSApi.Entities
         public int AuditId { get; set; } //
         public int LogId { get; set; }
 
-        public List<DataPoint> dataPoints { get; set; }
+       // public List<DataPoint> dataPoints { get; set; }
 
     }
 }

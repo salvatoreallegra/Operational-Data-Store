@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Controllers
 {
-    [Route("api/[controller]")]
-    public class PredictiveModelController : Controller
+    [Route("api/predictivemodel")]
+    public class PredictiveModelController : ControllerBase
     {
         private readonly IRepository repository;
 
@@ -19,9 +19,31 @@ namespace ODSApi.Controllers
         }
 
         [HttpGet]
+        [HttpGet("list")]
+        [HttpGet("/allmodels")]
         public List<PredictiveModel> Get()
         {
             return repository.getAllModels();
+        }
+        [HttpGet("{id:int}")]
+        public PredictiveModel Get(int id)
+        {
+            var predictiveModel = repository.GetPredictiveModelById(id);
+            if(predictiveModel == null)
+            {
+
+            }
+            return predictiveModel;
+        }
+        [HttpPost]
+        public void Put()
+        {
+
+        }
+        [HttpDelete]
+        public void Delete()
+        {
+
         }
     }
 }
