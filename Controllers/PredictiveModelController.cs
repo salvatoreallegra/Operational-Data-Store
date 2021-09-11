@@ -21,29 +21,34 @@ namespace ODSApi.Controllers
         [HttpGet]
         [HttpGet("list")]
         [HttpGet("/allmodels")]
-        public List<PredictiveModel> Get()
+        public ActionResult<List<PredictiveModel>> Get()
         {
             return repository.getAllModels();
         }
-        [HttpGet("{id:int}")]
-        public PredictiveModel Get(int id)
+        
+        [HttpGet("{CenterId:int}")]
+        public ActionResult<List<PredictiveModel>> GetByCenterId(int CenterId)
         {
-            var predictiveModel = repository.GetPredictiveModelById(id);
-            if(predictiveModel == null)
+            var predictiveModel = repository.GetPredictiveModelsByCenterId(CenterId);
+            if (predictiveModel == null)
             {
+                return NotFound();
 
             }
             return predictiveModel;
         }
         [HttpPost]
-        public void Put()
+        public ActionResult Post([FromBody] PredictiveModel model)
         {
-
+            
+              
+            
+             return NoContent(); //This is ok result to client, but returns nothing in the body
         }
         [HttpDelete]
-        public void Delete()
+        public ActionResult Delete()
         {
-
+            return NoContent();
         }
     }
 }

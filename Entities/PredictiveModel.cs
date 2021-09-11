@@ -7,13 +7,25 @@ namespace ODSApi.Entities
 {
     public class PredictiveModel
     {
-        public int Id { get; set; }
+        public int Id { get; set; }  //Id for record stored in Database
         public int MatchId { get; set; }  //predictive model match id from model api
         public int SequenceId { get; set; } //identifier of patient from model api
-        public int AuditId { get; set; } //
-        public int LogId { get; set; }
+        public int AuditId { get; set; } //Audit id sent from mobile client
+        public int LogId { get; set; }  //Log id sent from mobile client  
+        public int Kdpi { get; set; }  //kdpi value sent from mobile client
 
-       // public List<DataPoint> dataPoints { get; set; }
+        public int CenterId { get; set; }
+
+     
+
+       // public List<DataPoint> dataPoints { get; set; }  // disregard for now
+
+       
+    }
+    enum kdpitouse
+    {
+
 
     }
+    
 }

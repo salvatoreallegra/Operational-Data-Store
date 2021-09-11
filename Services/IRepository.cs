@@ -10,5 +10,7 @@ namespace ODSApi.Services
     {
         List<PredictiveModel> getAllModels();
         PredictiveModel GetPredictiveModelById(int Id);
+
+        List<PredictiveModel> GetPredictiveModelsByCenterId(int centerId);
     }
 }
