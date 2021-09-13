@@ -19,7 +19,7 @@ namespace ODSApi.Controllers
         }
 
         [HttpGet]
-        [HttpGet("list")]
+        [HttpGet("/list")]
         [HttpGet("/allmodels")]
         public ActionResult<List<PredictiveModel>> Get()
         {

@@ -14,6 +14,7 @@ namespace ODSApi.Entities
         public int LogId { get; set; }  //Log id sent from mobile client  
         public int Kdpi { get; set; }  //kdpi value sent from mobile client
 
+        float[] dataPoints { get; set; } //2 datapoints known so far, time in days = 2.5, .3f is probability of survival
         public int CenterId { get; set; }
 
      
