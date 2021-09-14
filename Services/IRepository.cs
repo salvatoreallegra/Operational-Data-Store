@@ -8,9 +8,9 @@ namespace ODSApi.Services
 {
     public interface IRepository
     {
-        List<PredictiveModel> getAllModels();
-        PredictiveModel GetPredictiveModelById(int Id);
+        List<MatchRun> getAllModels();
+        MatchRun GetPredictiveModelById(int Id);
 
-        List<PredictiveModel> GetPredictiveModelsByCenterId(int centerId);
+        List<MatchRun> GetPredictiveModelsByCenterId(string centerId);
     }
 }

@@ -1,0 +1,7 @@
+{
+  "Mortality_Slope": [ 3, ".5", 5, 2, 6, 7, 8, 3, 10 ], // 
+  "Modal_Used": [ "KDPI-30" ],
+  "Time_To_Better_Offer": "34",
+  "Survival Probability": ".00001",
+  "PlotPoint_Survival_Probability": ".05"
+}

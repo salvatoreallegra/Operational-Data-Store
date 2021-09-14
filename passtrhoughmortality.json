@@ -1,0 +1,33 @@
+//Each match run record is for one person
+
+
+{
+  "id": "1",
+  "Match_id": "9090909090",
+  "Offer_Date": "2021-01-01",
+  "Offer_KDPI": 21.1,
+  "Sequence_ID": "111111", //match id + sequenceid = match
+  "Donor_Audit_ID": "33333",
+  "Center_ID": "28934",
+  "Log_ID": "7834",
+  "WL_ID": "898234",
+  "WL_Audit_ID": "7263849",
+  //might not be in the database
+  
+  "mortality_slope": [
+    {
+      "sequenceid": "23847293847293847",
+      "waitlistmortality": [
+        {
+          "time": "3",
+          "probabilityofsurvival": "4"
+          
+        },
+        {
+          "time": "4",
+          "probabilityofsurvival": ".0001"
+        }
+      ]
+    }
+  ]
+}

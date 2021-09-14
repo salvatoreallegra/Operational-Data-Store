@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Entities
 {
-    public class Match
+    public class MatchRunModel
     {
     }
 }

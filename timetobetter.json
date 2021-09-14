@@ -1,0 +1,18 @@
+{
+
+  "id": "1",
+  "MatchID": "909090",
+  "sequenceid": "23847293847293847",
+  "Timestamp": "xxxxx",
+  "ModelVersionID": "72837483", //talk to nathan to get this field passed in through the endpoint
+
+  "Time_To_Better": [
+    {
+      "t2b30": "5", 
+      "t2b50": "3"
+
+    }
+  ]
+
+}
+

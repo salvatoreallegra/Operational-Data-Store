@@ -8,34 +8,38 @@ namespace ODSApi.Services
 {
     public class InMemoryRepository : IRepository
     {
-        private List<PredictiveModel> _models;
+        private List<MatchRun> _models;
         public InMemoryRepository()
         {
-            _models = new List<PredictiveModel>
+            _models = new List<MatchRun>
             {
-                new PredictiveModel(){Id = 1, MatchId = 7898374, AuditId = 2193028, SequenceId = 9837493, LogId = 00029378, CenterId = 4444 },
+                new MatchRun(){Id = 1, MatchId = "89098309", Offer_Date = "2021-01-01", Offer_KDPI = 2.49f, 
+                    Sequence_Id = "9837493", Log_Id = "00029378", CenterId= "4444", 
+                Donor_Audit_id = "88475934", WL_ID = "4782938", WL_Audit_ID = "204968"},
                     // dataPoints = new List<DataPoint>{ new DataPoint { dataPoint = "Dead in 6 months" }, new DataPoint {dataPoint = "Kidney not found"} } },
-
-                new PredictiveModel(){Id = 2, MatchId = 98746, AuditId = 3333, SequenceId = 775343, LogId = 01027378, CenterId = 22222 },
-                     //dataPoints = new List<DataPoint>{ new DataPoint { dataPoint = "Cancer Victim" }, new DataPoint {dataPoint = "Cell Transplant"} } }
-                new PredictiveModel(){Id = 2, MatchId = 98746, AuditId = 3223, SequenceId = 775343, LogId = 01344578, CenterId = 22222 }
+                new MatchRun(){Id = 2, MatchId = "7943309", Offer_Date = "2021-02-03", Offer_KDPI = .49f,
+                    Sequence_Id = "98565", Log_Id = "456345", CenterId = "4444",
+                Donor_Audit_id = "05453", WL_ID = "2342342", WL_Audit_ID = "1111111"},
+                new MatchRun(){Id = 3, MatchId = "794444", Offer_Date = "2019-02-03", Offer_KDPI = .56f,
+                    Sequence_Id = "91165", Log_Id = "956345", CenterId= "32224",
+                Donor_Audit_id = "05678", WL_ID = "33333", WL_Audit_ID = "222222"}
             };
         }
-        public List<PredictiveModel> getAllModels()
+        public List<MatchRun> getAllModels()
         {
             return _models;
         }
 
-        public PredictiveModel GetPredictiveModelById(int Id)
+        public MatchRun GetPredictiveModelById(int Id)
         {
             return _models.FirstOrDefault(x => x.Id == Id);
         }
-        public List<PredictiveModel> GetPredictiveModelsByCenterId(int centerId)
+        public List<MatchRun> GetPredictiveModelsByCenterId(string centerId)
         {
-            List<PredictiveModel> returnModels = new List<PredictiveModel>();
+            List<MatchRun> returnModels = new List<MatchRun>();
             foreach (var model in _models)
             {
-                if(model.CenterId == centerId)
+                if(model.CenterId.Equals(centerId))
                 {
                     returnModels.Add(model);
                 }
