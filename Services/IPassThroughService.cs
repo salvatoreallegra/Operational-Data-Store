@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Services
 {
-    public interface IRepository
+    public interface IPassThroughService
     {
-        List<MatchRun> getAllModels();
-        MatchRun GetPredictiveModelById(int Id);
-
         List<MatchRun> GetMatchRunRecordsByCenterIdMatchId(string centerId, int matchId);
 
-        List<Log> getLogByCenterIdMatchId(int centerId, int matchID);
     }
 }

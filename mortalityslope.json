@@ -1,5 +1,16 @@
 {
   "Id": 1,
   "Sequence_Id": "3452343",
+  "waitlistmortality": [
+    {
+      "time": "8",
+      "probabilityofsurvival": "4"
+
+    },
+    {
+      "time": "9",
+      "probabilityofsurvival": ".0001"
+    }
+  ]
 
 }

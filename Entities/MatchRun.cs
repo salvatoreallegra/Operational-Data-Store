@@ -8,7 +8,7 @@ namespace ODSApi.Entities
     public class MatchRun
     {
         public int Id { get; set; }  //Id for record 
-        public string MatchId { get; set; }  //predictive model match id from model api
+        public int MatchId { get; set; }  //predictive model match id from model api
         public string Offer_Date { get; set; }
         public float Offer_KDPI { get; set; }
         public string Sequence_Id { get; set; } //identifier of patient from model api

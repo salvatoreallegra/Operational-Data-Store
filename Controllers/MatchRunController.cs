@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace ODSApi.Controllers
 {
     [Route("api/matchrun")]
+    [ApiController]
     public class MatchRunController : ControllerBase
     {
         private readonly IRepository repository;
@@ -19,32 +20,39 @@ namespace ODSApi.Controllers
         }
 
         [HttpGet]
-        [HttpGet("/list")]
-        [HttpGet("/allmodels")]
         public ActionResult<List<MatchRun>> Get()
         {
             return repository.getAllModels();
         }
         
-        [HttpGet("{CenterId}")]
-        public ActionResult<List<MatchRun>> GetByCenterId(string CenterId)
+        [HttpGet("{CenterId}/{MatchId}")]
+        public ActionResult<List<MatchRun>> GetAllMatchRecordsByCenterIdMatchId(string CenterId,int MatchId)
         {
-            var predictiveModel = repository.GetPredictiveModelsByCenterId(CenterId);
-            if (predictiveModel == null)
-            {
-                return NotFound();
+            //try
+            //{
+            //    if (KDPI < 0)
+            //        throw new Exception("KDPI Cannot be less than zero");
+                var predictiveModel = repository.GetMatchRunRecordsByCenterIdMatchId(CenterId, MatchId);
 
-            }
-            return predictiveModel;
+                return predictiveModel;
+            //}
+            //catch(Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
         }
-        [HttpPost]
-        public ActionResult Post([FromBody] MatchRun model)
-        {
+
+      
+
+
+        //[HttpPost]
+        //public ActionResult Post([FromBody] Log _log)
+        //{
             
               
             
-             return NoContent(); //This is ok result to client, but returns nothing in the body
-        }
+          //   return NoContent(); //This is ok result to client, but returns nothing in the body
+        //}
         //public ActionResult Post([FromBody] MatchRunModel model)
         //{
 

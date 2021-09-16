@@ -1,9 +1,19 @@
-{
-  "DrName": "Time Berners Lee",
-  "CenterID": 1,
-  "Match_IDs": [ 23453, 2343234, 2356778, 90394059 ],
-  "Sequence_IDs": [ 38498298, 29384029384, 27384729 ],
-  "Request_Time": [ "2020-01-01:time" ],
-  "Response_Time": ["2020-01-02:time"]
-
+{ 
+  "DrName": "Time Berners Lee", 
+  "CenterID": 1, 
+  "Match_IDs": 374839283764, 
+  "Sequence_IDs": [ 89898989, 898098098, 898098098098, 8098098 ],
+  "DateTimeStamp": "xxxx"
 }
+//2 approaches, 
+
+
+{ //This will be piggybacking and coming in at the same time as the get request for model data and calculations
+  "LogId": 837473,
+  "DrName": "Time Berners Lee", //coming in with post
+  "CenterID": 1, //coming in with post
+  "Match_IDs": 374839283764 //coming in with post
+  "Sequence_IDs": [89898989,898098098,898098098098,8098098] 
+  "DateTimeStamp": "xxxx"
+}
+//2 approaches, 

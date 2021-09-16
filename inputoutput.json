@@ -1,6 +1,9 @@
 {
-  "Mortality_Slope": [ 3, ".5", 5, 2, 6, 7, 8, 3, 10 ], // 
-  "Modal_Used": [ "KDPI-30" ],
+  "Id" : "78987",
+  "MatchId": "839483948",
+  "SequenceId": "839483984",
+  "mortalityslope" : exists on mortailityslope table  You don't need to calculate this, just grap from mortalityslope table'
+  "Modal_Used": [ "KDPI-30" ], 
   "Time_To_Better_Offer": "34",
   "Survival Probability": ".00001",
   "PlotPoint_Survival_Probability": ".05"
