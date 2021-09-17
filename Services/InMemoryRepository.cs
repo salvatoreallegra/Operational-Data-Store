@@ -27,8 +27,8 @@ namespace ODSApi.Services
             };
             _logs = new List<Log>
             {
-                new Log {Id = 1, CenterId = 4444, DrName = "Dr. Who", MatchID = 89098309,  SequenceIds = new List<int>{9837493,4568403}, timeStamp = new DateTime(2008, 5, 1, 8, 30, 52) },
-                new Log {Id = 1, CenterId = 4444, DrName = "Dr. Who", MatchID = 89098309,  SequenceIds = new List<int>{9837493,4568403}, timeStamp = new DateTime(2008, 5, 1, 8, 30, 52) }
+                new Log {Id = 1, CenterId = 4444, DrName = "Dr. Who", MatchID = 89098309,  SequenceIds = new List<int>{9837493,4568403}, TimeStamp = new DateTime(2008, 5, 1, 8, 30, 52) },
+                new Log {Id = 1, CenterId = 4444, DrName = "Dr. Who", MatchID = 89098309,  SequenceIds = new List<int>{9837493,4568403}, TimeStamp = new DateTime(2008, 5, 1, 8, 30, 52) }
 
             };
         }
