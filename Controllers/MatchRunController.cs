@@ -4,6 +4,7 @@ using ODSApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ODSApi.Controllers
@@ -24,46 +25,18 @@ namespace ODSApi.Controllers
         {
             return repository.getAllModels();
         }
-        
+
         [HttpGet("{CenterId}/{MatchId}")]
-        public ActionResult<List<MatchRun>> GetAllMatchRecordsByCenterIdMatchId(string CenterId,int MatchId)
+        public ActionResult<List<MatchRun>> GetAllMatchRecordsByCenterIdMatchId(string CenterId, int MatchId)
         {
-            //try
-            //{
-            //    if (KDPI < 0)
-            //        throw new Exception("KDPI Cannot be less than zero");
-                var predictiveModel = repository.GetMatchRunRecordsByCenterIdMatchId(CenterId, MatchId);
 
-                return predictiveModel;
-            //}
-            //catch(Exception ex)
-            //{
-            //    return BadRequest(ex.Message);
-            //}
+            var predictiveModel = repository.GetMatchRunRecordsByCenterIdMatchId(CenterId, MatchId);
+              if(MatchId < 10) {
+               
+
+            }
+            return predictiveModel;
         }
-
       
-
-
-        //[HttpPost]
-        //public ActionResult Post([FromBody] Log _log)
-        //{
-            
-              
-            
-          //   return NoContent(); //This is ok result to client, but returns nothing in the body
-        //}
-        //public ActionResult Post([FromBody] MatchRunModel model)
-        //{
-
-
-
-          //  return NoContent(); //This is ok result to client, but returns nothing in the body
-        //}
-        [HttpDelete]
-        public ActionResult Delete()
-        {
-            return NoContent();
-        }
     }
 }

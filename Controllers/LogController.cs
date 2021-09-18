@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ODSApi.DTOs;
 using ODSApi.Entities;
 using ODSApi.Services;
 using System;
@@ -32,7 +33,7 @@ namespace ODSApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Log _log)
+        public ActionResult Post([FromBody] CreateLogDTO _logDTO)
         {
 
 
