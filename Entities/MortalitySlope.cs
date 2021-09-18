@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Entities
 {
-    public class Donor
+    public class MortalitySlope
     {
     }
 }

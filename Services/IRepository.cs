@@ -11,7 +11,7 @@ namespace ODSApi.Services
         List<MatchRun> getAllModels();
         MatchRun GetPredictiveModelById(int Id);
 
-        List<MatchRun> GetMatchRunRecordsByCenterIdMatchId(string centerId, int matchId);
+        List<MatchRun> GetMatchRunRecordsByCenterIdMatchId(int centerId, int matchId);
 
         List<Log> getLogByCenterIdMatchId(int centerId, int matchID);
     }

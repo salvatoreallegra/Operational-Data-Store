@@ -14,16 +14,16 @@ namespace ODSApi.Services
         {
             _models = new List<MatchRun>
             {
-                new MatchRun(){Id = 1, MatchId = 89098309, Offer_Date = "2021-01-01", Offer_KDPI = 2.49f,
-                    Sequence_Id = "9837493", Log_Id = "00029378", CenterId= "4444",
-                Donor_Audit_id = "88475934", WL_ID = "4782938", WL_Audit_ID = "204968"},
+                new MatchRun(){Id = 1, MatchId = 89098309, Offer_Date = new DateTime(2020, 6, 1, 8, 30, 52), Offer_KDPI = 2.49f,
+                    Sequence_Id = 9837493, Log_Id = 00029378, CenterId= 4444,
+                Donor_Audit_id = 88475934, WL_ID = 4782938, WL_Audit_ID = 204968},
                     // dataPoints = new List<DataPoint>{ new DataPoint { dataPoint = "Dead in 6 months" }, new DataPoint {dataPoint = "Kidney not found"} } },
-                new MatchRun(){Id = 2, MatchId = 89098309, Offer_Date = "2021-02-03", Offer_KDPI = .49f,
-                    Sequence_Id = "98565", Log_Id = "456345", CenterId = "4444",
-                Donor_Audit_id = "05453", WL_ID = "2342342", WL_Audit_ID = "1111111"},
-                new MatchRun(){Id = 3, MatchId = 794444, Offer_Date = "2019-02-03", Offer_KDPI = .56f,
-                    Sequence_Id = "91165", Log_Id = "956345", CenterId= "32224",
-                Donor_Audit_id = "05678", WL_ID = "33333", WL_Audit_ID = "222222"}
+                new MatchRun(){Id = 2, MatchId = 89098309, Offer_Date = new DateTime(2021, 5, 1, 8, 30, 52), Offer_KDPI = .49f,
+                    Sequence_Id = 98565, Log_Id = 456345, CenterId = 4444,
+                Donor_Audit_id = 05453, WL_ID = 2342342, WL_Audit_ID = 1111111},
+                new MatchRun(){Id = 3, MatchId = 794444, Offer_Date = new DateTime(2021, 9, 1, 8, 30, 52), Offer_KDPI = .56f,
+                    Sequence_Id = 91165, Log_Id = 956345, CenterId= 32224,
+                Donor_Audit_id = 05678, WL_ID = 33333, WL_Audit_ID = 222222}
             };
             _logs = new List<Log>
             {
@@ -56,12 +56,12 @@ namespace ODSApi.Services
         {
             return _models.FirstOrDefault(x => x.Id == Id);
         }
-        public List<MatchRun> GetMatchRunRecordsByCenterIdMatchId(string centerId, int matchId)
+        public List<MatchRun> GetMatchRunRecordsByCenterIdMatchId(int centerId, int matchId)
         {
             List<MatchRun> returnModels = new List<MatchRun>();
             foreach (var model in _models)
             {
-                if(model.CenterId.Equals(centerId) && model.MatchId == matchId)
+                if(model.CenterId == centerId && model.MatchId == matchId)
                 {
                     returnModels.Add(model);
                 }

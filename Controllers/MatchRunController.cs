@@ -27,7 +27,7 @@ namespace ODSApi.Controllers
         }
 
         [HttpGet("{CenterId}/{MatchId}")]
-        public ActionResult<List<MatchRun>> GetAllMatchRecordsByCenterIdMatchId(string CenterId, int MatchId)
+        public ActionResult<List<MatchRun>> GetAllMatchRecordsByCenterIdMatchId(int CenterId, int MatchId)
         {
 
             var predictiveModel = repository.GetMatchRunRecordsByCenterIdMatchId(CenterId, MatchId);
