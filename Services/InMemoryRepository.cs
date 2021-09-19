@@ -10,6 +10,8 @@ namespace ODSApi.Services
     {
         private List<MatchRun> _models;
         private List<Log> _logs;
+        private List<TimeToBetterEntity> _timeToBetters;
+        private List<MortalitySlopeEntity> _mortalitySlope;
         public InMemoryRepository()
         {
             _models = new List<MatchRun>
@@ -27,9 +29,23 @@ namespace ODSApi.Services
             };
             _logs = new List<Log>
             {
-                new Log {Id = 1, CenterId = 4444, DrName = "Dr. Who", MatchID = 89098309,  SequenceIds = new List<int>{9837493,4568403}, TimeStamp = new DateTime(2008, 5, 1, 8, 30, 52) },
-                new Log {Id = 1, CenterId = 4444, DrName = "Dr. Who", MatchID = 89098309,  SequenceIds = new List<int>{9837493,4568403}, TimeStamp = new DateTime(2008, 5, 1, 8, 30, 52) }
+                new Log {Id = "1", CenterId = 4444, DrName = "Dr. Who", MatchID = 89098309,  SequenceIds = new List<int>{9837493,4568403}, TimeStamp = new DateTime(2008, 5, 1, 8, 30, 52) },
+                new Log {Id = "2", CenterId = 4444, DrName = "Dr. Who", MatchID = 89098309,  SequenceIds = new List<int>{9837493,4568403}, TimeStamp = new DateTime(2008, 5, 1, 8, 30, 52) }
 
+            };
+            _timeToBetters = new List<TimeToBetterEntity>
+            {
+                new TimeToBetterEntity{Id =1, MatchId = 89098309, ModelVersionId = 777, SequenceId = 9837493,
+                TimeStamp = new DateTime(2008, 5, 1, 8, 30, 52), TimeToBetter = new Dictionary<string,int>() { { "TimeToBetter30", 34 },{ "TimeToBetter50", 23 } }
+                }
+            };
+            _mortalitySlope = new List<MortalitySlopeEntity>
+            {
+                new MortalitySlopeEntity
+                {Id = 10,
+                SequenceId = 87747,
+                WaitListMortality = new Dictionary<string, float>(10) { {"Time", 5 }, { "Time", 8 }, { "Time", 2.4f }, { "Time", 8.4f }, { "Time", 8 },
+                {"Time", 1 },{"Time", 5 },{"Time", 2 },{"Time", 4 },{"Time", 5 }} }
             };
         }
         public List<Log> getLogByCenterIdMatchId(int centerId, int matchId)
@@ -44,12 +60,21 @@ namespace ODSApi.Services
                 }
             }
             return returnLogs;
-            
+
+        }
+        public MortalitySlopeEntity GetMortalitySlopeBySequenceId(int sequenceId)
+        {
+
+            return _mortalitySlope.FirstOrDefault(x => x.Id == sequenceId);
+
         }
         public List<MatchRun> getAllModels()
-
         {
             return _models;
+        }
+        public List<TimeToBetterEntity> getAllTimeToBetter()
+        {
+            return _timeToBetters;
         }
 
         public MatchRun GetPredictiveModelById(int Id)
@@ -61,7 +86,7 @@ namespace ODSApi.Services
             List<MatchRun> returnModels = new List<MatchRun>();
             foreach (var model in _models)
             {
-                if(model.CenterId == centerId && model.MatchId == matchId)
+                if (model.CenterId == centerId && model.MatchId == matchId)
                 {
                     returnModels.Add(model);
                 }

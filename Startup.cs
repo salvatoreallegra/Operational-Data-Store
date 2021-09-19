@@ -37,7 +37,9 @@ namespace ODSApi
             });
             services.AddSingleton<IRepository, InMemoryRepository>();
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+            services.AddSingleton<ILogService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
         }
+    
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,6 +62,20 @@ namespace ODSApi
             {
                 endpoints.MapControllers();
             });
+        }
+        private static async Task<LogService> InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
+        {
+            var databaseName = configurationSection["DatabaseName"];
+            var containerName = configurationSection["ContainerName"];
+            var account = configurationSection["Account"];
+            var key = configurationSection["Key"];
+
+            var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
+            var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+
+            var cosmosDbService = new LogService(client, databaseName, containerName);
+            return cosmosDbService;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ODSApi.Entities
     public class Log
     {
         [JsonProperty(PropertyName = "id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [JsonProperty(PropertyName = "drname")]

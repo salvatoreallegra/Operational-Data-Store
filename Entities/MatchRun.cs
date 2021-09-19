@@ -31,10 +31,6 @@ namespace ODSApi.Entities
 
        
     }
-    enum kdpitouse
-    {
-
-
-    }
+    
     
 }

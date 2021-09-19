@@ -14,5 +14,9 @@ namespace ODSApi.Services
         List<MatchRun> GetMatchRunRecordsByCenterIdMatchId(int centerId, int matchId);
 
         List<Log> getLogByCenterIdMatchId(int centerId, int matchID);
+
+        List<TimeToBetterEntity> getAllTimeToBetter();
+
+        MortalitySlopeEntity GetMortalitySlopeBySequenceId(int sequenceId);
     }
 }

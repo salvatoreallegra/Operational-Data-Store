@@ -26,6 +26,12 @@ namespace ODSApi.Controllers
             return repository.getAllModels();
         }
 
+        [HttpGet("/timetobetter")]
+        public ActionResult<List<TimeToBetterEntity>> GetAllTimeToBetters()
+        {
+            return repository.getAllTimeToBetter();
+        }
+
         [HttpGet("{CenterId}/{MatchId}")]
         public ActionResult<List<MatchRun>> GetAllMatchRecordsByCenterIdMatchId(int CenterId, int MatchId)
         {

@@ -8,8 +8,10 @@ namespace ODSApi.Services
 {
     public interface ILogService
     {
-        //Task<IEnumerable<Log>> GetLogsAsync(string query);
+        Task<IEnumerable<Log>> GetMultipleAsync(string query);
+        Task<Log> GetAsync(string id);
+        Task AddAsync(Log item);
         
-        Task AddLogAsync(Log log);
+        
     }
 }
