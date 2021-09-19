@@ -38,16 +38,29 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "waitlistauditid")]
         public int WaitListAuditId { get; set; }
 
+        [JsonProperty(PropertyName = "timetobetteroffer")]
+        public Dictionary<string, float> MortalitySlope { get; set; }    //This is wait list mortality from Mortality Slope Collection
 
-        //public int Kdpi { get; set; }  //kdpi value sent from mobile client
+        [JsonProperty(PropertyName = "timetobetteroffer")]
+        public string ModelUsed { get; set; }
 
-       // float[] dataPoints { get; set; } //2 datapoints known so far, time in days = 2.5, .3f is probability of survival
-        
-             
+        [JsonProperty(PropertyName = "timetobetteroffer")]
+        public Dictionary<string, int> TimeToBetterOffer { get; set; }
 
-       // public List<DataPoint> dataPoints { get; set; }  // disregard for now
+        [JsonProperty(PropertyName = "survivalprobabilityattimetobetteroffer")]
+        public Dictionary<string, float> SurvivalProbabilityAtTimeToBetterOffer { get; set; }
 
-       
+
+        [JsonProperty(PropertyName = "plotpointofsurvivalprobability")]
+        public Dictionary<string, float> PlotPointOfSurvivalProbability { get; set; }
+
+
+
+
+
+
+
+
     }
     
     
