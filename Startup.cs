@@ -37,7 +37,8 @@ namespace ODSApi
             });
             services.AddSingleton<IRepository, InMemoryRepository>();
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
-            services.AddSingleton<ILogService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<ILogService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<ITimeToBetterService>(InitializeCosmosClientInstanceAsyncTimeToBetter(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
         }
     
 
@@ -63,7 +64,7 @@ namespace ODSApi
                 endpoints.MapControllers();
             });
         }
-        private static async Task<LogService> InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
+        private static async Task<LogService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["ContainerName"];
@@ -75,6 +76,20 @@ namespace ODSApi
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
             var cosmosDbService = new LogService(client, databaseName, containerName);
+            return cosmosDbService;
+        }
+        private static async Task<TimeToBetterService> InitializeCosmosClientInstanceAsyncTimeToBetter(IConfigurationSection configurationSection)
+        {
+            var databaseName = configurationSection["DatabaseName"];
+            var containerName = "TimeToBetter";
+            var account = configurationSection["Account"];
+            var key = configurationSection["Key"];
+
+            var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
+            var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+
+            var cosmosDbService = new TimeToBetterService(client, databaseName, containerName);
             return cosmosDbService;
         }
     }

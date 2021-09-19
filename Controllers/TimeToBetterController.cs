@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ODSApi.DTOs;
 using ODSApi.Entities;
 using ODSApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ODSApi.Controllers
 {
-    [Route("api/log")]
+    [Route("api/timetobetter")]
     [ApiController]
-    public class LogController : ControllerBase
+    public class TimeToBetterController : ControllerBase
     {
-        private readonly ILogService _cosmosDbService;
-        public LogController(ILogService cosmosDbService)
+        private readonly ITimeToBetterService _cosmosDbService;
+        public TimeToBetterController(ITimeToBetterService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
         }
@@ -28,17 +28,20 @@ namespace ODSApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
+            TimeToBetterEntity returnEntity = await _cosmosDbService.GetAsync(id);
+             if(returnEntity.SequenceId == 0)
+             {
+                return StatusCode(209);
+             }
             return Ok(await _cosmosDbService.GetAsync(id));
         }
         // POST api/items
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Log item)
+        public async Task<IActionResult> Create([FromBody] TimeToBetterEntity item)
         {
             item.Id = Guid.NewGuid().ToString();
             await _cosmosDbService.AddAsync(item);
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
-        
     }
-      
 }

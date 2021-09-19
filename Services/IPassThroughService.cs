@@ -8,7 +8,7 @@ namespace ODSApi.Services
 {
     public interface IPassThroughService
     {
-        List<MatchRun> GetMatchRunRecordsByCenterIdMatchId(string centerId, int matchId);
+        List<MatchRunEntity> GetMatchRunRecordsByCenterIdMatchId(string centerId, int matchId);
 
     }
 }
