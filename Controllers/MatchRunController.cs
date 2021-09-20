@@ -13,36 +13,66 @@ namespace ODSApi.Controllers
     [ApiController]
     public class MatchRunController : ControllerBase
     {
-        private readonly IRepository repository;
-
-        public MatchRunController(IRepository repository)
+        private readonly IMatchRunService _cosmosDbService;
+        public MatchRunController(IMatchRunService cosmosDbService)
         {
-            this.repository = repository;
+            _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
         }
-
+        // GET api/items
         [HttpGet]
-        public ActionResult<List<MatchRunEntity>> Get()
+        public async Task<IActionResult> List()
         {
-            return repository.getAllModels();
+            return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM c"));
         }
-
-        [HttpGet("/timetobetter")]
-        public ActionResult<List<TimeToBetterEntity>> GetAllTimeToBetters()
+        // GET api/items/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
         {
-            return repository.getAllTimeToBetter();
+            return Ok(await _cosmosDbService.GetAsync(id));
         }
-
-        [HttpGet("{CenterId}/{MatchId}")]
-        public ActionResult<List<MatchRunEntity>> GetAllMatchRecordsByCenterIdMatchId(int CenterId, int MatchId)
+        [HttpGet("{MatchId}/{SequenceId}")]
+        public async Task<IActionResult> GetByMatchSequence(int MatchId,int SequenceId)
         {
-
-            var predictiveModel = repository.GetMatchRunRecordsByCenterIdMatchId(CenterId, MatchId);
-              if(MatchId < 10) {
-               
-
-            }
-            return predictiveModel;
+            return Ok(await _cosmosDbService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " +  SequenceId));
         }
-      
+        // POST api/items
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] MatchRunEntity item)
+        {
+            item.Id = Guid.NewGuid().ToString();
+            await _cosmosDbService.AddAsync(item);
+            return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
+        }
+        //private readonly IRepository repository;
+
+        //public MatchRunController(IRepository repository)
+        //{
+        //    this.repository = repository;
+        //}
+
+        //[HttpGet]
+        //public ActionResult<List<MatchRunEntity>> Get()
+        //{
+        //    return repository.getAllModels();
+        //}
+
+        //[HttpGet("/timetobetter")]
+        //public ActionResult<List<TimeToBetterEntity>> GetAllTimeToBetters()
+        //{
+        //    return repository.getAllTimeToBetter();
+        //}
+
+        //[HttpGet("{CenterId}/{MatchId}")]
+        //public ActionResult<List<MatchRunEntity>> GetAllMatchRecordsByCenterIdMatchId(int CenterId, int MatchId)
+        //{
+
+        //    var predictiveModel = repository.GetMatchRunRecordsByCenterIdMatchId(CenterId, MatchId);
+        //      if(MatchId < 10) {
+
+
+        //    }
+        //    return predictiveModel;
+        //}
+
     }
 }

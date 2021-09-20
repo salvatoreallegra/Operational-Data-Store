@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Entities
 {
-    public class WaitListMortality
+    public class WaitListMortalityEntity
     { 
         public int Time { get; set; }
         public float ProbabilityOfSurvival { get; set; }

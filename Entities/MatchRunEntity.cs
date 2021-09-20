@@ -9,7 +9,7 @@ namespace ODSApi.Entities
     public class MatchRunEntity
     {
         [JsonProperty(PropertyName = "id")]
-        public int Id { get; set; }  //Id for record 
+        public string Id { get; set; }  //Id for record 
 
         [JsonProperty(PropertyName = "matchid")]
         public int MatchId { get; set; }  //predictive model match id from model api
@@ -38,10 +38,10 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "waitlistauditid")]
         public int WaitListAuditId { get; set; }
 
-        [JsonProperty(PropertyName = "timetobetteroffer")]
-        public Dictionary<string, float> MortalitySlope { get; set; }    //This is wait list mortality from Mortality Slope Collection
+        [JsonProperty(PropertyName = "mortalityslope")]
+        public List<Dictionary<string, float>> MortalitySlope { get; set; }    //This is wait list mortality from Mortality Slope Collection
 
-        [JsonProperty(PropertyName = "timetobetteroffer")]
+        [JsonProperty(PropertyName = "modelused")]
         public string ModelUsed { get; set; }
 
         [JsonProperty(PropertyName = "timetobetteroffer")]

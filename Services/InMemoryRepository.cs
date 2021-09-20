@@ -16,7 +16,7 @@ namespace ODSApi.Services
         {
             _models = new List<MatchRunEntity>
             {
-                new MatchRunEntity(){Id = 1, MatchId = 89098309, OfferDate = new DateTime(2020, 6, 1, 8, 30, 52), OfferKdpi = 2.49f,
+                new MatchRunEntity(){Id = "1", MatchId = 89098309, OfferDate = new DateTime(2020, 6, 1, 8, 30, 52), OfferKdpi = 2.49f,
                     SequenceId = 9837493, LogId = 00029378, CenterId= 4444,
                 DonorAuditId = 88475934, WaitListId = 4782938, WaitListAuditId = 204968},
                     // dataPoints = new List<DataPoint>{ new DataPoint { dataPoint = "Dead in 6 months" }, new DataPoint {dataPoint = "Kidney not found"} } },
@@ -39,14 +39,16 @@ namespace ODSApi.Services
                 TimeStamp = new DateTime(2008, 5, 1, 8, 30, 52), TimeToBetter = new Dictionary<string,int>() { { "TimeToBetter30", 34 },{ "TimeToBetter50", 23 } }
                 }
             };
-            _mortalitySlope = new List<MortalitySlopeEntity>
-            {
-                new MortalitySlopeEntity
-                {Id = 10,
-                SequenceId = 87747,
-                WaitListMortality = new Dictionary<string, float>(10) { {"Time", 5 }, { "Time", 8 }, { "Time", 2.4f }, { "Time", 8.4f }, { "Time", 8 },
-                {"Time", 1 },{"Time", 5 },{"Time", 2 },{"Time", 4 },{"Time", 5 }} }
-            };
+            //_mortalitySlope = new List<MortalitySlopeEntity>
+            //{
+              //  new MortalitySlopeEntity
+               // {
+                 //   Id = "10",
+                   // SequenceId = 87747
+                //WaitListMortality = new List<Dictionary<string, float>>(10) { {"Time", 5 }, { "Time", 8 }, { "Time", 2.4f }, { "Time", 8.4f }, { "Time", 8 },
+                //{"Time", 1 },{"Time", 5 },{"Time", 2 },{"Time", 4 },{"Time", 5 }} }
+                //}; 
+        
         }
         public List<Log> getLogByCenterIdMatchId(int centerId, int matchId)
         {
@@ -65,7 +67,7 @@ namespace ODSApi.Services
         public MortalitySlopeEntity GetMortalitySlopeBySequenceId(int sequenceId)
         {
 
-            return _mortalitySlope.FirstOrDefault(x => x.Id == sequenceId);
+            return _mortalitySlope.FirstOrDefault(x => x.Id.Equals(sequenceId));
 
         }
         public List<MatchRunEntity> getAllModels()
@@ -79,7 +81,7 @@ namespace ODSApi.Services
 
         public MatchRunEntity GetPredictiveModelById(int Id)
         {
-            return _models.FirstOrDefault(x => x.Id == Id);
+            return _models.FirstOrDefault(x => x.Id.Equals(Id));
         }
         public List<MatchRunEntity> GetMatchRunRecordsByCenterIdMatchId(int centerId, int matchId)
         {
