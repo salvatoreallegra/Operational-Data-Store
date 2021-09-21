@@ -10,6 +10,7 @@ namespace ODSApi.Services
     public class MatchRunService : IMatchRunService
     {
         private Container _container;
+        private readonly IMatchRunService matchRunService;
         public MatchRunService(
             CosmosClient cosmosDbClient,
             string databaseName,
@@ -32,7 +33,7 @@ namespace ODSApi.Services
                 MortalitySlopeEntity mortalitySlope = await _container.ReadItemAsync<MortalitySlopeEntity>(id, new PartitionKey(id));
                 List<Dictionary<string, float>> mortalitySlopePoints = mortalitySlope.WaitListMortality;
                 MatchRunEntity MatchRun = await _container.ReadItemAsync<MatchRunEntity>(id, new PartitionKey(id));
-                MatchRun.MortalitySlope = mortalitySlopePoints;
+                MatchRun.PlotPoints = mortalitySlopePoints;
                 return MatchRun;
                 //return response.Resource;
             }
@@ -43,8 +44,10 @@ namespace ODSApi.Services
         }
         public async Task<IEnumerable<MatchRunEntity>> getByMatchSequence(string queryString)
         {
+
             var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
             var results = new List<MatchRunEntity>();
+
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();

@@ -41,6 +41,8 @@ namespace ODSApi
             services.AddSingleton<ITimeToBetterService>(InitializeCosmosClientInstanceAsyncTimeToBetter(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<IMatchRunService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<IMortalitySlopeService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+
+            services.AddApplicationInsightsTelemetry();
         }
     
 

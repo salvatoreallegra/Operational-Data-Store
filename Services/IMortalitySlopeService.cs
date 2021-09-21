@@ -12,6 +12,8 @@ namespace ODSApi.Services
         Task<MortalitySlopeEntity> GetAsync(string id);
         Task AddAsync(MortalitySlopeEntity item);
 
-        
+        Task<IEnumerable<MortalitySlopeEntity>> getByMatchSequence(string query);
+
+
     }
 }

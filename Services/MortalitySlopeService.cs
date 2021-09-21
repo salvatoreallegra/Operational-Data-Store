@@ -46,5 +46,29 @@ namespace ODSApi.Services
             }
             return results;
         }
+
+        public async Task<IEnumerable<MortalitySlopeEntity>> getByMatchSequence(string queryString)
+        {
+
+            var query = _container.GetItemQueryIterator<MortalitySlopeEntity>(new QueryDefinition(queryString));
+            var results = new List<MortalitySlopeEntity>();
+            while (query.HasMoreResults)
+            {
+                var response = await query.ReadNextAsync();
+                results.AddRange(response.ToList());
+            }
+            return results;
+
+        }
+        //public Task<MortalitySlopeEntity> getOnByMatchSequence(int matchId, int sequenceId)
+        //{
+        //    var slope =  _container.GetItemLinqQueryable<MortalitySlopeEntity>(true)
+        //             .Where(b => b.SequenceId == sequenceId && b.MatchId == matchId)
+        //             .AsEnumerable()
+        //             .FirstOrDefault();
+        //    return slope;
+        //}
+
     }
-}
+  }
+

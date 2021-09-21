@@ -13,66 +13,62 @@ namespace ODSApi.Controllers
     [ApiController]
     public class MatchRunController : ControllerBase
     {
-        private readonly IMatchRunService _cosmosDbService;
-        public MatchRunController(IMatchRunService cosmosDbService)
+        private readonly IMatchRunService _matchRunService;
+        private readonly IMortalitySlopeService _mortalitySlopeService;
+        public MatchRunController(IMatchRunService matchRunService, IMortalitySlopeService mortalitySlopeService)
         {
-            _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
+            _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
+            _mortalitySlopeService = mortalitySlopeService ?? throw new ArgumentNullException(nameof(mortalitySlopeService));
         }
         // GET api/items
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM c"));
+            return Ok(await _matchRunService.GetMultipleAsync("SELECT * FROM c"));
         }
         // GET api/items/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            return Ok(await _cosmosDbService.GetAsync(id));
+            return Ok(await _matchRunService.GetAsync(id));
         }
         [HttpGet("{MatchId}/{SequenceId}")]
         public async Task<IActionResult> GetByMatchSequence(int MatchId,int SequenceId)
         {
-            return Ok(await _cosmosDbService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " +  SequenceId));
+                        
+                var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+
+                if (matchRunRecords.Count() == 0)
+                {
+                    return NotFound("No Records Found");
+                }
+                var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+                List<Dictionary<string,float>> plotpoints = null;
+                foreach( var m in mortalitySlopeRecords)
+                {
+                   plotpoints = m.WaitListMortality;
+
+                }
+                foreach( var x in matchRunRecords)
+                {
+                    x.PlotPoints = plotpoints;
+                }
+
+
+            return Ok(matchRunRecords);
+              //  return Ok(await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId));
+              
+      
         }
         // POST api/items
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] MatchRunEntity item)
         {
             item.Id = Guid.NewGuid().ToString();
-            await _cosmosDbService.AddAsync(item);
+            await _matchRunService.AddAsync(item);
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
-        //private readonly IRepository repository;
-
-        //public MatchRunController(IRepository repository)
-        //{
-        //    this.repository = repository;
-        //}
-
-        //[HttpGet]
-        //public ActionResult<List<MatchRunEntity>> Get()
-        //{
-        //    return repository.getAllModels();
-        //}
-
-        //[HttpGet("/timetobetter")]
-        //public ActionResult<List<TimeToBetterEntity>> GetAllTimeToBetters()
-        //{
-        //    return repository.getAllTimeToBetter();
-        //}
-
-        //[HttpGet("{CenterId}/{MatchId}")]
-        //public ActionResult<List<MatchRunEntity>> GetAllMatchRecordsByCenterIdMatchId(int CenterId, int MatchId)
-        //{
-
-        //    var predictiveModel = repository.GetMatchRunRecordsByCenterIdMatchId(CenterId, MatchId);
-        //      if(MatchId < 10) {
-
-
-        //    }
-        //    return predictiveModel;
-        //}
+        
 
     }
 }

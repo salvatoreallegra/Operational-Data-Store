@@ -14,14 +14,16 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "matchid")]
         public int MatchId { get; set; }  //predictive model match id from model api
 
+        [JsonProperty(PropertyName = "sequenceid")]
+        public int SequenceId { get; set; } //identifier of patient from model api
+
         [JsonProperty(PropertyName = "offerdate")]
         public DateTime OfferDate { get; set; }
 
         [JsonProperty(PropertyName = "offerkdpi")]
         public float OfferKdpi { get; set; }
 
-        [JsonProperty(PropertyName = "sequenceid")]
-        public int SequenceId { get; set; } //identifier of patient from model api
+       
 
         [JsonProperty(PropertyName = "donorauditid")]
         public int DonorAuditId { get; set; } //Audit id sent from mobile client
@@ -38,8 +40,7 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "waitlistauditid")]
         public int WaitListAuditId { get; set; }
 
-        [JsonProperty(PropertyName = "mortalityslope")]
-        public List<Dictionary<string, float>> MortalitySlope { get; set; }    //This is wait list mortality from Mortality Slope Collection
+           
 
         [JsonProperty(PropertyName = "modelused")]
         public string ModelUsed { get; set; }
@@ -47,13 +48,26 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "timetobetteroffer")]
         public Dictionary<string, int> TimeToBetterOffer { get; set; }
 
-        [JsonProperty(PropertyName = "survivalprobabilityattimetobetteroffer")]
-        public Dictionary<string, float> SurvivalProbabilityAtTimeToBetterOffer { get; set; }
+        [JsonProperty(PropertyName = "plotpoints")]
+        public List<Dictionary<string, float>> PlotPoints { get; set; }  //This is wait list mortality from Mortality Slope Collection
 
 
-        [JsonProperty(PropertyName = "plotpointofsurvivalprobability")]
-        public Dictionary<string, float> PlotPointOfSurvivalProbability { get; set; }
+        [JsonProperty(PropertyName = "timetonext30")]
+        public Dictionary<string, float> TimeToNext30 { get; set; }
 
+        [JsonProperty(PropertyName = "timetonext50")]
+        public Dictionary<string, float> TimeToNext50 { get; set; }
+
+
+
+        //[JsonProperty(PropertyName = "survivalprobabilityattimetobetteroffer")]
+        //public Dictionary<string, float> SurvivalProbabilityAtTimeToBetterOffer { get; set; }
+
+        //[JsonProperty(PropertyName = "plotpointofsurvivalprobability")]
+        //public Dictionary<string, float> PlotPointOfSurvivalProbability { get; set; }
+
+        [JsonProperty(PropertyName = "timestamp")]
+        public DateTime TimeStamp { get; set; }
 
 
 
