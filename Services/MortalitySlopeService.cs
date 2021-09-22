@@ -60,7 +60,7 @@ namespace ODSApi.Services
             return results;
 
         }
-        //public Task<MortalitySlopeEntity> getOnByMatchSequence(int matchId, int sequenceId)
+        //public MortalitySlopeEntity getOneByMatchSequence(int matchId, int sequenceId)
         //{
         //    var slope =  _container.GetItemLinqQueryable<MortalitySlopeEntity>(true)
         //             .Where(b => b.SequenceId == sequenceId && b.MatchId == matchId)

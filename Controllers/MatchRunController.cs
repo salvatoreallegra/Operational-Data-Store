@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using ODSApi.Helpers;
 
 namespace ODSApi.Controllers
 {
@@ -15,10 +16,13 @@ namespace ODSApi.Controllers
     {
         private readonly IMatchRunService _matchRunService;
         private readonly IMortalitySlopeService _mortalitySlopeService;
+        //private OdSHelper _helper;
+        
         public MatchRunController(IMatchRunService matchRunService, IMortalitySlopeService mortalitySlopeService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
             _mortalitySlopeService = mortalitySlopeService ?? throw new ArgumentNullException(nameof(mortalitySlopeService));
+            //_helper = helper;
         }
         // GET api/items
         [HttpGet]
@@ -35,7 +39,8 @@ namespace ODSApi.Controllers
         [HttpGet("{MatchId}/{SequenceId}")]
         public async Task<IActionResult> GetByMatchSequence(int MatchId,int SequenceId)
         {
-                        
+                //var testSlope = _mortalitySlopeService.getOneByMatchSequence(MatchId, SequenceId);
+                //        
                 var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
 
                 if (matchRunRecords.Count() == 0)
@@ -54,9 +59,23 @@ namespace ODSApi.Controllers
                     x.PlotPoints = plotpoints;
                 }
 
+            //Calculate Model Used
+            float _kdpi;
+            foreach (var x in matchRunRecords)
+            {
+                _kdpi = x.OfferKdpi;
+            }
+
+
+
+            //foreach (var x in matchRunRecords)
+            //{
+            //    x.ModelUsed = ;
+            //}
+
 
             return Ok(matchRunRecords);
-              //  return Ok(await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId));
+            //  return Ok(await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId));
               
       
         }
