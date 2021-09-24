@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Services
 {
-    public interface ITimeToBetterService
+    public interface ITimeToNextOffer
     {
         Task<IEnumerable<TimeToBetterEntity>> GetMultipleAsync(string query);
         Task<TimeToBetterEntity> GetAsync(string id);

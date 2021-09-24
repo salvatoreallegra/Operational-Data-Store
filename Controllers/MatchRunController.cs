@@ -16,56 +16,74 @@ namespace ODSApi.Controllers
     {
         private readonly IMatchRunService _matchRunService;
         private readonly IMortalitySlopeService _mortalitySlopeService;
-        private readonly ITimeToBetterService _timeToBetterService;
+        private readonly ITimeToNextOffer _timeToBetterService;
         //private OdSHelper _helper;
         
-        public MatchRunController(IMatchRunService matchRunService, IMortalitySlopeService mortalitySlopeService, ITimeToBetterService timeToBetterService)
+        public MatchRunController(IMatchRunService matchRunService, IMortalitySlopeService mortalitySlopeService, ITimeToNextOffer timeToBetterService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
             _mortalitySlopeService = mortalitySlopeService ?? throw new ArgumentNullException(nameof(mortalitySlopeService));
             _timeToBetterService = timeToBetterService ?? throw new ArgumentNullException(nameof(timeToBetterService)); 
         }
-        // GET api/items
-        [HttpGet]
-        public async Task<IActionResult> List()
-        {
-            return Ok(await _matchRunService.GetMultipleAsync("SELECT * FROM c"));
-        }
+        
         // GET api/items/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             return Ok(await _matchRunService.GetAsync(id));
         }
-        [HttpGet("{MatchId}/{SequenceId}")]
-        public async Task<IActionResult> GetByMatchSequence(int MatchId,int SequenceId)
+
+        // POST api/items
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] MatchRunEntity item)
         {
-                   
-                var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+            item.Id = Guid.NewGuid().ToString();
+            await _matchRunService.AddAsync(item);
+            return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
+        }
+        [HttpGet("{MatchId}/{SequenceId}")]
+        public async Task<IActionResult> GetByMatchSequence(int MatchId, int SequenceId)
+        {
 
-                if (matchRunRecords.Count() == 0)
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+
+            if (matchRunRecords.Count() == 0)
+            {
+                return NotFound("No Match Run Records Found for MatchId " + MatchId + " and SequenceId " + SequenceId);
+            }
+
+            //get mortality slope record by MatchId and SequenceId
+            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+           
+            List<Dictionary<string, float>> plotpoints = null;
+            try
+            {
+                foreach (var m in mortalitySlopeRecords)
                 {
-                    return NotFound("No Records Found");
-                }
+                    if (m.WaitListMortality is null || m.WaitListMortality.Count == 0)
+                    {
+                        return NoContent();  //204
+                    }
 
-                //get mortality slope record by MatchId and SequenceId
-                var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
-
-                List<Dictionary<string,float>> plotpoints = null;  
-                foreach(var m in mortalitySlopeRecords)
-                {
-                   plotpoints = m.WaitListMortality;
+                    
+                    plotpoints = m.WaitListMortality;
 
                 }
-                foreach(var x in matchRunRecords)
+                foreach (var x in matchRunRecords)
                 {
                     x.PlotPoints = plotpoints;
+                    x.TimeStamp = DateTime.Now;
                 }
+            }
+            catch (Exception ex)
+            {
 
+            }
 
-            //get time to better records by MatchId and Sequence ID
-                var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
-           
+               //it's all timetonextoffer now, change your model and controllers
+                //get time to better records by MatchId and Sequence ID
+               var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+              
                 Dictionary<string, int> timeToBetter = null;
                 foreach (var x in timeToBetterRecords)
                 {
@@ -82,18 +100,10 @@ namespace ODSApi.Controllers
             }
 
             return Ok(matchRunRecords);
-            //  return Ok(await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId));
               
       
         }
-        // POST api/items
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] MatchRunEntity item)
-        {
-            item.Id = Guid.NewGuid().ToString();
-            await _matchRunService.AddAsync(item);
-            return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
-        }
+       
         
         public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string,float>> plotPointsList, Dictionary<string,int> timeToBetter)
         {
@@ -213,26 +223,26 @@ namespace ODSApi.Controllers
                     }
                 }
             }
-            float[] strippedNumbersArray = strippedNumbers.ToArray();
-            float[] strippedSurvivalArray = strippedSurvival.ToArray();
+            float[] strippedNumbersArrayList = strippedNumbers.ToArray();
+            float[] strippedSurvivalArrayList = strippedSurvival.ToArray();
             float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
 
             //need to match the probability of survival with the number of days between the two above arrays
 
-            Array.Sort(strippedNumbersArray);
-            for(var i = 0; i < strippedNumbersArray.Length; i++)
+            Array.Sort(strippedNumbersArrayList);
+            for(var i = 0; i < strippedNumbersArrayList.Length; i++)
             {
-                if(strippedNumbersArray[i] > time50 )           
+                if(strippedNumbersArrayList[i] > time50 )           
                 {                                                
-                    y2 = strippedNumbersArray[i];
+                    y2 = strippedNumbersArrayList[i];
                     break;                  
                 }
             }
-            for(var i = 0; i < strippedNumbersArray.Length; i++)
+            for(var i = 0; i < strippedNumbersArrayList.Length; i++)
             {
-                if (strippedNumbersArray[i] < time50)        
+                if (strippedNumbersArrayList[i] < time50)        
                 {                                            
-                    y1 = strippedNumbersArray[i];
+                    y1 = strippedNumbersArrayList[i];
                     break;
                 }
             }
@@ -240,11 +250,11 @@ namespace ODSApi.Controllers
             {
                 if (unsortedstrippedNumbersArray[i] == y2)
                 {
-                    for(var j = 0; j < strippedSurvivalArray.Length; j++)
+                    for(var j = 0; j < strippedSurvivalArrayList.Length; j++)
                     {
                         if(j == i)
                         {
-                            x2 = strippedSurvivalArray[j];
+                            x2 = strippedSurvivalArrayList[j];
                             break;
                         }
                     }
@@ -254,11 +264,11 @@ namespace ODSApi.Controllers
             {
                 if (unsortedstrippedNumbersArray[i] == y1)
                 {
-                    for (var j = 0; j < strippedSurvivalArray.Length; j++)
+                    for (var j = 0; j < strippedSurvivalArrayList.Length; j++)
                     {
                         if (j == i)
                         {
-                            x1 = strippedSurvivalArray[j];
+                            x1 = strippedSurvivalArrayList[j];
                             break;
                         }
                     }

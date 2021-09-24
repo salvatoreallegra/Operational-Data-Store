@@ -62,6 +62,7 @@ namespace ODSApi.Services
         {
             
             var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
+            
             var results = new List<MatchRunEntity>();
             while (query.HasMoreResults)
             {

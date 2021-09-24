@@ -37,7 +37,7 @@ namespace ODSApi
             });
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             services.AddSingleton<ILogService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<ITimeToBetterService>(InitializeCosmosClientInstanceAsyncTimeToBetter(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<ITimeToNextOffer>(InitializeCosmosClientInstanceAsyncTimeToBetter(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<IMatchRunService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<IMortalitySlopeService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
 
@@ -81,7 +81,7 @@ namespace ODSApi
             var cosmosDbService = new LogService(client, databaseName, containerName);
             return cosmosDbService;
         }
-        private static async Task<TimeToBetterService> InitializeCosmosClientInstanceAsyncTimeToBetter(IConfigurationSection configurationSection)
+        private static async Task<TimeToNextOffer> InitializeCosmosClientInstanceAsyncTimeToBetter(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = "TimeToBetter";
@@ -92,7 +92,7 @@ namespace ODSApi
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
-            var cosmosDbService = new TimeToBetterService(client, databaseName, containerName);
+            var cosmosDbService = new TimeToNextOffer(client, databaseName, containerName);
             return cosmosDbService;
         }
         private static async Task<IMatchRunService> InitializeCosmosClientInstanceAsyncMatchRun(IConfigurationSection configurationSection)
