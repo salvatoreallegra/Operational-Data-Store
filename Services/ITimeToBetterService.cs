@@ -11,5 +11,6 @@ namespace ODSApi.Services
         Task<IEnumerable<TimeToBetterEntity>> GetMultipleAsync(string query);
         Task<TimeToBetterEntity> GetAsync(string id);
         Task AddAsync(TimeToBetterEntity item);
+        Task<IEnumerable<TimeToBetterEntity>> getByMatchSequence(string query);
     }
 }

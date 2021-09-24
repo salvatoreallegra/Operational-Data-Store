@@ -14,7 +14,7 @@ namespace ODSApi.Entities
 {
     public class TimeToBetterEntity
     {
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "id")] 
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "matchid")]

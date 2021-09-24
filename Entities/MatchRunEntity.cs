@@ -18,12 +18,7 @@ namespace ODSApi.Entities
         public int SequenceId { get; set; } //identifier of patient from model api
 
         [JsonProperty(PropertyName = "offerdate")]
-        public DateTime OfferDate { get; set; }
-
-        [JsonProperty(PropertyName = "offerkdpi")]
-        public float OfferKdpi { get; set; }
-
-       
+        public DateTime OfferDate { get; set; }       
 
         [JsonProperty(PropertyName = "donorauditid")]
         public int DonorAuditId { get; set; } //Audit id sent from mobile client
@@ -39,14 +34,7 @@ namespace ODSApi.Entities
 
         [JsonProperty(PropertyName = "waitlistauditid")]
         public int WaitListAuditId { get; set; }
-
-           
-
-        [JsonProperty(PropertyName = "modelused")]
-        public string ModelUsed { get; set; }
-
-        [JsonProperty(PropertyName = "timetobetteroffer")]
-        public Dictionary<string, int> TimeToBetterOffer { get; set; }
+                      
 
         [JsonProperty(PropertyName = "plotpoints")]
         public List<Dictionary<string, float>> PlotPoints { get; set; }  //This is wait list mortality from Mortality Slope Collection
@@ -58,13 +46,9 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "timetonext50")]
         public Dictionary<string, float> TimeToNext50 { get; set; }
 
-
-
-        //[JsonProperty(PropertyName = "survivalprobabilityattimetobetteroffer")]
-        //public Dictionary<string, float> SurvivalProbabilityAtTimeToBetterOffer { get; set; }
-
-        //[JsonProperty(PropertyName = "plotpointofsurvivalprobability")]
-        //public Dictionary<string, float> PlotPointOfSurvivalProbability { get; set; }
+        //Add graph params
+        [JsonProperty(PropertyName = "graphparams")]
+        public List<float> GraphParams { get; set; }
 
         [JsonProperty(PropertyName = "timestamp")]
         public DateTime TimeStamp { get; set; }

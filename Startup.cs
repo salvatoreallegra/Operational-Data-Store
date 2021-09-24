@@ -35,7 +35,6 @@ namespace ODSApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ODSApi", Version = "v1" });
             });
-            services.AddSingleton<IRepository, InMemoryRepository>();
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             services.AddSingleton<ILogService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<ITimeToBetterService>(InitializeCosmosClientInstanceAsyncTimeToBetter(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
@@ -106,9 +105,11 @@ namespace ODSApi
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            
 
-            var cosmosDbService = new MatchRunService(client, databaseName, containerName);
-            return cosmosDbService;
+            var cosmosDBService = new MatchRunService(client, databaseName, containerName);
+
+            return cosmosDBService;
         }
         private static async Task<IMortalitySlopeService> InitializeCosmosClientInstanceAsyncMortalitySlope(IConfigurationSection configurationSection)
         {

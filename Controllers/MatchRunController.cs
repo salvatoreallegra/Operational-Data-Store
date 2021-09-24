@@ -16,13 +16,14 @@ namespace ODSApi.Controllers
     {
         private readonly IMatchRunService _matchRunService;
         private readonly IMortalitySlopeService _mortalitySlopeService;
+        private readonly ITimeToBetterService _timeToBetterService;
         //private OdSHelper _helper;
         
-        public MatchRunController(IMatchRunService matchRunService, IMortalitySlopeService mortalitySlopeService)
+        public MatchRunController(IMatchRunService matchRunService, IMortalitySlopeService mortalitySlopeService, ITimeToBetterService timeToBetterService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
             _mortalitySlopeService = mortalitySlopeService ?? throw new ArgumentNullException(nameof(mortalitySlopeService));
-            //_helper = helper;
+            _timeToBetterService = timeToBetterService ?? throw new ArgumentNullException(nameof(timeToBetterService)); 
         }
         // GET api/items
         [HttpGet]
@@ -39,40 +40,46 @@ namespace ODSApi.Controllers
         [HttpGet("{MatchId}/{SequenceId}")]
         public async Task<IActionResult> GetByMatchSequence(int MatchId,int SequenceId)
         {
-                //var testSlope = _mortalitySlopeService.getOneByMatchSequence(MatchId, SequenceId);
-                //        
+                   
                 var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
 
                 if (matchRunRecords.Count() == 0)
                 {
                     return NotFound("No Records Found");
                 }
+
+                //get mortality slope record by MatchId and SequenceId
                 var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
-                List<Dictionary<string,float>> plotpoints = null;
-                foreach( var m in mortalitySlopeRecords)
+
+                List<Dictionary<string,float>> plotpoints = null;  
+                foreach(var m in mortalitySlopeRecords)
                 {
                    plotpoints = m.WaitListMortality;
 
                 }
-                foreach( var x in matchRunRecords)
+                foreach(var x in matchRunRecords)
                 {
                     x.PlotPoints = plotpoints;
                 }
 
-            //Calculate Model Used
-            float _kdpi;
-            foreach (var x in matchRunRecords)
-            {
-                _kdpi = x.OfferKdpi;
+
+            //get time to better records by MatchId and Sequence ID
+                var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+           
+                Dictionary<string, int> timeToBetter = null;
+                foreach (var x in timeToBetterRecords)
+                {
+                    timeToBetter = x.TimeToBetter;
+                    
+                }
+                foreach (var x in matchRunRecords) //there is no field time to next 30
+                {
+                
+                    x.TimeToNext30["time"] = timeToBetter["timetobetter30"];
+                    x.TimeToNext50["time"] = timeToBetter["timetobetter50"];
+                    x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints,timeToBetter);
+                    x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints,timeToBetter);
             }
-
-
-
-            //foreach (var x in matchRunRecords)
-            //{
-            //    x.ModelUsed = ;
-            //}
-
 
             return Ok(matchRunRecords);
             //  return Ok(await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId));
@@ -88,6 +95,180 @@ namespace ODSApi.Controllers
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
         
+        public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string,float>> plotPointsList, Dictionary<string,int> timeToBetter)
+        {
+            var time30 = timeToBetter["timetobetter30"];
+            float mortalitySlope;
+            float probabilityOfSurvival;
+            float y2 = 0.0f;
+            float y1 = 0.0f;
+            float x2 = 0.0f;
+            float x1 = 0.0f;
+
+            List<float> strippedNumbers = new List<float>();
+            List<float> strippedSurvival = new List<float>();
+
+            foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
+            {
+                foreach (var kvp in allPlotPoints)
+                {
+                    string key = kvp.Key;
+                    float value = kvp.Value;
+                    if (key == "time")
+                    {
+                        strippedNumbers.Add(value);
+
+                    }
+                    if (key == "probabilityofsurvival")
+                    {
+                        strippedSurvival.Add(value);
+                    }
+                }
+            }
+            float[] strippedNumbersArray = strippedNumbers.ToArray();
+            float[] strippedSurvivalArray = strippedSurvival.ToArray();
+            float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
+
+            //need to match the probability of survival with the number of days between the two above arrays
+
+            Array.Sort(strippedNumbersArray);
+            for (var i = 0; i < strippedNumbersArray.Length; i++)
+            {
+                if (strippedNumbersArray[i] > time30)
+                {
+                    y2 = strippedNumbersArray[i];
+                    break;
+                }
+            }
+            for (var i = 0; i < strippedNumbersArray.Length; i++)
+            {
+                if (strippedNumbersArray[i] < time30)
+                {
+                    y1 = strippedNumbersArray[i];
+                    break;
+                }
+            }
+            for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
+            {
+                if (unsortedstrippedNumbersArray[i] == y2)
+                {
+                    for (var j = 0; j < strippedSurvivalArray.Length; j++)
+                    {
+                        if (j == i)
+                        {
+                            x2 = strippedSurvivalArray[j];
+                            break;
+                        }
+                    }
+                }
+            }
+            for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
+            {
+                if (unsortedstrippedNumbersArray[i] == y1)
+                {
+                    for (var j = 0; j < strippedSurvivalArray.Length; j++)
+                    {
+                        if (j == i)
+                        {
+                            x1 = strippedSurvivalArray[j];
+                            break;
+                        }
+                    }
+                }
+            }
+            mortalitySlope = (y2 - y1) / (x2 - x1);
+            probabilityOfSurvival = mortalitySlope * time30 + 1;
+
+            return probabilityOfSurvival;
+
+
+        }
+        public static float CalculateProbabilityOfSurvivalTime50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, int> timeToBetter)
+        {
+            var time50 = timeToBetter["timetobetter50"];
+            float mortalitySlope;
+            float probabilityOfSurvival;
+            float y2 = 0.0f;
+            float y1 = 0.0f;
+            float x2 = 0.0f;
+            float x1 = 0.0f;
+            
+            List<float> strippedNumbers = new List<float>();
+            List<float> strippedSurvival = new List<float>();
+
+            foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
+            {
+                foreach (var kvp in allPlotPoints)
+                {
+                    string key = kvp.Key;
+                    float value = kvp.Value;
+                    if(key == "time")
+                    {
+                        strippedNumbers.Add(value);
+                        
+                    }
+                    if(key == "probabilityofsurvival")
+                    {
+                        strippedSurvival.Add(value);
+                    }
+                }
+            }
+            float[] strippedNumbersArray = strippedNumbers.ToArray();
+            float[] strippedSurvivalArray = strippedSurvival.ToArray();
+            float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
+
+            //need to match the probability of survival with the number of days between the two above arrays
+
+            Array.Sort(strippedNumbersArray);
+            for(var i = 0; i < strippedNumbersArray.Length; i++)
+            {
+                if(strippedNumbersArray[i] > time50 )           
+                {                                                
+                    y2 = strippedNumbersArray[i];
+                    break;                  
+                }
+            }
+            for(var i = 0; i < strippedNumbersArray.Length; i++)
+            {
+                if (strippedNumbersArray[i] < time50)        
+                {                                            
+                    y1 = strippedNumbersArray[i];
+                    break;
+                }
+            }
+            for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
+            {
+                if (unsortedstrippedNumbersArray[i] == y2)
+                {
+                    for(var j = 0; j < strippedSurvivalArray.Length; j++)
+                    {
+                        if(j == i)
+                        {
+                            x2 = strippedSurvivalArray[j];
+                            break;
+                        }
+                    }
+                }
+            }
+            for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
+            {
+                if (unsortedstrippedNumbersArray[i] == y1)
+                {
+                    for (var j = 0; j < strippedSurvivalArray.Length; j++)
+                    {
+                        if (j == i)
+                        {
+                            x1 = strippedSurvivalArray[j];
+                            break;
+                        }
+                    }
+                }
+            }
+            mortalitySlope = (y2 - y1) / (x2 - x1);
+            probabilityOfSurvival = mortalitySlope * time50 + 1;
+
+            return probabilityOfSurvival;
+        }
 
     }
 }

@@ -45,5 +45,32 @@ namespace ODSApi.Services
             }
             return results;
         }
+        public async Task<IEnumerable<TimeToBetterEntity>> getByMatchSequence(string queryString)
+        {
+
+            var query = _container.GetItemQueryIterator<TimeToBetterEntity>(new QueryDefinition(queryString));
+            var results = new List<TimeToBetterEntity>();
+            while (query.HasMoreResults)
+            {
+                var response = await query.ReadNextAsync();
+                results.AddRange(response.ToList());
+            }
+            return results;
+
+        }
+        //public async Task<TimeToBetterEntity> getByMatchSequenceLinq(int matchId, int sequenceId)
+        //{
+
+        //   var person = await _container.GetItemLinqQueryable<TimeToBetterEntity>(true)
+        //                        .Where(p => p.MatchId == matchId && p.SequenceId == sequenceId)
+        //                        .ToList().First();
+
+        //    return person;
+        //}
+
+
+
+
+            
     }
 }

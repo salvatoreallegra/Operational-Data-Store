@@ -10,15 +10,17 @@ namespace ODSApi.Services
     public class MatchRunService : IMatchRunService
     {
         private Container _container;
-        private readonly IMatchRunService matchRunService;
         public MatchRunService(
             CosmosClient cosmosDbClient,
             string databaseName,
-            string containerName)
+            string containerName
+           )
+        
         {
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
-        }
 
+        }
+      
         public async Task AddAsync(MatchRunEntity item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
@@ -58,6 +60,7 @@ namespace ODSApi.Services
         }
         public async Task<IEnumerable<MatchRunEntity>> GetMultipleAsync(string queryString)
         {
+            
             var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
             var results = new List<MatchRunEntity>();
             while (query.HasMoreResults)
@@ -66,6 +69,7 @@ namespace ODSApi.Services
                 results.AddRange(response.ToList());
             }
             return results;
+            
         }
     }
 }
