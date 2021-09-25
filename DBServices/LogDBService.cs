@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Services
 {
-    public class LogService : ILogService
+    public class LogDBService : ILogDBService
     {
         private Container _container;
-        public LogService(
+        public LogDBService(
             CosmosClient cosmosDbClient,
             string databaseName,
             string containerName)

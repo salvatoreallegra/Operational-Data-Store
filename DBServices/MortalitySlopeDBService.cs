@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Services
 {
-    public class MortalitySlopeService : IMortalitySlopeService
+    public class MortalitySlopeDBService : IMortalitySlopeDBService
     {
         private Container _container;
-        public MortalitySlopeService(
+        public MortalitySlopeDBService(
             CosmosClient cosmosDbClient,
             string databaseName,
             string containerName)

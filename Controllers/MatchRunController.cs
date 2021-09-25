@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ODSApi.DTOs;
 using ODSApi.Entities;
 using ODSApi.Services;
 using System;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using ODSApi.Helpers;
+
 
 namespace ODSApi.Controllers
 {
@@ -14,12 +15,12 @@ namespace ODSApi.Controllers
     [ApiController]
     public class MatchRunController : ControllerBase
     {
-        private readonly IMatchRunService _matchRunService;
-        private readonly IMortalitySlopeService _mortalitySlopeService;
-        private readonly ITimeToNextOffer _timeToBetterService;
-        //private OdSHelper _helper;
+        private readonly IMatchRunDBService _matchRunService;
+        private readonly IMortalitySlopeDBService _mortalitySlopeService;
+        private readonly ITimeToNextOfferDBService _timeToBetterService;
         
-        public MatchRunController(IMatchRunService matchRunService, IMortalitySlopeService mortalitySlopeService, ITimeToNextOffer timeToBetterService)
+        
+        public MatchRunController(IMatchRunDBService matchRunService, IMortalitySlopeDBService mortalitySlopeService, ITimeToNextOfferDBService timeToBetterService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
             _mortalitySlopeService = mortalitySlopeService ?? throw new ArgumentNullException(nameof(mortalitySlopeService));
@@ -35,7 +36,7 @@ namespace ODSApi.Controllers
 
         // POST api/items
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] MatchRunEntity item)
+        public async Task<IActionResult> Create([FromBody] MatchRunCreateDto item)
         {
             item.Id = Guid.NewGuid().ToString();
             await _matchRunService.AddAsync(item);
@@ -44,29 +45,44 @@ namespace ODSApi.Controllers
         [HttpGet("{MatchId}/{SequenceId}")]
         public async Task<IActionResult> GetByMatchSequence(int MatchId, int SequenceId)
         {
-
+            /*******************************************************************
+             * Get all the records from the MatchRun(PassThrough) Cosmos Collection
+             * by matchid and sequenceid
+             * *****************************************************************/
             var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+
+
+            /*******************************************************************
+             * Need to check if the list count is 0.  Null check does not work
+             * here because matchRunService returns IEnumerable
+             * ******************************************************************/
 
             if (matchRunRecords.Count() == 0)
             {
                 return NotFound("No Match Run Records Found for MatchId " + MatchId + " and SequenceId " + SequenceId);
             }
 
-            //get mortality slope record by MatchId and SequenceId
+            /*******************************************************************
+            * Get all Mortality Slope records from Cosmos Mortality Slope Collection
+            * ******************************************************************/
             var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
            
             List<Dictionary<string, float>> plotpoints = null;
-            try
-            {
-                foreach (var m in mortalitySlopeRecords)
+
+            /*******************************************************************
+            * Validate that mortality slope plot points exist for the retrieved
+            * records by matchrun and sequenceid
+            * ******************************************************************/
+
+            foreach (var m in mortalitySlopeRecords)
                 {
-                    if (m.WaitListMortality is null || m.WaitListMortality.Count == 0)
+                    if (m.MortalitySlopePlotPoints is null || m.MortalitySlopePlotPoints.Count == 0)
                     {
                         return NoContent();  //204
                     }
 
                     
-                    plotpoints = m.WaitListMortality;
+                    plotpoints = m.MortalitySlopePlotPoints;
 
                 }
                 foreach (var x in matchRunRecords)
@@ -74,11 +90,8 @@ namespace ODSApi.Controllers
                     x.PlotPoints = plotpoints;
                     x.TimeStamp = DateTime.Now;
                 }
-            }
-            catch (Exception ex)
-            {
-
-            }
+            
+            
 
                //it's all timetonextoffer now, change your model and controllers
                 //get time to better records by MatchId and Sequence ID
@@ -90,6 +103,8 @@ namespace ODSApi.Controllers
                     timeToBetter = x.TimeToBetter;
                     
                 }
+
+                //Refactor this to just send the timetobetter30 and timetobetter 50 in calcprob...instead of the entire object
                 foreach (var x in matchRunRecords) //there is no field time to next 30
                 {
                 
@@ -107,6 +122,9 @@ namespace ODSApi.Controllers
         
         public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string,float>> plotPointsList, Dictionary<string,int> timeToBetter)
         {
+
+            // y = survival probability
+            // x = number of days
             var time30 = timeToBetter["timetobetter30"];
             float mortalitySlope;
             float probabilityOfSurvival;
@@ -146,7 +164,7 @@ namespace ODSApi.Controllers
             {
                 if (strippedNumbersArray[i] > time30)
                 {
-                    y2 = strippedNumbersArray[i];
+                    x2 = strippedNumbersArray[i];
                     break;
                 }
             }
@@ -154,19 +172,20 @@ namespace ODSApi.Controllers
             {
                 if (strippedNumbersArray[i] < time30)
                 {
-                    y1 = strippedNumbersArray[i];
+                    x1 = strippedNumbersArray[i];
                     break;
                 }
             }
+            //Get survival probability of each
             for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
             {
-                if (unsortedstrippedNumbersArray[i] == y2)
+                if (unsortedstrippedNumbersArray[i] == x2)
                 {
                     for (var j = 0; j < strippedSurvivalArray.Length; j++)
                     {
                         if (j == i)
                         {
-                            x2 = strippedSurvivalArray[j];
+                            y2 = strippedSurvivalArray[j];
                             break;
                         }
                     }
@@ -174,13 +193,13 @@ namespace ODSApi.Controllers
             }
             for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
             {
-                if (unsortedstrippedNumbersArray[i] == y1)
+                if (unsortedstrippedNumbersArray[i] == x1)
                 {
                     for (var j = 0; j < strippedSurvivalArray.Length; j++)
                     {
                         if (j == i)
                         {
-                            x1 = strippedSurvivalArray[j];
+                            y1 = strippedSurvivalArray[j];
                             break;
                         }
                     }
@@ -234,7 +253,7 @@ namespace ODSApi.Controllers
             {
                 if(strippedNumbersArrayList[i] > time50 )           
                 {                                                
-                    y2 = strippedNumbersArrayList[i];
+                    x2 = strippedNumbersArrayList[i];
                     break;                  
                 }
             }
@@ -242,19 +261,19 @@ namespace ODSApi.Controllers
             {
                 if (strippedNumbersArrayList[i] < time50)        
                 {                                            
-                    y1 = strippedNumbersArrayList[i];
+                    x1 = strippedNumbersArrayList[i];
                     break;
                 }
             }
             for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
             {
-                if (unsortedstrippedNumbersArray[i] == y2)
+                if (unsortedstrippedNumbersArray[i] == x2)
                 {
                     for(var j = 0; j < strippedSurvivalArrayList.Length; j++)
                     {
                         if(j == i)
                         {
-                            x2 = strippedSurvivalArrayList[j];
+                            y2 = strippedSurvivalArrayList[j];
                             break;
                         }
                     }
@@ -262,13 +281,13 @@ namespace ODSApi.Controllers
             }
             for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
             {
-                if (unsortedstrippedNumbersArray[i] == y1)
+                if (unsortedstrippedNumbersArray[i] == x1)
                 {
                     for (var j = 0; j < strippedSurvivalArrayList.Length; j++)
                     {
                         if (j == i)
                         {
-                            x1 = strippedSurvivalArrayList[j];
+                            y1 = strippedSurvivalArrayList[j];
                             break;
                         }
                     }

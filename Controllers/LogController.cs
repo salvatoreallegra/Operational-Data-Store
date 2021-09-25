@@ -13,8 +13,8 @@ namespace ODSApi.Controllers
     [ApiController]
     public class LogController : ControllerBase
     {
-        private readonly ILogService _cosmosDbService;
-        public LogController(ILogService cosmosDbService)
+        private readonly ILogDBService _cosmosDbService;
+        public LogController(ILogDBService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
+using ODSApi.DTOs;
 using ODSApi.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Services
 {
-    public class MatchRunService : IMatchRunService
+    public class MatchRunDBService : IMatchRunDBService
     {
         private Container _container;
-        public MatchRunService(
+        public MatchRunDBService(
             CosmosClient cosmosDbClient,
             string databaseName,
             string containerName
@@ -21,9 +22,10 @@ namespace ODSApi.Services
 
         }
       
-        public async Task AddAsync(MatchRunEntity item)
+        public async Task AddAsync(MatchRunCreateDto item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
+            
         }
 
         public async Task<MatchRunEntity> GetAsync(string id)
@@ -33,7 +35,7 @@ namespace ODSApi.Services
                 //get mortality slope by match id and sequence id 
                 //
                 MortalitySlopeEntity mortalitySlope = await _container.ReadItemAsync<MortalitySlopeEntity>(id, new PartitionKey(id));
-                List<Dictionary<string, float>> mortalitySlopePoints = mortalitySlope.WaitListMortality;
+                List<Dictionary<string, float>> mortalitySlopePoints = mortalitySlope.MortalitySlopePlotPoints;
                 MatchRunEntity MatchRun = await _container.ReadItemAsync<MatchRunEntity>(id, new PartitionKey(id));
                 MatchRun.PlotPoints = mortalitySlopePoints;
                 return MatchRun;
@@ -46,30 +48,42 @@ namespace ODSApi.Services
         }
         public async Task<IEnumerable<MatchRunEntity>> getByMatchSequence(string queryString)
         {
-
-            var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
-            var results = new List<MatchRunEntity>();
-
-            while (query.HasMoreResults)
+            try
             {
-                var response = await query.ReadNextAsync();
-                results.AddRange(response.ToList());
-            }
-            return results;
+                var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
+                
+                var results = new List<MatchRunEntity>();
 
+                while (query.HasMoreResults)
+                {
+                    var response = await query.ReadNextAsync();
+                    results.AddRange(response.ToList());
+                }
+                return results;
+            }
+            catch(CosmosException ce)
+            {
+                return null;
+            }
         }
         public async Task<IEnumerable<MatchRunEntity>> GetMultipleAsync(string queryString)
         {
-            
-            var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
-            
-            var results = new List<MatchRunEntity>();
-            while (query.HasMoreResults)
+            try
             {
-                var response = await query.ReadNextAsync();
-                results.AddRange(response.ToList());
+                var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
+
+                var results = new List<MatchRunEntity>();
+                while (query.HasMoreResults)
+                {
+                    var response = await query.ReadNextAsync();
+                    results.AddRange(response.ToList());
+                }
+                return results;
             }
-            return results;
+            catch (CosmosException)
+            {
+                return null;
+            }
             
         }
     }

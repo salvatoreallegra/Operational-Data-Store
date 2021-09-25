@@ -13,8 +13,8 @@ namespace ODSApi.Controllers
     [ApiController]
     public class TimeToBetterController : ControllerBase
     {
-        private readonly ITimeToNextOffer _cosmosDbService;
-        public TimeToBetterController(ITimeToNextOffer cosmosDbService)
+        private readonly ITimeToNextOfferDBService _cosmosDbService;
+        public TimeToBetterController(ITimeToNextOfferDBService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
         }

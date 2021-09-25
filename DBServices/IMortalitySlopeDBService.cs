@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Services
 {
-    public interface IMortalitySlopeService
+    public interface IMortalitySlopeDBService
     {
         Task<IEnumerable<MortalitySlopeEntity>> GetMultipleAsync(string query);
         Task<MortalitySlopeEntity> GetAsync(string id);

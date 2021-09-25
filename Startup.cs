@@ -36,10 +36,10 @@ namespace ODSApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ODSApi", Version = "v1" });
             });
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
-            services.AddSingleton<ILogService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<ITimeToNextOffer>(InitializeCosmosClientInstanceAsyncTimeToBetter(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<IMatchRunService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<IMortalitySlopeService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToBetter(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
 
             services.AddApplicationInsightsTelemetry();
         }
@@ -67,7 +67,7 @@ namespace ODSApi
                 endpoints.MapControllers();
             });
         }
-        private static async Task<LogService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
+        private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["ContainerName"];
@@ -78,10 +78,10 @@ namespace ODSApi
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
-            var cosmosDbService = new LogService(client, databaseName, containerName);
+            var cosmosDbService = new LogDBService(client, databaseName, containerName);
             return cosmosDbService;
         }
-        private static async Task<TimeToNextOffer> InitializeCosmosClientInstanceAsyncTimeToBetter(IConfigurationSection configurationSection)
+        private static async Task<TimeToNextOfferDBService> InitializeCosmosClientInstanceAsyncTimeToBetter(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = "TimeToBetter";
@@ -92,10 +92,10 @@ namespace ODSApi
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
-            var cosmosDbService = new TimeToNextOffer(client, databaseName, containerName);
+            var cosmosDbService = new TimeToNextOfferDBService(client, databaseName, containerName);
             return cosmosDbService;
         }
-        private static async Task<IMatchRunService> InitializeCosmosClientInstanceAsyncMatchRun(IConfigurationSection configurationSection)
+        private static async Task<IMatchRunDBService> InitializeCosmosClientInstanceAsyncMatchRun(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = "MatchRun";
@@ -107,11 +107,11 @@ namespace ODSApi
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
             
 
-            var cosmosDBService = new MatchRunService(client, databaseName, containerName);
+            var cosmosDBService = new MatchRunDBService(client, databaseName, containerName);
 
             return cosmosDBService;
         }
-        private static async Task<IMortalitySlopeService> InitializeCosmosClientInstanceAsyncMortalitySlope(IConfigurationSection configurationSection)
+        private static async Task<IMortalitySlopeDBService> InitializeCosmosClientInstanceAsyncMortalitySlope(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = "MortalitySlope";
@@ -122,7 +122,7 @@ namespace ODSApi
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
-            var cosmosDbService = new MortalitySlopeService(client, databaseName, containerName);
+            var cosmosDbService = new MortalitySlopeDBService(client, databaseName, containerName);
             return cosmosDbService;
         }
     }

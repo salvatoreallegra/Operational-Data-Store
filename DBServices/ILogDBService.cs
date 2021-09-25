@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Services
 {
-    public interface ILogService
+    public interface ILogDBService
     {
         Task<IEnumerable<Log>> GetMultipleAsync(string query);
         Task<Log> GetAsync(string id);

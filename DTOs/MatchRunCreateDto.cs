@@ -23,8 +23,8 @@ namespace ODSApi.DTOs
         [JsonProperty(PropertyName = "donorauditid")]
         public int DonorAuditId { get; set; } //Audit id sent from mobile client
 
-        [JsonProperty(PropertyName = "createdDateTime")]
-        public int createdDateTime { get; set; } //Audit id sent from mobile client
+        [JsonProperty(PropertyName = "createddatetime")]
+        public DateTime createdDateTime { get; set; } //Audit id sent from mobile client
 
         [JsonProperty(PropertyName = "logid")]
         public int LogId { get; set; }  //Log id sent from mobile client

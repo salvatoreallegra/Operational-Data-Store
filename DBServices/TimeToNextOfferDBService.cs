@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Services
 {
-    public class TimeToNextOffer : ITimeToNextOffer
+    public class TimeToNextOfferDBService : ITimeToNextOfferDBService
     {
         private Container _container;
-        public TimeToNextOffer(
+        public TimeToNextOfferDBService(
             CosmosClient cosmosDbClient,
             string databaseName,
             string containerName)

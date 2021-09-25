@@ -13,8 +13,8 @@ namespace ODSApi.Controllers
     [ApiController]
     public class MortalitySlopeController : ControllerBase
     {
-        private readonly IMortalitySlopeService _cosmosDbService;
-        public MortalitySlopeController(IMortalitySlopeService cosmosDbService)
+        private readonly IMortalitySlopeDBService _cosmosDbService;
+        public MortalitySlopeController(IMortalitySlopeDBService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
         }
