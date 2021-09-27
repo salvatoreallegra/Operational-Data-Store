@@ -32,7 +32,7 @@ namespace ODSApi.Controllers
         }
         // POST api/items
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Log item)
+        public async Task<IActionResult> Create([FromBody] LogEntity item)
         {
             item.Id = Guid.NewGuid().ToString();
             await _cosmosDbService.AddAsync(item);

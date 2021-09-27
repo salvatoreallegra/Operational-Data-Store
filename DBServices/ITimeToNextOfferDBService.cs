@@ -8,9 +8,9 @@ namespace ODSApi.Services
 {
     public interface ITimeToNextOfferDBService
     {
-        Task<IEnumerable<TimeToBetterEntity>> GetMultipleAsync(string query);
-        Task<TimeToBetterEntity> GetAsync(string id);
-        Task AddAsync(TimeToBetterEntity item);
-        Task<IEnumerable<TimeToBetterEntity>> getByMatchSequence(string query);
+        Task<IEnumerable<TimeToNextOfferEntity>> GetMultipleAsync(string query);
+        Task<TimeToNextOfferEntity> GetAsync(string id);
+        Task AddAsync(TimeToNextOfferEntity item);
+        Task<IEnumerable<TimeToNextOfferEntity>> getByMatchSequence(string query);
     }
 }

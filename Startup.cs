@@ -37,7 +37,7 @@ namespace ODSApi
             });
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToBetter(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
 
@@ -81,10 +81,10 @@ namespace ODSApi
             var cosmosDbService = new LogDBService(client, databaseName, containerName);
             return cosmosDbService;
         }
-        private static async Task<TimeToNextOfferDBService> InitializeCosmosClientInstanceAsyncTimeToBetter(IConfigurationSection configurationSection)
+        private static async Task<TimeToNextOfferDBService> InitializeCosmosClientInstanceAsyncTimeToNextOffer(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "TimeToBetter";
+            var containerName = "TimeToNextOffer";
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 

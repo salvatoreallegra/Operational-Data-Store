@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Entities
 {
-    public class TimeToBetterEntity
+    public class TimeToNextOfferEntity
     {
         [JsonProperty(PropertyName = "id")] 
         public string Id { get; set; }
@@ -27,10 +27,10 @@ namespace ODSApi.Entities
         public DateTime TimeStamp { get; set; }
 
         [JsonProperty(PropertyName = "modelversionid")]
-        public int ModelVersionId { get; set; }
+        public float ModelVersionId { get; set; }
 
-        [JsonProperty(PropertyName = "timetobetter")]
-        public Dictionary<string, int> TimeToBetter { get; set; }
+        [JsonProperty(PropertyName = "timetonextoffer")]
+        public Dictionary<string, int> TimeToNextOffer { get; set; }
                        
     }
 }

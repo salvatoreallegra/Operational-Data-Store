@@ -66,7 +66,11 @@ namespace ODSApi.Controllers
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
             var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
-           
+
+            if (mortalitySlopeRecords.Count() == 0)
+            {
+                return NotFound("No Mortality Slope Records Found for MatchId " + MatchId + " and SequenceId " + SequenceId);
+            }
             List<Dictionary<string, float>> plotpoints = null;
 
             /*******************************************************************
@@ -74,7 +78,7 @@ namespace ODSApi.Controllers
             * records by matchrun and sequenceid
             * ******************************************************************/
 
-            foreach (var m in mortalitySlopeRecords)
+                foreach (var m in mortalitySlopeRecords)
                 {
                     if (m.MortalitySlopePlotPoints is null || m.MortalitySlopePlotPoints.Count == 0)
                     {
@@ -88,19 +92,35 @@ namespace ODSApi.Controllers
                 foreach (var x in matchRunRecords)
                 {
                     x.PlotPoints = plotpoints;
-                    x.TimeStamp = DateTime.Now;
+                 //   x.TimeStamp = DateTime.Now;
                 }
-            
-            
 
-               //it's all timetonextoffer now, change your model and controllers
-                //get time to better records by MatchId and Sequence ID
+
+             /*******************************************************************
+             * Validate that mortality slope plot points exist for the retrieved
+             * records by matchrun and sequenceid
+             *******************************************************************/
                var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
-              
-                Dictionary<string, int> timeToBetter = null;
-                foreach (var x in timeToBetterRecords)
+               if (timeToBetterRecords.Count() == 0)
+               {
+                return NotFound("No Time to Next Offer Records Found for MatchId " + MatchId + " and SequenceId " + SequenceId);
+               }
+
+            Dictionary<string, int> timeToNextOffer = null;
+
+
+                foreach (var t in timeToBetterRecords)
                 {
-                    timeToBetter = x.TimeToBetter;
+
+                if (t.TimeToNextOffer is null || t.TimeToNextOffer.Count == 0)
+                {
+                    return NoContent();  //204
+                }
+                else
+                {
+
+                    timeToNextOffer = t.TimeToNextOffer;
+                }
                     
                 }
 
@@ -108,12 +128,12 @@ namespace ODSApi.Controllers
                 foreach (var x in matchRunRecords) //there is no field time to next 30
                 {
                 
-                    x.TimeToNext30["time"] = timeToBetter["timetobetter30"];
-                    x.TimeToNext50["time"] = timeToBetter["timetobetter50"];
-                    x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints,timeToBetter);
-                    x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints,timeToBetter);
+                    x.TimeToNext50["time"] = timeToNextOffer["timetobetter30"];
+                    x.TimeToNext50["time"] = timeToNextOffer["timetobetter50"];
+                    x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints,timeToNextOffer);
+                    x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints,timeToNextOffer);
             }
-
+                
             return Ok(matchRunRecords);
               
       

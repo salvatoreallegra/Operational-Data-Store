@@ -28,7 +28,7 @@ namespace ODSApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            TimeToBetterEntity returnEntity = await _cosmosDbService.GetAsync(id);
+            TimeToNextOfferEntity returnEntity = await _cosmosDbService.GetAsync(id);
              if(returnEntity.SequenceId == 0)
              {
                 return StatusCode(209);
@@ -37,7 +37,7 @@ namespace ODSApi.Controllers
         }
         // POST api/items
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TimeToBetterEntity item)
+        public async Task<IActionResult> Create([FromBody] TimeToNextOfferEntity item)
         {
             item.Id = Guid.NewGuid().ToString();
             await _cosmosDbService.AddAsync(item);

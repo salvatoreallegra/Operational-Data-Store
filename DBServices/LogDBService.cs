@@ -17,16 +17,16 @@ namespace ODSApi.Services
         {
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
         }
-        public async Task AddAsync(Log item)
+        public async Task AddAsync(LogEntity item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
        
-        public async Task<Log> GetAsync(string id)
+        public async Task<LogEntity> GetAsync(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<Log>(id, new PartitionKey(id));
+                var response = await _container.ReadItemAsync<LogEntity>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch (CosmosException) //For handling item not found and other exceptions
@@ -34,10 +34,10 @@ namespace ODSApi.Services
                 return null;
             }
         }
-        public async Task<IEnumerable<Log>> GetMultipleAsync(string queryString)
+        public async Task<IEnumerable<LogEntity>> GetMultipleAsync(string queryString)
         {
-            var query = _container.GetItemQueryIterator<Log>(new QueryDefinition(queryString));
-            var results = new List<Log>();
+            var query = _container.GetItemQueryIterator<LogEntity>(new QueryDefinition(queryString));
+            var results = new List<LogEntity>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();

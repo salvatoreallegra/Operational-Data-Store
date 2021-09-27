@@ -17,16 +17,16 @@ namespace ODSApi.Services
         {
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
         }
-        public async Task AddAsync(TimeToBetterEntity item)
+        public async Task AddAsync(TimeToNextOfferEntity item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
 
-        public async Task<TimeToBetterEntity> GetAsync(string id)
+        public async Task<TimeToNextOfferEntity> GetAsync(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<TimeToBetterEntity>(id, new PartitionKey(id));
+                var response = await _container.ReadItemAsync<TimeToNextOfferEntity>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch (CosmosException) //For handling item not found and other exceptions
@@ -34,10 +34,10 @@ namespace ODSApi.Services
                 return null;
             }
         }
-        public async Task<IEnumerable<TimeToBetterEntity>> GetMultipleAsync(string queryString)
+        public async Task<IEnumerable<TimeToNextOfferEntity>> GetMultipleAsync(string queryString)
         {
-            var query = _container.GetItemQueryIterator<TimeToBetterEntity>(new QueryDefinition(queryString));
-            var results = new List<TimeToBetterEntity>();
+            var query = _container.GetItemQueryIterator<TimeToNextOfferEntity>(new QueryDefinition(queryString));
+            var results = new List<TimeToNextOfferEntity>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -45,11 +45,11 @@ namespace ODSApi.Services
             }
             return results;
         }
-        public async Task<IEnumerable<TimeToBetterEntity>> getByMatchSequence(string queryString)
+        public async Task<IEnumerable<TimeToNextOfferEntity>> getByMatchSequence(string queryString)
         {
 
-            var query = _container.GetItemQueryIterator<TimeToBetterEntity>(new QueryDefinition(queryString));
-            var results = new List<TimeToBetterEntity>();
+            var query = _container.GetItemQueryIterator<TimeToNextOfferEntity>(new QueryDefinition(queryString));
+            var results = new List<TimeToNextOfferEntity>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
