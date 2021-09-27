@@ -21,7 +21,7 @@ namespace ODSApi.Entities
         public DateTime TimeStamp { get; set; }
 
         [JsonProperty(PropertyName = "modelversion")]
-        public string ModelVersion { get; set; }
+        public float ModelVersion { get; set; }
 
         [JsonProperty(PropertyName = "mortalityslopeplotpoints")]
         public List<Dictionary<string,float>> MortalitySlopePlotPoints { get; set; }

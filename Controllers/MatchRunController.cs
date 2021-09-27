@@ -116,20 +116,27 @@ namespace ODSApi.Controllers
                 {
                     return NoContent();  //204
                 }
-                else
-                {
+              
 
                     timeToNextOffer = t.TimeToNextOffer;
-                }
+              
                     
                 }
+          
+                foreach(var x in matchRunRecords)
+               {
+                 x.TimeToNext30 = new Dictionary<string,float>{ };
+                 x.TimeToNext50 = new Dictionary<string, float> { };
 
-                //Refactor this to just send the timetobetter30 and timetobetter 50 in calcprob...instead of the entire object
-                foreach (var x in matchRunRecords) //there is no field time to next 30
+               }
+
+
+            //Refactor this to just send the timetobetter30 and timetobetter 50 in calcprob...instead of the entire object
+            foreach (var x in matchRunRecords) //there is no field time to next 30
                 {
                 
-                    x.TimeToNext50["time"] = timeToNextOffer["timetobetter30"];
-                    x.TimeToNext50["time"] = timeToNextOffer["timetobetter50"];
+                    x.TimeToNext30["time"] = timeToNextOffer["timetonextoffer30"];
+                    x.TimeToNext50["time"] = timeToNextOffer["timetonextoffer50"];
                     x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints,timeToNextOffer);
                     x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints,timeToNextOffer);
             }
@@ -145,7 +152,7 @@ namespace ODSApi.Controllers
 
             // y = survival probability
             // x = number of days
-            var time30 = timeToBetter["timetobetter30"];
+            var time30 = timeToBetter["timetonextoffer30"];
             float mortalitySlope;
             float probabilityOfSurvival;
             float y2 = 0.0f;
@@ -234,7 +241,7 @@ namespace ODSApi.Controllers
         }
         public static float CalculateProbabilityOfSurvivalTime50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, int> timeToBetter)
         {
-            var time50 = timeToBetter["timetobetter50"];
+            var time50 = timeToBetter["timetonextoffer50"];
             float mortalitySlope;
             float probabilityOfSurvival;
             float y2 = 0.0f;
