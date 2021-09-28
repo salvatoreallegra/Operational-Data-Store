@@ -45,7 +45,7 @@ namespace ODSApi.Controllers
             await _matchRunService.AddAsync(item);
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
-        [HttpGet("{match_id}/potential-recepients{PtrSequenceNumber}")]
+        [HttpGet("{match_id}/potential-recepients/{PtrSequenceNumber}")]
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
             /*******************************************************************
@@ -159,6 +159,13 @@ namespace ODSApi.Controllers
             {
                 m.GraphParam = graphParam;
                
+            }
+
+            DateTime createdAtDate = new DateTime();
+            foreach (var m in matchRunRecords)
+            {
+                m.CreatedDateTime = createdAtDate;
+
             }
 
 

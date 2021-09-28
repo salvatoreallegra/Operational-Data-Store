@@ -19,22 +19,7 @@ namespace ODSApi.Entities
 
         [JsonProperty(PropertyName = "offerdate")]
         public DateTime OfferDate { get; set; }       
-
-        [JsonProperty(PropertyName = "donorauditid")]
-        public int DonorAuditId { get; set; } //Audit id sent from mobile client
-
-        [JsonProperty(PropertyName = "centerid")]
-        public int CenterId { get; set; }
-
-        [JsonProperty(PropertyName = "logid")]
-        public int LogId { get; set; }  //Log id sent from mobile client
-
-        [JsonProperty(PropertyName = "waitlistid")]
-        public int WaitListId { get; set; }
-
-        [JsonProperty(PropertyName = "waitlistauditid")]
-        public int WaitListAuditId { get; set; }
-                      
+                     
 
         [JsonProperty(PropertyName = "plotpoints")]
         public List<Dictionary<string, float>> PlotPoints { get; set; }  //This is wait list mortality from Mortality Slope Collection
@@ -50,8 +35,8 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "graphparams")]
         public GraphParamsEntity GraphParam { get; set; }
 
-        [JsonProperty(PropertyName = "timestamp")]
-        public DateTime TimeStamp { get; set; }
+        [JsonProperty(PropertyName = "createddatetime")]
+        public DateTime CreatedDateTime { get; set; }
 
 
     }
