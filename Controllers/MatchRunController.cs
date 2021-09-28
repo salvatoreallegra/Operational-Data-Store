@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Controllers
 {
-    [Route("api/matchrun")]
+    [Route("donornet-analytics/v1/matches/")]
     [ApiController]
     public class MatchRunController : ControllerBase
     {
@@ -45,14 +45,14 @@ namespace ODSApi.Controllers
             await _matchRunService.AddAsync(item);
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
-        [HttpGet("{MatchId}/{SequenceId}")]
-        public async Task<IActionResult> GetByMatchSequence(int MatchId, int SequenceId)
+        [HttpGet("{match_id}/potential-recepients{PtrSequenceNumber}")]
+        public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
             /*******************************************************************
              * Get all the records from the MatchRun(PassThrough) Cosmos Collection
              * by matchid and sequenceid
              * *****************************************************************/
-            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
 
 
             /*******************************************************************
@@ -62,17 +62,17 @@ namespace ODSApi.Controllers
 
             if (matchRunRecords.Count() == 0)
             {
-                return NotFound("No Match Run Records Found for MatchId " + MatchId + " and SequenceId " + SequenceId);
+                return NotFound("No Match Run Records Found for MatchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
 
             /*******************************************************************
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
-            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
 
             if (mortalitySlopeRecords.Count() == 0)
             {
-                return NotFound("No Mortality Slope Records Found for MatchId " + MatchId + " and SequenceId " + SequenceId);
+                return NotFound("No Mortality Slope Records Found for MatchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
             List<Dictionary<string, float>> plotpoints = null;
 
@@ -103,10 +103,10 @@ namespace ODSApi.Controllers
             * Validate that mortality slope plot points exist for the retrieved
             * records by matchrun and sequenceid
             *******************************************************************/
-            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
             if (timeToBetterRecords.Count() == 0)
             {
-                return NotFound("No Time to Next Offer Records Found for MatchId " + MatchId + " and SequenceId " + SequenceId);
+                return NotFound("No Time to Next Offer Records Found for MatchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
 
             Dictionary<string, int> timeToNextOffer = null;
