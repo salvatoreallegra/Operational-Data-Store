@@ -18,15 +18,15 @@ namespace ODSApi.Controllers
         private readonly IMatchRunDBService _matchRunService;
         private readonly IMortalitySlopeDBService _mortalitySlopeService;
         private readonly ITimeToNextOfferDBService _timeToBetterService;
-        
-        
+
+
         public MatchRunController(IMatchRunDBService matchRunService, IMortalitySlopeDBService mortalitySlopeService, ITimeToNextOfferDBService timeToBetterService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
             _mortalitySlopeService = mortalitySlopeService ?? throw new ArgumentNullException(nameof(mortalitySlopeService));
-            _timeToBetterService = timeToBetterService ?? throw new ArgumentNullException(nameof(timeToBetterService)); 
+            _timeToBetterService = timeToBetterService ?? throw new ArgumentNullException(nameof(timeToBetterService));
         }
-        
+
         // GET api/items/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
@@ -78,76 +78,78 @@ namespace ODSApi.Controllers
             * records by matchrun and sequenceid
             * ******************************************************************/
 
-                foreach (var m in mortalitySlopeRecords)
+            foreach (var m in mortalitySlopeRecords)
+            {
+                if (m.MortalitySlopePlotPoints is null || m.MortalitySlopePlotPoints.Count == 0)
                 {
-                    if (m.MortalitySlopePlotPoints is null || m.MortalitySlopePlotPoints.Count == 0)
-                    {
-                        return NoContent();  //204
-                    }
-
-                    
-                    plotpoints = m.MortalitySlopePlotPoints;
-
-                }
-                foreach (var x in matchRunRecords)
-                {
-                    x.PlotPoints = plotpoints;
-                 //   x.TimeStamp = DateTime.Now;
+                    return NoContent();  //204
                 }
 
 
-             /*******************************************************************
-             * Validate that mortality slope plot points exist for the retrieved
-             * records by matchrun and sequenceid
-             *******************************************************************/
-               var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
-               if (timeToBetterRecords.Count() == 0)
-               {
+                plotpoints = m.MortalitySlopePlotPoints;
+
+            }
+            foreach (var x in matchRunRecords)
+            {
+                x.PlotPoints = plotpoints;
+                //   x.TimeStamp = DateTime.Now;
+            }
+
+
+            /*******************************************************************
+            * Validate that mortality slope plot points exist for the retrieved
+            * records by matchrun and sequenceid
+            *******************************************************************/
+            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + MatchId + " and mr.sequenceid = " + SequenceId);
+            if (timeToBetterRecords.Count() == 0)
+            {
                 return NotFound("No Time to Next Offer Records Found for MatchId " + MatchId + " and SequenceId " + SequenceId);
-               }
+            }
 
             Dictionary<string, int> timeToNextOffer = null;
 
 
-                foreach (var t in timeToBetterRecords)
-                {
+            foreach (var t in timeToBetterRecords)
+            {
 
                 if (t.TimeToNextOffer is null || t.TimeToNextOffer.Count == 0)
                 {
                     return NoContent();  //204
                 }
-              
 
-                    timeToNextOffer = t.TimeToNextOffer;
-              
-                    
-                }
-          
-                foreach(var x in matchRunRecords)
-               {
-                 x.TimeToNext30 = new Dictionary<string,float>{ };
-                 x.TimeToNext50 = new Dictionary<string, float> { };
+                timeToNextOffer = t.TimeToNextOffer;
+            }
 
-               }
+            /*******************************************************************
+           * Set time to next 30 and 50 to a value to avoid null pointer exception
+           * *******************************************************************/
+            foreach (var x in matchRunRecords)
+            {
+                x.TimeToNext30 = new Dictionary<string, float> { };
+                x.TimeToNext50 = new Dictionary<string, float> { };
+
+            }
 
 
             //Refactor this to just send the timetobetter30 and timetobetter 50 in calcprob...instead of the entire object
+
+            /*******************************************************************
+           * set timetonext30 and 50 to the values from the timetonext offer schema
+           *******************************************************************/
             foreach (var x in matchRunRecords) //there is no field time to next 30
-                {
-                
-                    x.TimeToNext30["time"] = timeToNextOffer["timetonextoffer30"];
-                    x.TimeToNext50["time"] = timeToNextOffer["timetonextoffer50"];
-                    x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints,timeToNextOffer);
-                    x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints,timeToNextOffer);
+            {
+
+                x.TimeToNext30["time"] = timeToNextOffer["timetonextoffer30"];
+                x.TimeToNext50["time"] = timeToNextOffer["timetonextoffer50"];
+                x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints, timeToNextOffer);
+                x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints, timeToNextOffer);
             }
-                
+
             return Ok(matchRunRecords);
-              
-      
+
         }
-       
-        
-        public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string,float>> plotPointsList, Dictionary<string,int> timeToBetter)
+
+        public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, int> timeToBetter)
         {
 
             // y = survival probability
@@ -248,7 +250,7 @@ namespace ODSApi.Controllers
             float y1 = 0.0f;
             float x2 = 0.0f;
             float x1 = 0.0f;
-            
+
             List<float> strippedNumbers = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
@@ -258,12 +260,12 @@ namespace ODSApi.Controllers
                 {
                     string key = kvp.Key;
                     float value = kvp.Value;
-                    if(key == "time")
+                    if (key == "time")
                     {
                         strippedNumbers.Add(value);
-                        
+
                     }
-                    if(key == "probabilityofsurvival")
+                    if (key == "probabilityofsurvival")
                     {
                         strippedSurvival.Add(value);
                     }
@@ -276,18 +278,18 @@ namespace ODSApi.Controllers
             //need to match the probability of survival with the number of days between the two above arrays
 
             Array.Sort(strippedNumbersArrayList);
-            for(var i = 0; i < strippedNumbersArrayList.Length; i++)
+            for (var i = 0; i < strippedNumbersArrayList.Length; i++)
             {
-                if(strippedNumbersArrayList[i] > time50 )           
-                {                                                
+                if (strippedNumbersArrayList[i] > time50)
+                {
                     x2 = strippedNumbersArrayList[i];
-                    break;                  
+                    break;
                 }
             }
-            for(var i = 0; i < strippedNumbersArrayList.Length; i++)
+            for (var i = 0; i < strippedNumbersArrayList.Length; i++)
             {
-                if (strippedNumbersArrayList[i] < time50)        
-                {                                            
+                if (strippedNumbersArrayList[i] < time50)
+                {
                     x1 = strippedNumbersArrayList[i];
                     break;
                 }
@@ -296,9 +298,9 @@ namespace ODSApi.Controllers
             {
                 if (unsortedstrippedNumbersArray[i] == x2)
                 {
-                    for(var j = 0; j < strippedSurvivalArrayList.Length; j++)
+                    for (var j = 0; j < strippedSurvivalArrayList.Length; j++)
                     {
-                        if(j == i)
+                        if (j == i)
                         {
                             y2 = strippedSurvivalArrayList[j];
                             break;
