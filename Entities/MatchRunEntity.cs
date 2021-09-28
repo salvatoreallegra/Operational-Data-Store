@@ -48,7 +48,7 @@ namespace ODSApi.Entities
 
         //Add graph params
         [JsonProperty(PropertyName = "graphparams")]
-        public List<float> GraphParams { get; set; }
+        public GraphParamsEntity GraphParam { get; set; }
 
         [JsonProperty(PropertyName = "timestamp")]
         public DateTime TimeStamp { get; set; }

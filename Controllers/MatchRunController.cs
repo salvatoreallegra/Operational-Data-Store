@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ODSApi.DBServices;
 using ODSApi.DTOs;
 using ODSApi.Entities;
 using ODSApi.Services;
@@ -18,13 +19,15 @@ namespace ODSApi.Controllers
         private readonly IMatchRunDBService _matchRunService;
         private readonly IMortalitySlopeDBService _mortalitySlopeService;
         private readonly ITimeToNextOfferDBService _timeToBetterService;
+        private readonly IGraphParamsDBService _graphParamsDBService;
 
 
-        public MatchRunController(IMatchRunDBService matchRunService, IMortalitySlopeDBService mortalitySlopeService, ITimeToNextOfferDBService timeToBetterService)
+        public MatchRunController(IMatchRunDBService matchRunService, IMortalitySlopeDBService mortalitySlopeService, ITimeToNextOfferDBService timeToBetterService, IGraphParamsDBService graphParamsDBService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
             _mortalitySlopeService = mortalitySlopeService ?? throw new ArgumentNullException(nameof(mortalitySlopeService));
             _timeToBetterService = timeToBetterService ?? throw new ArgumentNullException(nameof(timeToBetterService));
+            _graphParamsDBService = graphParamsDBService ?? throw new ArgumentNullException(nameof(graphParamsDBService));
         }
 
         // GET api/items/5
@@ -144,6 +147,20 @@ namespace ODSApi.Controllers
                 x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints, timeToNextOffer);
                 x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints, timeToNextOffer);
             }
+
+            var graphParamRecords = await _graphParamsDBService.GetMultipleAsync("SELECT * FROM c");
+            GraphParamsEntity graphParam = new GraphParamsEntity();
+            foreach(var g in graphParamRecords)
+            {
+                graphParam = g;
+            }
+
+            foreach(var m in matchRunRecords)
+            {
+                m.GraphParam = graphParam;
+               
+            }
+
 
             return Ok(matchRunRecords);
 

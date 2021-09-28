@@ -18,10 +18,10 @@ namespace ODSApi.Entities
         public int XLower { get; set; }
 
         [JsonProperty(PropertyName = "yupper")]
-        public DateTime YUpper { get; set; }
+        public int YUpper { get; set; }
 
         [JsonProperty(PropertyName = "ylower")]
-        public DateTime YLower { get; set; }
+        public int YLower { get; set; }
 
         [JsonProperty(PropertyName = "timeunits")]
         public String TimeUnits { get; set; }
@@ -29,7 +29,7 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "displayUnite")]
         public String DisplayUnits { get; set; }
 
-        [JsonProperty(PropertyName = "ylower")]
+        [JsonProperty(PropertyName = "createddatetime")]
         public DateTime createdDateTime { get; set; }
 
     }
