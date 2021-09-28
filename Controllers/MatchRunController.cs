@@ -124,8 +124,8 @@ namespace ODSApi.Controllers
             }
 
             /*******************************************************************
-           * Set time to next 30 and 50 to a value to avoid null pointer exception
-           * *******************************************************************/
+            * Set time to next 30 and 50 to a value to avoid null pointer exception
+            * *******************************************************************/
             foreach (var x in matchRunRecords)
             {
                 x.TimeToNext30 = new Dictionary<string, float> { };
@@ -168,14 +168,12 @@ namespace ODSApi.Controllers
 
             }
 
-
             return Ok(matchRunRecords);
 
         }
 
         public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, int> timeToBetter)
         {
-
             // y = survival probability
             // x = number of days
             var time30 = timeToBetter["timetonextoffer30"];
@@ -211,6 +209,13 @@ namespace ODSApi.Controllers
             float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
 
             //need to match the probability of survival with the number of days between the two above arrays
+
+
+
+           /*******************************************************************
+           * Sort the number of days(timetonextoffer)so we can find the next highest day
+           * and the next lowest day
+           * *******************************************************************/
 
             Array.Sort(strippedNumbersArray);
             for (var i = 0; i < strippedNumbersArray.Length; i++)
