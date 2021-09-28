@@ -161,12 +161,7 @@ namespace ODSApi.Controllers
                
             }
 
-            DateTime createdAtDate = new DateTime();
-            foreach (var m in matchRunRecords)
-            {
-                m.CreatedDateTime = createdAtDate;
-
-            }
+           
 
             return Ok(matchRunRecords);
 

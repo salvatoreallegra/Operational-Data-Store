@@ -20,6 +20,9 @@ namespace ODSApi.DTOs
         [JsonProperty(PropertyName = "offerdate")]
         public DateTime OfferDate { get; set; }
 
+        [JsonProperty(PropertyName = "institutionid")]
+        public int InstitutionId { get; set; }
+
         [JsonProperty(PropertyName = "donorauditid")]
         public int DonorAuditId { get; set; } //Audit id sent from mobile client
 
