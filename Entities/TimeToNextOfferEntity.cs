@@ -17,14 +17,14 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "id")] 
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "matchid")]
+        [JsonProperty(PropertyName = "matchId")]
         public int MatchId { get; set; }
 
         [JsonProperty(PropertyName = "sequenceid")]
         public int SequenceId { get; set; }
 
-        [JsonProperty(PropertyName = "timestamp")]
-        public DateTime TimeStamp { get; set; }
+        [JsonProperty(PropertyName = "createdDateTime")]
+        public DateTime CreatedDateTime { get; set; }
 
         [JsonProperty(PropertyName = "modelversionid")]
         public float ModelVersionId { get; set; }
