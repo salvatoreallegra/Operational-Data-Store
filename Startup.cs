@@ -79,7 +79,7 @@ namespace ODSApi
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
 
             var cosmosDbService = new LogDBService(client, databaseName, containerName);
             return cosmosDbService;
@@ -87,13 +87,13 @@ namespace ODSApi
         private static async Task<TimeToNextOfferDBService> InitializeCosmosClientInstanceAsyncTimeToNextOffer(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "TimeToNextOffer";
+            var containerName = "TimeToNextOfferData";
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
 
             var cosmosDbService = new TimeToNextOfferDBService(client, databaseName, containerName);
             return cosmosDbService;
@@ -101,13 +101,13 @@ namespace ODSApi
         private static async Task<IMatchRunDBService> InitializeCosmosClientInstanceAsyncMatchRun(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "MatchRun";
+            var containerName = "PassThroughData";
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
             
 
             var cosmosDBService = new MatchRunDBService(client, databaseName, containerName);
@@ -117,13 +117,13 @@ namespace ODSApi
         private static async Task<IMortalitySlopeDBService> InitializeCosmosClientInstanceAsyncMortalitySlope(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "MortalitySlope";
+            var containerName = "MortalitySlopeData";
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/MatchId");
 
             var cosmosDbService = new MortalitySlopeDBService(client, databaseName, containerName);
             return cosmosDbService;
@@ -131,13 +131,13 @@ namespace ODSApi
         private static async Task<IGraphParamsDBService> InitializeCosmosClientInstanceAsyncGraphParams(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "GraphParams";
+            var containerName = "GraphParamsData";
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
 
             var cosmosDbService = new GraphParamsDBService(client, databaseName, containerName);
             return cosmosDbService;
