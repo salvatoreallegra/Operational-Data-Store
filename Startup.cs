@@ -123,7 +123,7 @@ namespace ODSApi
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/MatchId");
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
 
             var cosmosDbService = new MortalitySlopeDBService(client, databaseName, containerName);
             return cosmosDbService;
