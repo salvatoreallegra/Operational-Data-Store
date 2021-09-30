@@ -53,7 +53,7 @@ namespace ODSApi.Controllers
              * Get all the records from the MatchRun(PassThrough) Cosmos Collection
              * by matchid and sequenceid
              * *****************************************************************/
-            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM PassThroughData mr WHERE mr.matchId = " + match_id + " and mr.sequenceId = " + PtrSequenceNumber);
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM PassThroughData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
                                                                              
 
 
