@@ -137,7 +137,7 @@ namespace ODSApi
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
             var cosmosDbService = new GraphParamsDBService(client, databaseName, containerName);
             return cosmosDbService;

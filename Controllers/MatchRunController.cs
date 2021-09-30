@@ -44,6 +44,7 @@ namespace ODSApi.Controllers
             item.Id = Guid.NewGuid().ToString();
             await _matchRunService.AddAsync(item);
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
+          //  return CreatedAtAction(nameof(Get), new { matchid = item.MatchId }, item);
         }
         [HttpGet("{match_id}/potential-recepients/{PtrSequenceNumber}")]
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
@@ -52,7 +53,7 @@ namespace ODSApi.Controllers
              * Get all the records from the MatchRun(PassThrough) Cosmos Collection
              * by matchid and sequenceid
              * *****************************************************************/
-            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM PassThroughData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
 
 
             /*******************************************************************
@@ -68,7 +69,7 @@ namespace ODSApi.Controllers
             /*******************************************************************
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
-            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM PassThroughData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
 
             if (mortalitySlopeRecords.Count() == 0)
             {
@@ -103,7 +104,7 @@ namespace ODSApi.Controllers
             * Validate that mortality slope plot points exist for the retrieved
             * records by matchrun and sequenceid
             *******************************************************************/
-            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToNextOfferData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
             if (timeToBetterRecords.Count() == 0)
             {
                 return NotFound("No Time to Next Offer Records Found for MatchId " + match_id + " and SequenceId " + PtrSequenceNumber);

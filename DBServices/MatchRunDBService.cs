@@ -24,8 +24,9 @@ namespace ODSApi.Services
       
         public async Task AddAsync(MatchRunCreateDto item)
         {
-            await _container.CreateItemAsync(item, new PartitionKey(item.Id));
-            
+            await _container.CreateItemAsync(item, new PartitionKey(item.MatchId));
+            //await _container.CreateItemAsync(item, new PartitionKey(item.Id));
+
         }
 
         public async Task<MatchRunEntity> GetAsync(string id)
