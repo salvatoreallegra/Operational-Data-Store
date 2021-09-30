@@ -84,6 +84,7 @@ namespace ODSApi.Services
             catch (CosmosException)
             {
                 return null;
+                
             }
             
         }

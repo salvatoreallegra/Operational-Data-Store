@@ -53,7 +53,7 @@ namespace ODSApi.Controllers
              * Get all the records from the MatchRun(PassThrough) Cosmos Collection
              * by matchid and sequenceid
              * *****************************************************************/
-            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM PassThroughData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM PassThroughData mr WHERE mr.matchId = " + match_id + " and mr.sequenceId = " + PtrSequenceNumber);
 
 
             /*******************************************************************
@@ -69,7 +69,7 @@ namespace ODSApi.Controllers
             /*******************************************************************
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
-            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM PassThroughData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MortalitySlopeData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
 
             if (mortalitySlopeRecords.Count() == 0)
             {
