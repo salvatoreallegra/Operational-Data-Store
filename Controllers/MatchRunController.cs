@@ -36,6 +36,11 @@ namespace ODSApi.Controllers
         {
             return Ok(await _matchRunService.GetAsync(id));
         }
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            return Ok(await _matchRunService.GetMultipleAsync("SELECT * FROM c"));
+        }
 
         // POST api/items
         [HttpPost]
@@ -53,7 +58,7 @@ namespace ODSApi.Controllers
              * Get all the records from the MatchRun(PassThrough) Cosmos Collection
              * by matchid and sequenceid
              * *****************************************************************/
-            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM PassThroughData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
                                                                              
 
 
