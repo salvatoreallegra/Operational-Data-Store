@@ -75,7 +75,7 @@ namespace ODSApi.Controllers
             /*******************************************************************
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
-            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MortalitySlopeData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM c WHERE c.matchid = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
             if (mortalitySlopeRecords.Count() == 0)
             {
                 return NotFound("No Mortality Slope Records Found for MatchId " + match_id + " and SequenceId " + PtrSequenceNumber);
@@ -109,7 +109,7 @@ namespace ODSApi.Controllers
             * Validate that mortality slope plot points exist for the retrieved
             * records by matchrun and sequenceid
             *******************************************************************/
-            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToNextOfferData mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM c WHERE c.matchid = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
             if (timeToBetterRecords.Count() == 0)
             {
                 return NotFound("No Time to Next Offer Records Found for MatchId " + match_id + " and SequenceId " + PtrSequenceNumber);
