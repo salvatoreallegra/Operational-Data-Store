@@ -11,7 +11,7 @@ namespace ODSApi.DTOs
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }  //Id for record 
 
-        [JsonProperty(PropertyName = "matchid")]
+        [JsonProperty(PropertyName = "matchId")]
         public int MatchId { get; set; }  //predictive model match id from model api
 
         [JsonProperty(PropertyName = "sequenceid")]
@@ -19,6 +19,9 @@ namespace ODSApi.DTOs
 
         [JsonProperty(PropertyName = "offerdate")]
         public DateTime OfferDate { get; set; }
+
+        [JsonProperty(PropertyName = "institutionid")]
+        public int InstitutionId { get; set; }
 
         [JsonProperty(PropertyName = "donorauditid")]
         public int DonorAuditId { get; set; } //Audit id sent from mobile client

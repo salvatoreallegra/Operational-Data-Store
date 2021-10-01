@@ -36,6 +36,11 @@ namespace ODSApi.Controllers
         {
             return Ok(await _matchRunService.GetAsync(id));
         }
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            return Ok(await _matchRunService.GetMultipleAsync("SELECT * FROM c"));
+        }
 
         // POST api/items
         [HttpPost]
@@ -44,6 +49,7 @@ namespace ODSApi.Controllers
             item.Id = Guid.NewGuid().ToString();
             await _matchRunService.AddAsync(item);
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
+          //  return CreatedAtAction(nameof(Get), new { matchid = item.MatchId }, item);
         }
         [HttpGet("{match_id}/potential-recepients/{PtrSequenceNumber}")]
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
@@ -52,7 +58,8 @@ namespace ODSApi.Controllers
              * Get all the records from the MatchRun(PassThrough) Cosmos Collection
              * by matchid and sequenceid
              * *****************************************************************/
-            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
+                                                                             
 
 
             /*******************************************************************
@@ -68,8 +75,7 @@ namespace ODSApi.Controllers
             /*******************************************************************
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
-            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM MatchRun mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
-
+            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
             if (mortalitySlopeRecords.Count() == 0)
             {
                 return NotFound("No Mortality Slope Records Found for MatchId " + match_id + " and SequenceId " + PtrSequenceNumber);
@@ -103,24 +109,29 @@ namespace ODSApi.Controllers
             * Validate that mortality slope plot points exist for the retrieved
             * records by matchrun and sequenceid
             *******************************************************************/
-            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM TimeToBetter mr WHERE mr.matchid = " + match_id + " and mr.sequenceid = " + PtrSequenceNumber);
+            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
             if (timeToBetterRecords.Count() == 0)
             {
                 return NotFound("No Time to Next Offer Records Found for MatchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
 
-            Dictionary<string, int> timeToNextOffer = null;
+           // Dictionary<string, int> timeToNextOffer = null;
+            Dictionary<string, float> timeToNext30 = null;
+            Dictionary<string, float> timeToNext50 = null;
+
 
 
             foreach (var t in timeToBetterRecords)
             {
 
-                if (t.TimeToNextOffer is null || t.TimeToNextOffer.Count == 0)
+                if (t.TimeToNext30 is null || t.TimeToNext30.Count == 0 || t.TimeToNext50 is null || t.TimeToNext50.Count == 0)
                 {
                     return NoContent();  //204
                 }
 
-                timeToNextOffer = t.TimeToNextOffer;
+             //   timeToNextOffer = t.TimeToNextOffer;
+                timeToNext30 = t.TimeToNext30;
+                timeToNext50 = t.TimeToNext50;
             }
 
             /*******************************************************************
@@ -142,10 +153,18 @@ namespace ODSApi.Controllers
             foreach (var x in matchRunRecords) //there is no field time to next 30
             {
 
-                x.TimeToNext30["time"] = timeToNextOffer["timetonextoffer30"];
-                x.TimeToNext50["time"] = timeToNextOffer["timetonextoffer50"];
-                x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints, timeToNextOffer);
-                x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints, timeToNextOffer);
+                x.TimeToNext30["time"] = timeToNext30["median"];
+                x.TimeToNext50["time"] = timeToNext50["median"];
+
+                
+                x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints, timeToNext30);
+                x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints, timeToNext50);
+
+                x.TimeToNext30["quantile"] = timeToNext30["quantile"];
+                x.TimeToNext30["quantiletime"] = timeToNext30["quantileTime"];
+
+                x.TimeToNext50["quantile"] = timeToNext30["quantile"];
+                x.TimeToNext50["quantiletime"] = timeToNext30["quantileTime"];
             }
 
             var graphParamRecords = await _graphParamsDBService.GetMultipleAsync("SELECT * FROM c");
@@ -161,22 +180,17 @@ namespace ODSApi.Controllers
                
             }
 
-            DateTime createdAtDate = new DateTime();
-            foreach (var m in matchRunRecords)
-            {
-                m.CreatedDateTime = createdAtDate;
-
-            }
+           
 
             return Ok(matchRunRecords);
 
         }
 
-        public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, int> timeToBetter)
+        public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
             // y = survival probability
             // x = number of days
-            var time30 = timeToBetter["timetonextoffer30"];
+            var time30 = timeToBetter["median"];
             float mortalitySlope;
             float probabilityOfSurvival;
             float y2 = 0.0f;
@@ -270,9 +284,9 @@ namespace ODSApi.Controllers
 
 
         }
-        public static float CalculateProbabilityOfSurvivalTime50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, int> timeToBetter)
+        public static float CalculateProbabilityOfSurvivalTime50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
-            var time50 = timeToBetter["timetonextoffer50"];
+            var time50 = timeToBetter["median"];
             float mortalitySlope;
             float probabilityOfSurvival;
             float y2 = 0.0f;

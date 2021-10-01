@@ -20,7 +20,8 @@ namespace ODSApi.DBServices
         }
         public async Task AddAsync(GraphParamsEntity item)
         {
-            await _container.CreateItemAsync(item, new PartitionKey(item.Id));
+            // await _container.CreateItemAsync(item, new PartitionKey(item.Id));
+             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
 
         public async Task<GraphParamsEntity> GetAsync(string id)

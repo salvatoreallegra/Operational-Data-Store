@@ -17,10 +17,10 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "id")] 
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "matchid")]
+        [JsonProperty(PropertyName = "matchId")]
         public int MatchId { get; set; }
 
-        [JsonProperty(PropertyName = "sequenceid")]
+        [JsonProperty(PropertyName = "sequenceId")]
         public int SequenceId { get; set; }
 
         [JsonProperty(PropertyName = "timestamp")]
@@ -29,8 +29,12 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "modelversionid")]
         public float ModelVersionId { get; set; }
 
-        [JsonProperty(PropertyName = "timetonextoffer")]
-        public Dictionary<string, int> TimeToNextOffer { get; set; }
-                       
+       
+        [JsonProperty(PropertyName = "timetonext30")]
+        public Dictionary<string, float> TimeToNext30 { get; set; }
+
+        [JsonProperty(PropertyName = "timetonext50")]
+        public Dictionary<string, float> TimeToNext50 { get; set; }
+
     }
 }

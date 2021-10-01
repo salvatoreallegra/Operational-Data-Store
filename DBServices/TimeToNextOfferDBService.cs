@@ -19,7 +19,7 @@ namespace ODSApi.Services
         }
         public async Task AddAsync(TimeToNextOfferEntity item)
         {
-            await _container.CreateItemAsync(item, new PartitionKey(item.Id));
+            await _container.CreateItemAsync(item, new PartitionKey(item.MatchId));
         }
 
         public async Task<TimeToNextOfferEntity> GetAsync(string id)

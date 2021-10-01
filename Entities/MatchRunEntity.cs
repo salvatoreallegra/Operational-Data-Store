@@ -11,10 +11,10 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }  //Id for record 
 
-        [JsonProperty(PropertyName = "matchid")]
-        public int MatchId { get; set; }  //predictive model match id from model api
+        [JsonProperty(PropertyName = "matchId")]
+        public int matchId { get; set; }  //predictive model match id from model api
 
-        [JsonProperty(PropertyName = "sequenceid")]
+        [JsonProperty(PropertyName = "sequenceId")]
         public int SequenceId { get; set; } //identifier of patient from model api
 
         [JsonProperty(PropertyName = "offerdate")]
