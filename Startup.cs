@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using ODSApi.DBServices;
+using ODSApi.Middleware;
 using ODSApi.Services;
 using System;
 using System.Collections.Generic;
@@ -65,10 +66,16 @@ namespace ODSApi
          
             app.UseAuthorization();
 
+            //Use this Middleware prior to app.UseEndpoints....
+            app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            
+            
         }
         private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
