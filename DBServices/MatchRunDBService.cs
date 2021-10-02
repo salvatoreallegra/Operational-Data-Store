@@ -79,6 +79,8 @@ namespace ODSApi.Services
                     var response = await query.ReadNextAsync();
                     results.AddRange(response.ToList());
                 }
+              //  throw new System.Exception("An error occurred");
+
                 return results;
             }
             catch (CosmosException)
