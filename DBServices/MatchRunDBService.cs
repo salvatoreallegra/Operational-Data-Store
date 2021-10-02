@@ -24,8 +24,9 @@ namespace ODSApi.Services
       
         public async Task AddAsync(MatchRunCreateDto item)
         {
-            await _container.CreateItemAsync(item, new PartitionKey(item.Id));
-            
+            await _container.CreateItemAsync(item, new PartitionKey(item.MatchId));
+            //await _container.CreateItemAsync(item, new PartitionKey(item.Id));
+
         }
 
         public async Task<MatchRunEntity> GetAsync(string id)
@@ -78,11 +79,13 @@ namespace ODSApi.Services
                     var response = await query.ReadNextAsync();
                     results.AddRange(response.ToList());
                 }
+              //  throw new System.Exception("An error occurred");
+
                 return results;
             }
             catch (CosmosException)
             {
-                return null;
+                return null;                
             }
             
         }

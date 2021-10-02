@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,16 +12,16 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }  //Id for record 
 
-        [JsonProperty(PropertyName = "matchid")]
-        public int MatchId { get; set; }  //predictive model match id from model api
+        [JsonProperty(PropertyName = "matchId")]
+        public int matchId { get; set; }  //predictive model match id from model api
 
-        [JsonProperty(PropertyName = "sequenceid")]
+        [JsonProperty(PropertyName = "sequenceId")]
         public int SequenceId { get; set; } //identifier of patient from model api
 
         [JsonProperty(PropertyName = "offerdate")]
-        public DateTime OfferDate { get; set; }       
-                     
+        public DateTime OfferDate { get; set; }
 
+        
         [JsonProperty(PropertyName = "plotpoints")]
         public List<Dictionary<string, float>> PlotPoints { get; set; }  //This is wait list mortality from Mortality Slope Collection
 
