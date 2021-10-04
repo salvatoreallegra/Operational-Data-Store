@@ -211,7 +211,6 @@ namespace ODSApi.Controllers
                     if (key == "time")
                     {
                         strippedNumbers.Add(value);
-
                     }
                     if (key == "probabilityofsurvival")
                     {
