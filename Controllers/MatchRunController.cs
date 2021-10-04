@@ -80,6 +80,7 @@ namespace ODSApi.Controllers
             if (mortalitySlopeRecords.Count() == 0)
             {
                 return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                
             }
             List<Dictionary<string, float>> plotpoints = null;
 
@@ -92,7 +93,8 @@ namespace ODSApi.Controllers
             {
                 if (m.MortalitySlopePlotPoints is null || m.MortalitySlopePlotPoints.Count == 0)
                 {
-                    return NoContent();  //204
+                    // return NoContent();  //204
+                      return StatusCode(209, "The mortality slope field is null");
                 }
 
 
