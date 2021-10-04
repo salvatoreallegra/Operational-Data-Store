@@ -31,21 +31,24 @@ namespace ODSApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+        
+        
+                services.AddControllers();
+                services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ODSApi", Version = "v1" });
+                });
+                services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+                services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+                services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+                services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+                services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+                services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ODSApi", Version = "v1" });
-            });
-            services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
-            services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
 
-
-            services.AddApplicationInsightsTelemetry();
+                services.AddApplicationInsightsTelemetry();
+        
+        
         }
     
 
