@@ -58,6 +58,24 @@ namespace ODSApi.Controllers
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
             var matchRunRecords = await _matchRunBusinessService.getByMatchSequence(match_id,PtrSequenceNumber);
+            if(matchRunRecords.ResponseCode == 1)
+            {
+                return NotFound("No Pass Through Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+
+            }
+            else if(matchRunRecords.ResponseCode == 2){
+                return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+            }
+            else if(matchRunRecords.ResponseCode == 3)
+            {
+                return StatusCode(209, "The mortality slope field is null");
+            }
+            else if (matchRunRecords.ResponseCode == 4)
+            {
+                return NotFound("No Time to Next Offer Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+            }
+
+            List<MatchRunEntity> returnEntity = matchRunRecords.Data;
            // /*******************************************************************
            //  * Get all the records from the MatchRun(PassThrough) Cosmos Collection
            //  * by matchId and sequenceid
@@ -188,7 +206,7 @@ namespace ODSApi.Controllers
 
            
 
-            return Ok(matchRunRecords);
+            return Ok(returnEntity);
 
         }
 

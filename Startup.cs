@@ -46,8 +46,6 @@ namespace ODSApi
                 services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
                 services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
                 services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
-
-
                 services.AddApplicationInsightsTelemetry();
         
         

@@ -27,7 +27,7 @@ namespace ODSApi.BusinessServices
             _graphParamsDBService = graphParamsDBService ?? throw new ArgumentNullException(nameof(logDBService));
         }
 
-        public async Task<ServiceResponseEntity<List<MatchRunEntity>>> getByMatchSequence(int match_id,int PtrSequenceNumber)
+        public async Task<ServiceResponseEntity<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber)
         {
             /*******************************************************************
              * Get all the records from the MatchRun(PassThrough) Cosmos Collection
@@ -35,8 +35,8 @@ namespace ODSApi.BusinessServices
              * *****************************************************************/
             ServiceResponseEntity<List<MatchRunEntity>> serviceResponse = new ServiceResponseEntity<List<MatchRunEntity>>();
             var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
+            serviceResponse.Data = (List<MatchRunEntity>)matchRunRecords;
 
-            
 
             /*******************************************************************
              * Need to check if the list count is 0.  Null check does not work
@@ -47,6 +47,7 @@ namespace ODSApi.BusinessServices
             {
                 //return NotFound("No Match Run Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
                 serviceResponse.ResponseCode = 1;
+                return serviceResponse;
             }
 
             /*******************************************************************
@@ -57,6 +58,7 @@ namespace ODSApi.BusinessServices
             {
                 //return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
                 serviceResponse.ResponseCode = 2;
+                return serviceResponse;
 
             }
             List<Dictionary<string, float>> plotpoints = null;
@@ -68,20 +70,21 @@ namespace ODSApi.BusinessServices
 
             foreach (var m in mortalitySlopeRecords)
             {
-                if (m.MortalitySlopePlotPoints is null || m.MortalitySlopePlotPoints.Count == 0)
+                if (m.WaitListMortality[0] is null || m.WaitListMortality[0].Count == 0)
                 {
                     // return NoContent();  //204
                     //return StatusCode(209, "The mortality slope field is null");
                     serviceResponse.ResponseCode = 3;
+                    return serviceResponse;
                 }
 
 
-                plotpoints = m.MortalitySlopePlotPoints;
+                plotpoints = m.WaitListMortality;
 
             }
             foreach (var x in matchRunRecords)
             {
-                x.PlotPoints = plotpoints;
+                x.MortalitySlopePlotPoints = plotpoints;
                 //   x.TimeStamp = DateTime.Now;
             }
 
@@ -150,8 +153,8 @@ namespace ODSApi.BusinessServices
                     x.TimeToNext30["quantile"] = timeToNext30["quantile"];
                     x.TimeToNext30["quantiletime"] = timeToNext30["quantileTime"];
 
-                    x.TimeToNext50["quantile"] = timeToNext30["quantile"];
-                    x.TimeToNext50["quantiletime"] = timeToNext30["quantileTime"];
+                    x.TimeToNext50["quantile"] = timeToNext50["quantile"];
+                    x.TimeToNext50["quantiletime"] = timeToNext50["quantileTime"];
                 }
             }
             catch (NullReferenceException)
@@ -218,6 +221,7 @@ namespace ODSApi.BusinessServices
             * Sort the number of days(timetonextoffer)so we can find the next highest day
             * and the next lowest day
             * *******************************************************************/
+            
 
             Array.Sort(strippedNumbersArray);
             for (var i = 0; i < strippedNumbersArray.Length; i++)
