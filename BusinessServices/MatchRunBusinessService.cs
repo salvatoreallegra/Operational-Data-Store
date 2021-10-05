@@ -68,16 +68,26 @@ namespace ODSApi.BusinessServices
             * records by matchrun and sequenceid
             * ******************************************************************/
 
+           
+            /*very Big, we need to fix this!
+             * There were records in the database, eg. 999,999 that were created with older code
+             * The Code Changed, and it couldn't read the value anymore
+             * so a null reference was thrown, try it with 999, and 999
+             */
+            
+            
+            
             foreach (var m in mortalitySlopeRecords)
             {
-                if (m.WaitListMortality[0] is null || m.WaitListMortality[0].Count == 0)
-                {
-                    // return NoContent();  //204
-                    //return StatusCode(209, "The mortality slope field is null");
-                    serviceResponse.ResponseCode = 3;
-                    return serviceResponse;
-                }
-
+                
+                    if (m.WaitListMortality is null)
+                    {
+                        // return NoContent();  //204
+                        //return StatusCode(209, "The mortality slope field is null");
+                        serviceResponse.ResponseCode = 3;
+                        return serviceResponse;
+                    }
+                               
 
                 plotpoints = m.WaitListMortality;
 
