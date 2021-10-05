@@ -298,7 +298,6 @@ namespace ODSApi.BusinessServices
                     if (key == "time")
                     {
                         strippedNumbers.Add(value);
-
                     }
                     if (key == "probabilityofsurvival")
                     {

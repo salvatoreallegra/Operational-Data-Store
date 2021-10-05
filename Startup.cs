@@ -47,8 +47,12 @@ namespace ODSApi
                 services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
                 services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
                 services.AddApplicationInsightsTelemetry();
-        
-        
+                services.AddCors(c =>
+                {
+                    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                });
+
+
         }
     
 
@@ -63,6 +67,7 @@ namespace ODSApi
             }
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
+            app.UseCors(options => options.AllowAnyOrigin());
             app.UseHttpsRedirection();
 
             app.UseRouting();
