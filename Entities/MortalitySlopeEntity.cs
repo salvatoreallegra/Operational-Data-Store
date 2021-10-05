@@ -23,8 +23,8 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "modelversion")]
         public float ModelVersion { get; set; }
 
-        [JsonProperty(PropertyName = "mortalityslopeplotpoints")]
-        public List<Dictionary<string,float>> MortalitySlopePlotPoints { get; set; }
+        [JsonProperty(PropertyName = "waitListMortality")]
+        public List<Dictionary<string,float>> WaitListMortality { get; set; }
         
          
 

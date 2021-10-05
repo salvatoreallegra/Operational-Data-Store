@@ -25,7 +25,6 @@ namespace ODSApi.Services
         public async Task AddAsync(MatchRunCreateDto item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.MatchId));
-            //await _container.CreateItemAsync(item, new PartitionKey(item.Id));
 
         }
 
@@ -36,9 +35,9 @@ namespace ODSApi.Services
                 //get mortality slope by match id and sequence id 
                 //
                 MortalitySlopeEntity mortalitySlope = await _container.ReadItemAsync<MortalitySlopeEntity>(id, new PartitionKey(id));
-                List<Dictionary<string, float>> mortalitySlopePoints = mortalitySlope.MortalitySlopePlotPoints;
+                List<Dictionary<string, float>> mortalitySlopePoints = mortalitySlope.WaitListMortality;
                 MatchRunEntity MatchRun = await _container.ReadItemAsync<MatchRunEntity>(id, new PartitionKey(id));
-                MatchRun.PlotPoints = mortalitySlopePoints;
+                MatchRun.MortalitySlopePlotPoints = mortalitySlopePoints;
                 return MatchRun;
                 //return response.Resource;
             }
@@ -79,12 +78,12 @@ namespace ODSApi.Services
                     var response = await query.ReadNextAsync();
                     results.AddRange(response.ToList());
                 }
+
                 return results;
             }
-            catch (CosmosException)
+            catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                return null;
-                
+                return null;                
             }
             
         }

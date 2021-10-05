@@ -23,8 +23,8 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "sequenceId")]
         public int SequenceId { get; set; }
 
-        [JsonProperty(PropertyName = "timestamp")]
-        public DateTime TimeStamp { get; set; }
+        [JsonProperty(PropertyName = "createdDateTime")]
+        public DateTime CreatedDateTime { get; set; }
 
         [JsonProperty(PropertyName = "modelversionid")]
         public float ModelVersionId { get; set; }
