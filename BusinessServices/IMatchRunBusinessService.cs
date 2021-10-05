@@ -8,9 +8,10 @@ namespace ODSApi.BusinessServices
 {
     public interface IMatchRunBusinessService
     {
-        Task<IEnumerable<MatchRunEntity>> GetMultipleAsync(string query);
-        Task<MatchRunEntity> GetAsync(string id);
-        Task AddAsync(MatchRunEntity item);
-        Task<IEnumerable<MatchRunEntity>> getByMatchSequence(string query);
+        //Task<IEnumerable<MatchRunEntity>> GetMultipleAsync(string query);
+        //Task<MatchRunEntity> GetAsync(string id);
+        //Task AddAsync(MatchRunEntity item);
+        Task<ServiceResponseEntity<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber);
+        //Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters();
     }
 }

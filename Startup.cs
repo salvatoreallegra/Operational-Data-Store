@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using ODSApi.BusinessServices;
 using ODSApi.DBServices;
 using ODSApi.Middleware;
 using ODSApi.Services;
@@ -44,6 +45,7 @@ namespace ODSApi
                 services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
                 services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
                 services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+                services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
 
 
                 services.AddApplicationInsightsTelemetry();
