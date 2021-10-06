@@ -48,8 +48,7 @@ namespace ODSApi.Services
         }
         public async Task<IEnumerable<MatchRunEntity>> getByMatchSequence(string queryString)
         {
-            try
-            {
+                        
                 var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
                 
                 var results = new List<MatchRunEntity>();
@@ -60,11 +59,8 @@ namespace ODSApi.Services
                     results.AddRange(response.ToList());
                 }
                 return results;
-            }
-            catch(CosmosException)
-            {
-                return null;
-            }
+              
+            
         }
         public async Task<IEnumerable<MatchRunEntity>> GetMultipleAsync(string queryString)
         {

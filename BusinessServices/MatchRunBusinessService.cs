@@ -33,11 +33,10 @@ namespace ODSApi.BusinessServices
              * Get all the records from the MatchRun(PassThrough) Cosmos Collection
              * by matchId and sequenceid
              * *****************************************************************/
+
             ServiceResponseEntity<List<MatchRunEntity>> serviceResponse = new ServiceResponseEntity<List<MatchRunEntity>>();
             var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
-            serviceResponse.Data = (List<MatchRunEntity>)matchRunRecords;
-
-
+           
             /*******************************************************************
              * Need to check if the list count is 0.  Null check does not work
              * here because matchRunService returns IEnumerable
@@ -46,9 +45,10 @@ namespace ODSApi.BusinessServices
             if (matchRunRecords.Count() == 0)
             {
                 //return NotFound("No Match Run Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-                serviceResponse.ResponseCode = 1;
+                serviceResponse.errors = ERRORS.NoPassThroughRecord;
                 return serviceResponse;
             }
+            serviceResponse.Data = (List<MatchRunEntity>)matchRunRecords;
 
             /*******************************************************************
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
@@ -56,7 +56,7 @@ namespace ODSApi.BusinessServices
             var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
             if (mortalitySlopeRecords.Count() == 0)
             {
-                serviceResponse.ResponseCode = 2;
+                serviceResponse.errors = ERRORS.NoMortalitySlopeRecord;
                 return serviceResponse;
 
             }
@@ -83,7 +83,7 @@ namespace ODSApi.BusinessServices
                     {
                         // return NoContent();  //204
                         //return StatusCode(209, "The mortality slope field is null");
-                        serviceResponse.ResponseCode = 3;
+                        serviceResponse.errors = ERRORS.NullMortalitySlopePlotPoints;
                         return serviceResponse;
                     }
                                
@@ -94,7 +94,6 @@ namespace ODSApi.BusinessServices
             foreach (var x in matchRunRecords)
             {
                 x.MortalitySlopePlotPoints = plotpoints;
-                //   x.TimeStamp = DateTime.Now;
             }
 
 
@@ -106,7 +105,7 @@ namespace ODSApi.BusinessServices
             if (timeToBetterRecords.Count() == 0)
             {
                 //return NotFound("No Time to Next Offer Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-                serviceResponse.ResponseCode = 4;
+                serviceResponse.errors = ERRORS.NoTimeToNextOfferRecord;
                 return serviceResponse;
             }
 
@@ -122,7 +121,7 @@ namespace ODSApi.BusinessServices
                 if (t.TimeToNext30 is null || t.TimeToNext30.Count == 0 || t.TimeToNext50 is null || t.TimeToNext50.Count == 0)
                 {
                     //  return NoContent();  //204
-                    serviceResponse.ResponseCode = 5;
+                    serviceResponse.errors = ERRORS.NullTimeTo30Or50;
                     return serviceResponse;
                 }
 

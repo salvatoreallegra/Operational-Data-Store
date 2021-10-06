@@ -18,7 +18,8 @@ namespace ODSApi.Entities
         NoPassThroughRecord,
         NoMortalitySlopeRecord,
         NoTimeToNextOfferRecord,
-        NullTimeTo30,
-        NullTimeTo50
+        NullMortalitySlopePlotPoints,
+        NullTimeTo30Or50,
+        
     }
 }
