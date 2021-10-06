@@ -18,18 +18,14 @@ namespace ODSApi.Controllers
     public class MatchRunController : ControllerBase
     {
         private readonly IMatchRunDBService _matchRunService;
-        private readonly IMortalitySlopeDBService _mortalitySlopeService;
-        private readonly ITimeToNextOfferDBService _timeToBetterService;
-        private readonly IGraphParamsDBService _graphParamsDBService;
+        
         private readonly IMatchRunBusinessService _matchRunBusinessService;
 
 
-        public MatchRunController(IMatchRunDBService matchRunService, IMortalitySlopeDBService mortalitySlopeService, ITimeToNextOfferDBService timeToBetterService, IGraphParamsDBService graphParamsDBService, IMatchRunBusinessService matchRunBusinessService)
+        public MatchRunController(IMatchRunDBService matchRunService, IMatchRunBusinessService matchRunBusinessService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
-            _mortalitySlopeService = mortalitySlopeService ?? throw new ArgumentNullException(nameof(mortalitySlopeService));
-            _timeToBetterService = timeToBetterService ?? throw new ArgumentNullException(nameof(timeToBetterService));
-            _graphParamsDBService = graphParamsDBService ?? throw new ArgumentNullException(nameof(graphParamsDBService));
+            
             _matchRunBusinessService = matchRunBusinessService ?? throw new ArgumentNullException(nameof(matchRunBusinessService));
         }
 
@@ -68,7 +64,7 @@ namespace ODSApi.Controllers
             }
             else if(matchRunRecords.ResponseCode == 3)
             {
-                return StatusCode(209, "The mortality slope field is null");
+                return NoContent();
             }
             else if (matchRunRecords.ResponseCode == 4)
             {

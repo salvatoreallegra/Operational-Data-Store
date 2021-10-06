@@ -56,7 +56,6 @@ namespace ODSApi.BusinessServices
             var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
             if (mortalitySlopeRecords.Count() == 0)
             {
-                //return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
                 serviceResponse.ResponseCode = 2;
                 return serviceResponse;
 
@@ -213,7 +212,7 @@ namespace ODSApi.BusinessServices
                     {
                         strippedNumbers.Add(value);
                     }
-                    if (key == "probabilityofsurvival")
+                    if (key == "probabilityOfSurvival")
                     {
                         strippedSurvival.Add(value);
                     }
@@ -309,7 +308,7 @@ namespace ODSApi.BusinessServices
                     {
                         strippedNumbers.Add(value);
                     }
-                    if (key == "probabilityofsurvival")
+                    if (key == "probabilityOfSurvival")
                     {
                         strippedSurvival.Add(value);
                     }

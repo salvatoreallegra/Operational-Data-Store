@@ -10,5 +10,15 @@ namespace ODSApi.Entities
         public T Data { get; set; }
         public int ResponseCode { get; set; }
 
+       public ERRORS errors { get; set; }
+
+    }
+    public enum ERRORS
+    {
+        NoPassThroughRecord,
+        NoMortalitySlopeRecord,
+        NoTimeToNextOfferRecord,
+        NullTimeTo30,
+        NullTimeTo50
     }
 }
