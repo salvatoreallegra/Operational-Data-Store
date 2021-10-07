@@ -15,11 +15,9 @@ namespace ODSApi.Services
             CosmosClient cosmosDbClient,
             string databaseName,
             string containerName
-           )
-        
+           )        
         {
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
-
         }
       
         public async Task AddAsync(MatchRunCreateDto item)

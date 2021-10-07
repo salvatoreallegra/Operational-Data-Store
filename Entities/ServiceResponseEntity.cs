@@ -8,9 +8,8 @@ namespace ODSApi.Entities
     public class ServiceResponseEntity<T>
     {
         public T Data { get; set; }
-        public int ResponseCode { get; set; }
-
-       public ERRORS errors { get; set; }
+        public string message { get; set; }
+        public ERRORS errors { get; set; }
 
     }
     public enum ERRORS
@@ -18,8 +17,7 @@ namespace ODSApi.Entities
         NoPassThroughRecord,
         NoMortalitySlopeRecord,
         NoTimeToNextOfferRecord,
-        NullMortalitySlopePlotPoints,
-        NullTimeTo30Or50,
+        DataValidationError
         
     }
 }

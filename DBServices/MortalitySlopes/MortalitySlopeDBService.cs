@@ -26,7 +26,6 @@ namespace ODSApi.Services
         {
             try
             {
-                //var response = _cosmosDbService.GetMultipleAsync("SELECT * FROM c")
                 var response = await _container.ReadItemAsync<MortalitySlopeEntity>(id, new PartitionKey(id));
                 return response.Resource;
             }
@@ -60,14 +59,6 @@ namespace ODSApi.Services
             return results;
 
         }
-        //public MortalitySlopeEntity getOneByMatchSequence(int matchId, int sequenceId)
-        //{
-        //    var slope =  _container.GetItemLinqQueryable<MortalitySlopeEntity>(true)
-        //             .Where(b => b.SequenceId == sequenceId && b.MatchId == matchId)
-        //             .AsEnumerable()
-        //             .FirstOrDefault();
-        //    return slope;
-        //}
 
     }
   }

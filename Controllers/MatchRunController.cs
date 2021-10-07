@@ -24,8 +24,7 @@ namespace ODSApi.Controllers
 
         public MatchRunController(IMatchRunDBService matchRunService, IMatchRunBusinessService matchRunBusinessService)
         {
-            _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
-            
+            _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));            
             _matchRunBusinessService = matchRunBusinessService ?? throw new ArgumentNullException(nameof(matchRunBusinessService));
         }
 
@@ -50,6 +49,7 @@ namespace ODSApi.Controllers
             await _matchRunService.AddAsync(item);
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
+
         [HttpGet("{match_id}/potential-recepients/{PtrSequenceNumber}")]
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
@@ -62,17 +62,13 @@ namespace ODSApi.Controllers
             else if(matchRunRecords.errors == ERRORS.NoMortalitySlopeRecord){
                 return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
-            else if(matchRunRecords.errors == ERRORS.NullMortalitySlopePlotPoints)
+            else if(matchRunRecords.errors == ERRORS.DataValidationError)
             {
                 return NoContent();
             }
-            else if (matchRunRecords.errors == ERRORS.NullTimeTo30Or50)
-            {
-                return NotFound("No Time to Next Offer Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-            }
+            
 
-            List<MatchRunEntity> returnEntity = matchRunRecords.Data;         
-           
+            List<MatchRunEntity> returnEntity = matchRunRecords.Data;                    
 
             return Ok(returnEntity);
 

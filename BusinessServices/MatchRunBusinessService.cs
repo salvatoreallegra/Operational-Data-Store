@@ -44,7 +44,6 @@ namespace ODSApi.BusinessServices
 
             if (matchRunRecords.Count() == 0)
             {
-                //return NotFound("No Match Run Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
                 serviceResponse.errors = ERRORS.NoPassThroughRecord;
                 return serviceResponse;
             }
@@ -58,39 +57,81 @@ namespace ODSApi.BusinessServices
             {
                 serviceResponse.errors = ERRORS.NoMortalitySlopeRecord;
                 return serviceResponse;
-
             }
             List<Dictionary<string, float>> plotpoints = null;
+
+
+
+
+            /*very Big, we need to fix this!
+             * There were records in the database, eg. 999,999 that were created with older code
+             * The Code Changed, and it couldn't read the value anymore
+             * so a null reference was thrown, try it with 999, and 999
+             */
+
+            /*******************************************************************
+            * Validate that mortality slope plot points exist for the retrieved
+            * records by matchrun and sequenceid
+            * ******************************************************************/
+            foreach (var m in mortalitySlopeRecords)
+            {
+                
+                   if(m.WaitListMortality == null)
+                   {
+                    serviceResponse.errors = ERRORS.DataValidationError;
+
+                    return serviceResponse;
+                   }
+                
+                
+                   if (m.WaitListMortality.Count == 0)
+                    {
+                        // return NoContent();  //204
+                        //return StatusCode(209, "The mortality slope field is null");
+                        serviceResponse.errors = ERRORS.DataValidationError;
+                        
+                        return serviceResponse;
+                    }                    
+                               
+
+                //plotpoints = m.WaitListMortality;
+
+            }
+
 
             /*******************************************************************
             * Validate that mortality slope plot points exist for the retrieved
             * records by matchrun and sequenceid
             * ******************************************************************/
 
-           
-            /*very Big, we need to fix this!
-             * There were records in the database, eg. 999,999 that were created with older code
-             * The Code Changed, and it couldn't read the value anymore
-             * so a null reference was thrown, try it with 999, and 999
-             */
-            
-            
-            
-            foreach (var m in mortalitySlopeRecords)
+            foreach (var m in mortalitySlopeRecords.Select((value, index) => new { value, index }))
             {
-                
-                    if (m.WaitListMortality is null)
+                foreach (var w in m.value.WaitListMortality.Select((value2, index2) => new { value2, index2 }))
+                {
+                    if (w.value2["probabilityOfSurvival"] > 1.0 || w.value2["probabilityOfSurvival"] < 0.0)
                     {
-                        // return NoContent();  //204
-                        //return StatusCode(209, "The mortality slope field is null");
-                        serviceResponse.errors = ERRORS.NullMortalitySlopePlotPoints;
+                        serviceResponse.errors = ERRORS.DataValidationError;
+                        serviceResponse.message = "Probability of Survival is less than or greater than 1.0";
                         return serviceResponse;
                     }
-                               
 
+                }
+            }
+
+
+            foreach (var m in mortalitySlopeRecords)
+            {
+                       
                 plotpoints = m.WaitListMortality;
 
             }
+
+
+
+
+
+
+
             foreach (var x in matchRunRecords)
             {
                 x.MortalitySlopePlotPoints = plotpoints;
@@ -121,7 +162,7 @@ namespace ODSApi.BusinessServices
                 if (t.TimeToNext30 is null || t.TimeToNext30.Count == 0 || t.TimeToNext50 is null || t.TimeToNext50.Count == 0)
                 {
                     //  return NoContent();  //204
-                    serviceResponse.errors = ERRORS.NullTimeTo30Or50;
+                    serviceResponse.errors = ERRORS.DataValidationError;
                     return serviceResponse;
                 }
 
