@@ -68,6 +68,11 @@ namespace ODSApi.Controllers
             else if(matchRunRecords.errors == ERRORS.NoMortalitySlopeRecord){
                 return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
+            else if (matchRunRecords.errors == ERRORS.NoTimeToNextOfferRecord)
+            {
+                return NotFound("No Time To Next Offer Record Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+            }
+
             else if(matchRunRecords.errors == ERRORS.DataValidationError)
             {
                 return NoContent();

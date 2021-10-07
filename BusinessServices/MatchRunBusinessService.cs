@@ -40,7 +40,7 @@ namespace ODSApi.BusinessServices
             /*******************************************************************
              * Check for Duplicates, return error code if duplicate records
              * ******************************************************************/
-            if(matchRunRecords.Count() > 1)
+            if (matchRunRecords.Count() > 1)
             {
                 serviceResponse.errors = ERRORS.Duplicates;
                 return serviceResponse;
@@ -81,25 +81,23 @@ namespace ODSApi.BusinessServices
             * ******************************************************************/
             foreach (var m in mortalitySlopeRecords)
             {
-                
-                   if(m.WaitListMortality == null)
-                   {
+
+                if (m.WaitListMortality == null)
+                {
                     serviceResponse.errors = ERRORS.DataValidationError;
 
                     return serviceResponse;
-                   }
-                
-                
-                   if (m.WaitListMortality.Count == 0)
-                    {
-                        serviceResponse.errors = ERRORS.DataValidationError;
-                        
-                        return serviceResponse;
-                    }                    
-                               
+                }
+
+                if (m.WaitListMortality.Count == 0)
+                {
+                    serviceResponse.errors = ERRORS.DataValidationError;
+
+                    return serviceResponse;
+                }
+
 
                 //plotpoints = m.WaitListMortality;
-
             }
 
 
@@ -122,14 +120,12 @@ namespace ODSApi.BusinessServices
                 }
             }
 
-
             foreach (var m in mortalitySlopeRecords)
             {
-                       
+
                 plotpoints = m.WaitListMortality;
 
             }
-
 
             foreach (var x in matchRunRecords)
             {
@@ -138,8 +134,8 @@ namespace ODSApi.BusinessServices
 
 
             /*******************************************************************
-            * Validate that mortality slope plot points exist for the retrieved
-            * records by matchrun and sequenceid
+            * Validate that a Time to Next Offer exists
+            * by matchrun and sequenceid
             *******************************************************************/
             var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
             if (timeToBetterRecords.Count() == 0)
@@ -153,22 +149,44 @@ namespace ODSApi.BusinessServices
             Dictionary<string, float> timeToNext30 = null;
             Dictionary<string, float> timeToNext50 = null;
 
-
-
             foreach (var t in timeToBetterRecords)
             {
 
-                if (t.TimeToNext30 is null || t.TimeToNext30.Count == 0 || t.TimeToNext50 is null || t.TimeToNext50.Count == 0)
+                if (t.TimeToNext30 == null || t.TimeToNext50 == null)
                 {
-                    //  return NoContent();  //204
                     serviceResponse.errors = ERRORS.DataValidationError;
+
                     return serviceResponse;
                 }
 
-                //   timeToNextOffer = t.TimeToNextOffer;
-                timeToNext30 = t.TimeToNext30;
-                timeToNext50 = t.TimeToNext50;
+                if (t.TimeToNext50.Count == 0 || t.TimeToNext50.Count == 0)
+                {
+                    serviceResponse.errors = ERRORS.DataValidationError;
+
+                    return serviceResponse;
+                }
+
+                    timeToNext30 = t.TimeToNext30;
+                    timeToNext50 = t.TimeToNext50;
+
+
+                //plotpoints = m.WaitListMortality;
             }
+
+            //foreach (var t in timeToBetterRecords)
+            //{
+
+            //    if (t.TimeToNext30 is null || t.TimeToNext30.Count == 0 || t.TimeToNext50 is null || t.TimeToNext50.Count == 0)
+            //    {
+            //        //  return NoContent();  //204
+            //        serviceResponse.errors = ERRORS.DataValidationError;
+            //        return serviceResponse;
+            //    }
+
+            //    //   timeToNextOffer = t.TimeToNextOffer;
+            //    timeToNext30 = t.TimeToNext30;
+            //    timeToNext50 = t.TimeToNext50;
+            //}
 
             /*******************************************************************
             * Set time to next 30 and 50 to a value to avoid null pointer exception
