@@ -18,7 +18,8 @@ namespace ODSApi.Entities
         NoMortalitySlopeRecord,
         NoTimeToNextOfferRecord,
         DataValidationError,
-        Ok
+        Ok,
+        Duplicates
         
     }
 }

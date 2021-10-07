@@ -54,11 +54,17 @@ namespace ODSApi.Controllers
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
             var matchRunRecords = await _matchRunBusinessService.getByMatchSequence(match_id,PtrSequenceNumber);
+
             if(matchRunRecords.errors == ERRORS.NoPassThroughRecord)
             {
                 return NotFound("No Pass Through Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-
             }
+
+            if (matchRunRecords.errors == ERRORS.Duplicates)
+            {
+                return NotFound("Duplicate Records found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+            }
+
             else if(matchRunRecords.errors == ERRORS.NoMortalitySlopeRecord){
                 return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }

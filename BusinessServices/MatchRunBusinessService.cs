@@ -36,7 +36,16 @@ namespace ODSApi.BusinessServices
 
             ServiceResponseEntity<List<MatchRunEntity>> serviceResponse = new ServiceResponseEntity<List<MatchRunEntity>>();
             var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
-           
+
+            /*******************************************************************
+             * Check for Duplicates, return error code if duplicate records
+             * ******************************************************************/
+            if(matchRunRecords.Count() > 1)
+            {
+                serviceResponse.errors = ERRORS.Duplicates;
+                return serviceResponse;
+            }
+
             /*******************************************************************
              * Need to check if the list count is 0.  Null check does not work
              * here because matchRunService returns IEnumerable
@@ -59,9 +68,6 @@ namespace ODSApi.BusinessServices
                 return serviceResponse;
             }
             List<Dictionary<string, float>> plotpoints = null;
-
-
-
 
             /*very Big, we need to fix this!
              * There were records in the database, eg. 999,999 that were created with older code
@@ -86,8 +92,6 @@ namespace ODSApi.BusinessServices
                 
                    if (m.WaitListMortality.Count == 0)
                     {
-                        // return NoContent();  //204
-                        //return StatusCode(209, "The mortality slope field is null");
                         serviceResponse.errors = ERRORS.DataValidationError;
                         
                         return serviceResponse;
