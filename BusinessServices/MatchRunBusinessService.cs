@@ -127,11 +127,6 @@ namespace ODSApi.BusinessServices
             }
 
 
-
-
-
-
-
             foreach (var x in matchRunRecords)
             {
                 x.MortalitySlopePlotPoints = plotpoints;
@@ -224,6 +219,10 @@ namespace ODSApi.BusinessServices
 
             }
             serviceResponse.Data = (List<MatchRunEntity>)matchRunRecords;
+
+            /*Reset service response here, or else controller will always think there is an error */
+            serviceResponse.errors = ERRORS.Ok;
+
             return serviceResponse;
         }
 
