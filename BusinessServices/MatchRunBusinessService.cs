@@ -103,11 +103,16 @@ namespace ODSApi.BusinessServices
             {
                 foreach (var w in m.value.WaitListMortality.Select((value2, index2) => new { value2, index2 }))
                 {
-                    if (w.value2["probabilityOfSurvival"] > 1.0 || w.value2["probabilityOfSurvival"] < 0.0)
+                    if (w.value2["probabilityOfSurvival"] > 1.0 || w.value2["probabilityOfSurvival"] < 0.0 || w.value2["probabilityOfSurvival"].GetType() != typeof(float))
                     {
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
                     }
+                    if(w.value2["time"] <= 0.0 || w.value2["time"].GetType() != typeof(float))
+                    {
+                        serviceResponse.errors = ERRORS.DataValidationError;
+                        return serviceResponse;
+                    } 
 
                 }
             }
