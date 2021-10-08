@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace ODSApi.BusinessServices
 {
 
-    
-    public class MatchRunBusinessService :  IMatchRunBusinessService
+
+    public class MatchRunBusinessService : IMatchRunBusinessService
     {
         private readonly IMatchRunDBService _matchRunService;
         private readonly IMortalitySlopeDBService _mortalitySlopeService;
@@ -162,31 +162,15 @@ namespace ODSApi.BusinessServices
                 if (t.TimeToNext50.Count == 0 || t.TimeToNext50.Count == 0)
                 {
                     serviceResponse.errors = ERRORS.DataValidationError;
-
                     return serviceResponse;
                 }
 
-                    timeToNext30 = t.TimeToNext30;
-                    timeToNext50 = t.TimeToNext50;
-
-
-                //plotpoints = m.WaitListMortality;
+                timeToNext30 = t.TimeToNext30;
+                timeToNext50 = t.TimeToNext50;
+                
             }
 
-            //foreach (var t in timeToBetterRecords)
-            //{
-
-            //    if (t.TimeToNext30 is null || t.TimeToNext30.Count == 0 || t.TimeToNext50 is null || t.TimeToNext50.Count == 0)
-            //    {
-            //        //  return NoContent();  //204
-            //        serviceResponse.errors = ERRORS.DataValidationError;
-            //        return serviceResponse;
-            //    }
-
-            //    //   timeToNextOffer = t.TimeToNextOffer;
-            //    timeToNext30 = t.TimeToNext30;
-            //    timeToNext50 = t.TimeToNext50;
-            //}
+           
 
             /*******************************************************************
             * Set time to next 30 and 50 to a value to avoid null pointer exception
@@ -197,7 +181,6 @@ namespace ODSApi.BusinessServices
                 x.TimeToNext50 = new Dictionary<string, float> { };
 
             }
-
 
             //Refactor this to just send the timetobetter30 and timetobetter 50 in calcprob...instead of the entire object
 
@@ -212,6 +195,11 @@ namespace ODSApi.BusinessServices
                     x.TimeToNext30["time"] = timeToNext30["median"];
                     x.TimeToNext50["time"] = timeToNext50["median"];
 
+                    /***************************************************
+                     * 
+                     * 
+                     * *************************************************/
+                    bool plotPointRangeErrorTime30 = ValidatePlotPointRangeTimeToBetter30(plotpoints, timeToNext30);
 
                     x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints, timeToNext30);
                     x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints, timeToNext50);
@@ -263,6 +251,9 @@ namespace ODSApi.BusinessServices
             List<float> strippedNumbers = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
+            strippedNumbers.Add(0);
+            strippedSurvival.Add(1);
+
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
                 foreach (var kvp in allPlotPoints)
@@ -291,9 +282,23 @@ namespace ODSApi.BusinessServices
             * Sort the number of days(timetonextoffer)so we can find the next highest day
             * and the next lowest day
             * *******************************************************************/
-            
 
             Array.Sort(strippedNumbersArray);
+
+            /******************************************************************
+            * Find the max value of array to check if time to 30 is within range
+            *
+            *
+            *******************************************************************/
+            float max = strippedNumbersArray[0];
+            for (var i = 0; i < strippedNumbersArray.Length; i++)
+            {
+                if (strippedNumbersArray[i] > max)
+                {
+                    max = strippedNumbersArray[i];
+                }
+            }
+
             for (var i = 0; i < strippedNumbersArray.Length; i++)
             {
                 if (strippedNumbersArray[i] > time30)
@@ -302,6 +307,12 @@ namespace ODSApi.BusinessServices
                     break;
                 }
             }
+
+
+
+            //Reverse Array to find next lower
+            Array.Reverse(strippedNumbersArray);
+
             for (var i = 0; i < strippedNumbersArray.Length; i++)
             {
                 if (strippedNumbersArray[i] < time30)
@@ -432,5 +443,13 @@ namespace ODSApi.BusinessServices
             return probabilityOfSurvival;
         }
 
+        public static bool ValidatePlotPointRangeTimeToBetter30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
+        {
+            return true;
+        }
+        public static bool ValidatePlotPointRangeTimeToBetter50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
+        {
+            return true;
+        }
     }
 }
