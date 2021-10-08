@@ -167,7 +167,37 @@ namespace ODSApi.BusinessServices
                 
             }
 
-           
+            foreach (var m in timeToBetterRecords.Select((value, index) => new { value, index }))
+            {
+                foreach (var w in m.value.TimeToNext30.Select((value2, index2) => new { value2, index2 }))
+                {
+                    //quantile
+                    //median
+                    //quantileTime
+                    if(w.value2.Key == "quantile")
+                    {
+                        if (w.value2.Value < 0.0 || w.value2.Value > 1.0)
+                        {
+                            serviceResponse.errors = ERRORS.DataValidationError;
+                            return serviceResponse;
+                        }
+                    }
+
+                    //if (w.value2["quantileTime"] > 1.0 || w.value2["probabilityOfSurvival"] < 0.0 || w.value2["probabilityOfSurvival"].GetType() != typeof(float))
+                    //{
+                    //    serviceResponse.errors = ERRORS.DataValidationError;
+                    //    return serviceResponse;
+                    //}
+                    //if (w.value2["time"] <= 0.0 || w.value2["time"].GetType() != typeof(float))
+                    //{
+                    //    serviceResponse.errors = ERRORS.DataValidationError;
+                    //    return serviceResponse;
+                    //}
+
+                }
+            }
+
+
 
             /*******************************************************************
             * Set time to next 30 and 50 to a value to avoid null pointer exception
