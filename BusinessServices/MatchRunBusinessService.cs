@@ -197,7 +197,14 @@ namespace ODSApi.BusinessServices
                     bool plotPointRangeErrorTime30 = ValidatePlotPointRangeTimeToBetter30(plotpoints, timeToNext30);
                     if (plotPointRangeErrorTime30)
                     {
-                        //serviceResponse.errors =  
+                        serviceResponse.errors = ERRORS.DataValidationError;
+                        return serviceResponse;
+                    }
+                    bool plotPointRangeErrorTime50 = ValidatePlotPointRangeTimeToBetter50(plotpoints, timeToNext50);
+                    if (plotPointRangeErrorTime50)
+                    {
+                        serviceResponse.errors = ERRORS.DataValidationError;
+                        return serviceResponse;
                     }
 
                     x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints, timeToNext30);
@@ -445,15 +452,7 @@ namespace ODSApi.BusinessServices
         public static bool ValidatePlotPointRangeTimeToBetter30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
 
-            // y = survival probability
-            // x = number of days
             var time30 = timeToBetter["median"];
-            //float mortalitySlope;
-            //float probabilityOfSurvival;
-            //float y2 = 0.0f;
-            //float y1 = 0.0f;
-            //float x2 = 0.0f;
-            //float x1 = 0.0f;
 
             List<float> strippedNumbers = new List<float>();
             List<float> strippedSurvival = new List<float>();
@@ -494,8 +493,7 @@ namespace ODSApi.BusinessServices
 
             /******************************************************************
             * Find the max value of array to check if time to 30 is within range
-            *
-            *
+            * or if Time30(median) is equal to the highest value
             *******************************************************************/
             float max = strippedNumbersArray[0];
             for (var i = 0; i < strippedNumbersArray.Length; i++)
@@ -505,15 +503,98 @@ namespace ODSApi.BusinessServices
                     max = strippedNumbersArray[i];
                 }
             }
-            if (time30 > max)
+            if (time30 > max || time30 == max)
             {
                 return true;
             }
+
+            /******************************************************************
+            * use the min value in the sorted array to chick if
+            * Time30(median) is equal to or lower than the min value
+            *******************************************************************/
+
+            float min = strippedNumbersArray[0];
+            if (time30 < min || time30 == min)
+            {
+                return true;
+            }
+
             return false;
+
+
         }
         public static bool ValidatePlotPointRangeTimeToBetter50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
-            return true;
+            var time50 = timeToBetter["median"];
+
+            List<float> strippedNumbers = new List<float>();
+            List<float> strippedSurvival = new List<float>();
+
+            strippedNumbers.Add(0);
+            strippedSurvival.Add(1);
+
+            foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
+            {
+                foreach (var kvp in allPlotPoints)
+                {
+                    string key = kvp.Key;
+                    float value = kvp.Value;
+                    if (key == "time")
+                    {
+                        strippedNumbers.Add(value);
+                    }
+                    if (key == "probabilityOfSurvival")
+                    {
+                        strippedSurvival.Add(value);
+                    }
+                }
+            }
+            float[] strippedNumbersArray = strippedNumbers.ToArray();
+            float[] strippedSurvivalArray = strippedSurvival.ToArray();
+            float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
+
+            //need to match the probability of survival with the number of days between the two above arrays
+
+
+
+            /*******************************************************************
+            * Sort the number of days(timetonextoffer)so we can find the next highest day
+            * and the next lowest day
+            * *******************************************************************/
+
+            Array.Sort(strippedNumbersArray);
+
+            /******************************************************************
+            * Find the max value of array to check if time to 30 is within range
+            * or if Time50(median) is equal to the highest value
+            *******************************************************************/
+            float max = strippedNumbersArray[0];
+            for (var i = 0; i < strippedNumbersArray.Length; i++)
+            {
+                if (strippedNumbersArray[i] > max)
+                {
+                    max = strippedNumbersArray[i];
+                }
+            }
+            if (time50 > max || time50 == max)
+            {
+                return true;
+            }
+
+            /******************************************************************
+            * use the min value in the sorted array to chick if
+            * Time50(median) is equal to or lower than the min value
+            *******************************************************************/
+
+            float min = strippedNumbersArray[0];
+            if (time50 < min || time50 == min)
+            {
+                return true;
+            }
+
+            return false;
+
+           
         }
     }
 }
