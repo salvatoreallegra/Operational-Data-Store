@@ -176,7 +176,7 @@ namespace ODSApi.BusinessServices
                     //quantileTime
                     if(w.value2.Key == "quantile")
                     {
-                        if (w.value2.Value < 0.0 || w.value2.Value > 1.0  || w.value2.GetType() != typeof(float))
+                        if (w.value2.Value < 0.0 || w.value2.Value > 1.0 /* || w.value2.GetType() != typeof(float)*/)
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
