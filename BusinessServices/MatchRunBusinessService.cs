@@ -91,14 +91,12 @@ namespace ODSApi.BusinessServices
                     return serviceResponse;
                 }
 
-
-                //plotpoints = m.WaitListMortality;
             }
 
 
             /*******************************************************************
-            * Validate that mortality slope plot points exist for the retrieved
-            * records by matchrun and sequenceid
+            *
+            *
             * ******************************************************************/
 
             foreach (var m in mortalitySlopeRecords.Select((value, index) => new { value, index }))
@@ -108,7 +106,6 @@ namespace ODSApi.BusinessServices
                     if (w.value2["probabilityOfSurvival"] > 1.0 || w.value2["probabilityOfSurvival"] < 0.0)
                     {
                         serviceResponse.errors = ERRORS.DataValidationError;
-                      //  serviceResponse.message = "Probability of Survival is less than or greater than 1.0";
                         return serviceResponse;
                     }
 
@@ -257,6 +254,11 @@ namespace ODSApi.BusinessServices
             List<float> strippedNumbers = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
+
+            /*******************************************
+             * Must add a 0 timetobetter in days
+             * and a 100% percent survival of probability
+             *******************************************/
             strippedNumbers.Add(0);
             strippedSurvival.Add(1);
 
@@ -376,6 +378,14 @@ namespace ODSApi.BusinessServices
             List<float> strippedNumbers = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
+            /*******************************************
+             * Must add a 0 timetobetter in days
+             * and a 100% percent survival of probability
+             *******************************************/
+
+            strippedNumbers.Add(0);
+            strippedSurvival.Add(1);
+
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
                 foreach (var kvp in allPlotPoints)
@@ -407,6 +417,13 @@ namespace ODSApi.BusinessServices
                     break;
                 }
             }
+
+            /**************************************
+            *Reverse Array to find next lowest
+            **************************************/
+
+            Array.Reverse(strippedNumbersArrayList);
+
             for (var i = 0; i < strippedNumbersArrayList.Length; i++)
             {
                 if (strippedNumbersArrayList[i] < time50)
