@@ -69,12 +69,7 @@ namespace ODSApi.BusinessServices
             }
             List<Dictionary<string, float>> plotpoints = null;
 
-            /*very Big, we need to fix this!
-             * There were records in the database, eg. 999,999 that were created with older code
-             * The Code Changed, and it couldn't read the value anymore
-             * so a null reference was thrown, try it with 999, and 999
-             */
-
+            
             /*******************************************************************
             * Validate that mortality slope plot points exist for the retrieved
             * records by matchrun and sequenceid
@@ -113,7 +108,7 @@ namespace ODSApi.BusinessServices
                     if (w.value2["probabilityOfSurvival"] > 1.0 || w.value2["probabilityOfSurvival"] < 0.0)
                     {
                         serviceResponse.errors = ERRORS.DataValidationError;
-                        serviceResponse.message = "Probability of Survival is less than or greater than 1.0";
+                      //  serviceResponse.message = "Probability of Survival is less than or greater than 1.0";
                         return serviceResponse;
                     }
 
@@ -200,6 +195,10 @@ namespace ODSApi.BusinessServices
                      * 
                      * *************************************************/
                     bool plotPointRangeErrorTime30 = ValidatePlotPointRangeTimeToBetter30(plotpoints, timeToNext30);
+                    if (plotPointRangeErrorTime30)
+                    {
+                        //serviceResponse.errors =  
+                    }
 
                     x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints, timeToNext30);
                     x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints, timeToNext50);
@@ -445,7 +444,72 @@ namespace ODSApi.BusinessServices
 
         public static bool ValidatePlotPointRangeTimeToBetter30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
-            return true;
+
+            // y = survival probability
+            // x = number of days
+            var time30 = timeToBetter["median"];
+            //float mortalitySlope;
+            //float probabilityOfSurvival;
+            //float y2 = 0.0f;
+            //float y1 = 0.0f;
+            //float x2 = 0.0f;
+            //float x1 = 0.0f;
+
+            List<float> strippedNumbers = new List<float>();
+            List<float> strippedSurvival = new List<float>();
+
+            strippedNumbers.Add(0);
+            strippedSurvival.Add(1);
+
+            foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
+            {
+                foreach (var kvp in allPlotPoints)
+                {
+                    string key = kvp.Key;
+                    float value = kvp.Value;
+                    if (key == "time")
+                    {
+                        strippedNumbers.Add(value);
+                    }
+                    if (key == "probabilityOfSurvival")
+                    {
+                        strippedSurvival.Add(value);
+                    }
+                }
+            }
+            float[] strippedNumbersArray = strippedNumbers.ToArray();
+            float[] strippedSurvivalArray = strippedSurvival.ToArray();
+            float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
+
+            //need to match the probability of survival with the number of days between the two above arrays
+
+
+
+            /*******************************************************************
+            * Sort the number of days(timetonextoffer)so we can find the next highest day
+            * and the next lowest day
+            * *******************************************************************/
+
+            Array.Sort(strippedNumbersArray);
+
+            /******************************************************************
+            * Find the max value of array to check if time to 30 is within range
+            *
+            *
+            *******************************************************************/
+            float max = strippedNumbersArray[0];
+            for (var i = 0; i < strippedNumbersArray.Length; i++)
+            {
+                if (strippedNumbersArray[i] > max)
+                {
+                    max = strippedNumbersArray[i];
+                }
+            }
+            if (time30 > max)
+            {
+                return true;
+            }
+            return false;
         }
         public static bool ValidatePlotPointRangeTimeToBetter50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
