@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ODSApi.BusinessServices;
 using ODSApi.DBServices;
@@ -16,12 +17,15 @@ using ODSApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ODSApi
 {
     public class Startup
     {
+        private const string SECRET_KEY = "sldkjfwivkSEGSekfjsleFWAF";
+        public static readonly SymmetricSecurityKey SIGNING_KEY = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,29 +37,46 @@ namespace ODSApi
         // Testing CICD Pipeline
         public void ConfigureServices(IServiceCollection services)
         {
-        
-        
-                services.AddControllers();
-                services.AddSwaggerGen(c =>
+
+
+            services.AddControllers();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "JwtBearer";
+                options.DefaultChallengeScheme = "JwtBearer";
+            }).AddJwtBearer("JwtBearer", jwtOptions =>
+            {
+                jwtOptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
-                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ODSApi", Version = "v1" });
-                });
-                services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
-                services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
-                services.AddApplicationInsightsTelemetry();
-                services.AddCors(c =>
-                {
-                    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-                });
+                    IssuerSigningKey = SIGNING_KEY,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = "https://localhost:44317",
+                    ValidAudience = "https://localhost:44317",
+                    ValidateLifetime = true
+                }; 
+
+            });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ODSApi", Version = "v1" });
+            });
+            services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+            services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
+            services.AddApplicationInsightsTelemetry();
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
 
 
         }
-    
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -72,7 +93,8 @@ namespace ODSApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
-         
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             //Use this Middleware prior to app.UseEndpoints....
@@ -83,8 +105,8 @@ namespace ODSApi
                 endpoints.MapControllers();
             });
 
-            
-            
+
+
         }
         private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
@@ -124,7 +146,7 @@ namespace ODSApi
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
-            
+
 
             var cosmosDBService = new MatchRunDBService(client, databaseName, containerName);
 
