@@ -95,8 +95,8 @@ namespace ODSApi.BusinessServices
 
 
             /*******************************************************************
-            *
-            *
+            * Validate WaitlistMortality from Mortality Slope Collection
+            * probablity of survival and time fields
             * ******************************************************************/
 
             foreach (var m in mortalitySlopeRecords.Select((value, index) => new { value, index }))
@@ -119,9 +119,7 @@ namespace ODSApi.BusinessServices
 
             foreach (var m in mortalitySlopeRecords)
             {
-
                 plotpoints = m.WaitListMortality;
-
             }
 
             foreach (var x in matchRunRecords)
@@ -137,12 +135,10 @@ namespace ODSApi.BusinessServices
             var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
             if (timeToBetterRecords.Count() == 0)
             {
-                //return NotFound("No Time to Next Offer Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
                 serviceResponse.errors = ERRORS.NoTimeToNextOfferRecord;
                 return serviceResponse;
             }
 
-            // Dictionary<string, int> timeToNextOffer = null;
             Dictionary<string, float> timeToNext30 = null;
             Dictionary<string, float> timeToNext50 = null;
 
@@ -152,10 +148,15 @@ namespace ODSApi.BusinessServices
                 if (t.TimeToNext30 == null || t.TimeToNext50 == null)
                 {
                     serviceResponse.errors = ERRORS.DataValidationError;
-
                     return serviceResponse;
                 }
 
+
+
+                /*****************************************************
+                 * This will check for {} in timeto30 or timeto50 {}                 * 
+                 * 
+                 * ****************************************************/
                 if (t.TimeToNext50.Count == 0 || t.TimeToNext50.Count == 0)
                 {
                     serviceResponse.errors = ERRORS.DataValidationError;
@@ -167,13 +168,16 @@ namespace ODSApi.BusinessServices
                 
             }
 
+            /*******************************************
+             * Validate Range and type of quantile,
+             * median, and quantileTime             * 
+             * ****************************************/
+
             foreach (var m in timeToBetterRecords.Select((value, index) => new { value, index }))
             {
                 foreach (var w in m.value.TimeToNext30.Select((value2, index2) => new { value2, index2 }))
                 {
-                    //quantile
-                    //median
-                    //quantileTime
+                   
                     if (w.value2.Key == "quantile")
                     {
                         if (w.value2.Value < 0.0 || w.value2.Value > 1.0 ||  w.value2.Value.GetType() != typeof(float))
@@ -220,7 +224,6 @@ namespace ODSApi.BusinessServices
 
             }
 
-            //Refactor this to just send the timetobetter30 and timetobetter 50 in calcprob...instead of the entire object
 
             /*******************************************************************
            * set timetonext30 and 50 to the values from the timetonext offer schema
@@ -542,9 +545,6 @@ namespace ODSApi.BusinessServices
             float[] strippedNumbersArray = strippedNumbers.ToArray();
             float[] strippedSurvivalArray = strippedSurvival.ToArray();
             float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
-
-            //need to match the probability of survival with the number of days between the two above arrays
-
 
 
             /*******************************************************************

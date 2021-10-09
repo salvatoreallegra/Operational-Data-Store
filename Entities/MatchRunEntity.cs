@@ -20,7 +20,6 @@ namespace ODSApi.Entities
 
         [JsonProperty(PropertyName = "offerdate")]
         public DateTime OfferDate { get; set; }
-
         
         [JsonProperty(PropertyName = "mortalitySlopePlotPoints")]
         public List<Dictionary<string, float>> MortalitySlopePlotPoints { get; set; }  //This is wait list mortality from Mortality Slope Collection
