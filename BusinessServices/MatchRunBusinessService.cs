@@ -180,21 +180,30 @@ namespace ODSApi.BusinessServices
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
-                            //testing build again
                         }
                         
                     }
 
-                    //if (w.value2["quantileTime"] > 1.0 || w.value2["probabilityOfSurvival"] < 0.0 || w.value2["probabilityOfSurvival"].GetType() != typeof(float))
-                    //{
-                    //    serviceResponse.errors = ERRORS.DataValidationError;
-                    //    return serviceResponse;
-                    //}
-                    //if (w.value2["time"] <= 0.0 || w.value2["time"].GetType() != typeof(float))
-                    //{
-                    //    serviceResponse.errors = ERRORS.DataValidationError;
-                    //    return serviceResponse;
-                    //}
+                    if (w.value2.Key == "median")
+                    {
+                        if (!(w.value2.Value > 0.0) || w.value2.Value.GetType() != typeof(float))
+                        {
+                            serviceResponse.errors = ERRORS.DataValidationError;
+                            return serviceResponse;
+                        }
+
+                    }
+
+                    if (w.value2.Key == "quantileTime")
+                    {
+                        if (!(w.value2.Value > 0.0) || w.value2.Value.GetType() != typeof(float))
+                        {
+                            serviceResponse.errors = ERRORS.DataValidationError;
+                            return serviceResponse;
+                        }
+
+                    }
+
 
                 }
             }
