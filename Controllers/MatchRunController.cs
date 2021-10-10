@@ -52,7 +52,7 @@ namespace ODSApi.Controllers
         }
 
         [HttpGet("{match_id}/potential-recepients/{PtrSequenceNumber}")]
-        [Authorize]
+       //[Authorize]
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
             var matchRunRecords = await _matchRunBusinessService.getByMatchSequence(match_id,PtrSequenceNumber);
