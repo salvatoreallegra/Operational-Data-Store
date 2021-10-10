@@ -67,7 +67,7 @@ namespace ODSApi.BusinessServices
                 serviceResponse.errors = ERRORS.NoMortalitySlopeRecord;
                 return serviceResponse;
             }
-            List<Dictionary<string, float>> plotpoints = null;
+            List<Dictionary<string, float>> waitListMortality = null;
 
             
             /*******************************************************************
@@ -119,12 +119,12 @@ namespace ODSApi.BusinessServices
 
             foreach (var m in mortalitySlopeRecords)
             {
-                plotpoints = m.WaitListMortality;
+                waitListMortality = m.WaitListMortality;
             }
 
             foreach (var x in matchRunRecords)
             {
-                x.MortalitySlopePlotPoints = plotpoints;
+                x.MortalitySlopePlotPoints = waitListMortality;
             }
 
 
@@ -240,21 +240,21 @@ namespace ODSApi.BusinessServices
                      * 
                      * 
                      * *************************************************/
-                    bool plotPointRangeErrorTime30 = ValidatePlotPointRangeTimeToBetter30(plotpoints, timeToNext30);
+                    bool plotPointRangeErrorTime30 = ValidatePlotPointRangeTimeToBetter30(waitListMortality, timeToNext30);
                     if (plotPointRangeErrorTime30)
                     {
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
                     }
-                    bool plotPointRangeErrorTime50 = ValidatePlotPointRangeTimeToBetter50(plotpoints, timeToNext50);
+                    bool plotPointRangeErrorTime50 = ValidatePlotPointRangeTimeToBetter50(waitListMortality, timeToNext50);
                     if (plotPointRangeErrorTime50)
                     {
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
                     }
 
-                    x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(plotpoints, timeToNext30);
-                    x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(plotpoints, timeToNext50);
+                    x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(waitListMortality, timeToNext30);
+                    x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(waitListMortality, timeToNext50);
 
                     x.TimeToNext30["quantile"] = timeToNext30["quantile"];
                     x.TimeToNext30["quantiletime"] = timeToNext30["quantileTime"];

@@ -56,7 +56,6 @@ namespace ODSApi.Controllers
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
            
-
                 var matchRunRecords = await _matchRunBusinessService.getByMatchSequence(match_id, PtrSequenceNumber);
 
                 if (matchRunRecords.errors == ERRORS.NoPassThroughRecord)
