@@ -285,6 +285,17 @@ namespace ODSApi.BusinessServices
             /*Reset service response here, or else controller will always think there is an error */
             serviceResponse.errors = ERRORS.Ok;
 
+
+            /*******************************************
+             * Create Log Record
+             * ****************************************/
+            LogEntity log = new LogEntity();
+            log.Id =  Guid.NewGuid().ToString();
+            log.CreatedDateTime = new DateTime();
+            log.MatchID = serviceResponse.Data[0].matchId;
+            log.SequenceId = serviceResponse.Data[0].SequenceId;
+            await _logDBService.AddAsync(log);
+
             return serviceResponse;
         }
 

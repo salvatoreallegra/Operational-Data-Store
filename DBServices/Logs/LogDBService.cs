@@ -19,7 +19,7 @@ namespace ODSApi.Services
         }
         public async Task AddAsync(LogEntity item)
         {
-            await _container.CreateItemAsync(item, new PartitionKey(item.Id));
+            await _container.CreateItemAsync(item, new PartitionKey(item.MatchID));
         }
        
         public async Task<LogEntity> GetAsync(string id)
