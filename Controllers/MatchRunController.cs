@@ -65,7 +65,7 @@ namespace ODSApi.Controllers
 
                 if (matchRunRecords.errors == ERRORS.Duplicates)
                 {
-                    return NotFound("Duplicate Records found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                      return BadRequest("Duplicate Records found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
                 }
 
                 else if (matchRunRecords.errors == ERRORS.NoMortalitySlopeRecord)

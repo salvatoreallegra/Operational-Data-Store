@@ -151,8 +151,6 @@ namespace ODSApi.BusinessServices
                     return serviceResponse;
                 }
 
-
-
                 /*****************************************************
                  * This will check for {} in timeto30 or timeto50 {}                 * 
                  * 
@@ -208,11 +206,8 @@ namespace ODSApi.BusinessServices
 
                     }
 
-
                 }
             }
-
-
 
             /*******************************************************************
             * Set time to next 30 and 50 to a value to avoid null pointer exception
@@ -221,9 +216,7 @@ namespace ODSApi.BusinessServices
             {
                 x.TimeToNext30 = new Dictionary<string, float> { };
                 x.TimeToNext50 = new Dictionary<string, float> { };
-
             }
-
 
             /*******************************************************************
            * set timetonext30 and 50 to the values from the timetonextoffer schema
@@ -278,7 +271,6 @@ namespace ODSApi.BusinessServices
             foreach (var m in matchRunRecords)
             {
                 m.GraphParam = graphParam;
-
             }
             serviceResponse.Data = (List<MatchRunEntity>)matchRunRecords;
 
@@ -291,7 +283,7 @@ namespace ODSApi.BusinessServices
              * ****************************************/
             LogEntity log = new LogEntity();
             log.Id =  Guid.NewGuid().ToString();
-            log.CreatedDateTime = new DateTime();
+            log.CreatedDateTime = DateTime.Now;
             log.MatchID = serviceResponse.Data[0].matchId;
             log.SequenceId = serviceResponse.Data[0].SequenceId;
             await _logDBService.AddAsync(log);
@@ -591,7 +583,6 @@ namespace ODSApi.BusinessServices
             }
 
             return false;
-
 
         }
         public static bool ValidatePlotPointRangeTimeToBetter50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
