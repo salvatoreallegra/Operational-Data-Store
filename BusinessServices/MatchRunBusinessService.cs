@@ -173,14 +173,14 @@ namespace ODSApi.BusinessServices
              * median, and quantileTime             * 
              * ****************************************/
 
-            foreach (var m in timeToBetterRecords.Select((value, index) => new { value, index }))
+            foreach (var ttnoRecord in timeToBetterRecords.Select((ttnoValue, index) => new { ttnoValue, index }))  //m = timetonextofferentity
             {
-                foreach (var w in m.value.TimeToNext30.Select((value2, index2) => new { value2, index2 }))
+                foreach (var ttn30Field in ttnoRecord.ttnoValue.TimeToNext30.Select((ttn30Kvp, index2) => new { ttn30Kvp, index2 }))  //w = timetonext30 field value2 = timetonext30 kvp, index2 = timetonext30 kvp index
                 {
                    
-                    if (w.value2.Key == "quantile")
+                    if (ttn30Field.ttn30Kvp.Key == "quantile")
                     {
-                        if (w.value2.Value < 0.0 || w.value2.Value > 1.0 ||  w.value2.Value.GetType() != typeof(float))
+                        if (ttn30Field.ttn30Kvp.Value < 0.0 || ttn30Field.ttn30Kvp.Value > 1.0 ||  ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
@@ -188,9 +188,9 @@ namespace ODSApi.BusinessServices
                         
                     }
 
-                    if (w.value2.Key == "median")
+                    if (ttn30Field.ttn30Kvp.Key == "median")
                     {
-                        if (!(w.value2.Value > 0.0) || w.value2.Value.GetType() != typeof(float))
+                        if (!(ttn30Field.ttn30Kvp.Value > 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
@@ -198,9 +198,9 @@ namespace ODSApi.BusinessServices
 
                     }
 
-                    if (w.value2.Key == "quantileTime")
+                    if (ttn30Field.ttn30Kvp.Key == "quantileTime")
                     {
-                        if (!(w.value2.Value > 0.0) || w.value2.Value.GetType() != typeof(float))
+                        if (!(ttn30Field.ttn30Kvp.Value > 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
@@ -226,11 +226,11 @@ namespace ODSApi.BusinessServices
 
 
             /*******************************************************************
-           * set timetonext30 and 50 to the values from the timetonext offer schema
+           * set timetonext30 and 50 to the values from the timetonextoffer schema
            *******************************************************************/
             try
             {
-                foreach (var x in matchRunRecords) //there is no field time to next 30
+                foreach (var x in matchRunRecords)
                 {
 
                     x.TimeToNext30["time"] = timeToNext30["median"];
