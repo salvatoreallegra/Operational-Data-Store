@@ -311,7 +311,7 @@ namespace ODSApi.BusinessServices
             float x2 = 0.0f;
             float x1 = 0.0f;
 
-            List<float> strippedNumbers = new List<float>();
+            List<float> strippedDays = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
 
@@ -319,7 +319,7 @@ namespace ODSApi.BusinessServices
              * Must add a 0 timetobetter in days
              * and a 100% percent survival of probability
              *******************************************/
-            strippedNumbers.Add(0);
+            strippedDays.Add(0);
             strippedSurvival.Add(1);
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
@@ -330,7 +330,7 @@ namespace ODSApi.BusinessServices
                     float value = kvp.Value;
                     if (key == "time")
                     {
-                        strippedNumbers.Add(value);
+                        strippedDays.Add(value);
                     }
                     if (key == "probabilityOfSurvival")
                     {
@@ -338,12 +338,9 @@ namespace ODSApi.BusinessServices
                     }
                 }
             }
-            float[] strippedNumbersArray = strippedNumbers.ToArray();
+            float[] strippedNumbersArray = strippedDays.ToArray();
             float[] strippedSurvivalArray = strippedSurvival.ToArray();
-            float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
-
-            //need to match the probability of survival with the number of days between the two above arrays
-
+            float[] unsortedstrippedDaysArray = strippedDays.ToArray();
 
 
             /*******************************************************************
@@ -390,9 +387,9 @@ namespace ODSApi.BusinessServices
                 }
             }
             //Get survival probability of each
-            for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
+            for (var i = 0; i < unsortedstrippedDaysArray.Length; i++)
             {
-                if (unsortedstrippedNumbersArray[i] == x2)
+                if (unsortedstrippedDaysArray[i] == x2)
                 {
                     for (var j = 0; j < strippedSurvivalArray.Length; j++)
                     {
@@ -404,9 +401,9 @@ namespace ODSApi.BusinessServices
                     }
                 }
             }
-            for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
+            for (var i = 0; i < unsortedstrippedDaysArray.Length; i++)
             {
-                if (unsortedstrippedNumbersArray[i] == x1)
+                if (unsortedstrippedDaysArray[i] == x1)
                 {
                     for (var j = 0; j < strippedSurvivalArray.Length; j++)
                     {
@@ -435,7 +432,7 @@ namespace ODSApi.BusinessServices
             float x2 = 0.0f;
             float x1 = 0.0f;
 
-            List<float> strippedNumbers = new List<float>();
+            List<float> strippedDays = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
             /*******************************************
@@ -443,7 +440,7 @@ namespace ODSApi.BusinessServices
              * and a 100% percent survival of probability
              *******************************************/
 
-            strippedNumbers.Add(0);
+            strippedDays.Add(0);
             strippedSurvival.Add(1);
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
@@ -454,7 +451,7 @@ namespace ODSApi.BusinessServices
                     float value = kvp.Value;
                     if (key == "time")
                     {
-                        strippedNumbers.Add(value);
+                        strippedDays.Add(value);
                     }
                     if (key == "probabilityOfSurvival")
                     {
@@ -462,9 +459,9 @@ namespace ODSApi.BusinessServices
                     }
                 }
             }
-            float[] strippedNumbersArrayList = strippedNumbers.ToArray();
+            float[] strippedNumbersArrayList = strippedDays.ToArray();
             float[] strippedSurvivalArrayList = strippedSurvival.ToArray();
-            float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
+            float[] unsortedstrippedDaysArray = strippedDays.ToArray();
 
             //need to match the probability of survival with the number of days between the two above arrays
 
@@ -492,9 +489,9 @@ namespace ODSApi.BusinessServices
                     break;
                 }
             }
-            for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
+            for (var i = 0; i < unsortedstrippedDaysArray.Length; i++)
             {
-                if (unsortedstrippedNumbersArray[i] == x2)
+                if (unsortedstrippedDaysArray[i] == x2)
                 {
                     for (var j = 0; j < strippedSurvivalArrayList.Length; j++)
                     {
@@ -506,9 +503,9 @@ namespace ODSApi.BusinessServices
                     }
                 }
             }
-            for (var i = 0; i < unsortedstrippedNumbersArray.Length; i++)
+            for (var i = 0; i < unsortedstrippedDaysArray.Length; i++)
             {
-                if (unsortedstrippedNumbersArray[i] == x1)
+                if (unsortedstrippedDaysArray[i] == x1)
                 {
                     for (var j = 0; j < strippedSurvivalArrayList.Length; j++)
                     {
