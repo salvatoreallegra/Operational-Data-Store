@@ -68,6 +68,8 @@ namespace ODSApi.BusinessServices
                 return serviceResponse;
             }
             List<Dictionary<string, float>> waitListMortality = null;
+            
+            
 
             
             /*******************************************************************
@@ -80,18 +82,30 @@ namespace ODSApi.BusinessServices
                 if (m.WaitListMortality == null)
                 {
                     serviceResponse.errors = ERRORS.MissingWaitListMortalityData;
-
                     return serviceResponse;
                 }
 
                 if (m.WaitListMortality.Count == 0)
                 {
                     serviceResponse.errors = ERRORS.MissingWaitListMortalityData;
-
                     return serviceResponse;
                 }
 
             }
+
+            //We must add a time value of 0 and probability of survival 1(100%)
+            foreach (var m in mortalitySlopeRecords)
+            {
+
+                m.WaitListMortality.Add(new Dictionary<string, float> {
+
+                {"time", 0 },
+                {"probabilityOfSurvival", 1 }
+
+                    });
+            }
+
+
 
 
             /*******************************************************************
@@ -108,7 +122,7 @@ namespace ODSApi.BusinessServices
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
                     }
-                    if(w.value2["time"] <= 0.0 || w.value2["time"].GetType() != typeof(float))
+                    if(w.value2["time"] < 0.0 || w.value2["time"].GetType() != typeof(float))
                     {
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
@@ -186,7 +200,7 @@ namespace ODSApi.BusinessServices
                         
                     }
 
-                    if (ttn30Field.ttn30Kvp.Key == "median")
+                    if (ttn30Field.ttn30Kvp.Key == "median")  // make this >=0      //make sure we are doing this for 50
                     {
                         if (!(ttn30Field.ttn30Kvp.Value > 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
@@ -196,7 +210,7 @@ namespace ODSApi.BusinessServices
 
                     }
 
-                    if (ttn30Field.ttn30Kvp.Key == "quantileTime")
+                    if (ttn30Field.ttn30Kvp.Key == "quantileTime")  //make this >=0
                     {
                         if (!(ttn30Field.ttn30Kvp.Value > 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
@@ -258,6 +272,7 @@ namespace ODSApi.BusinessServices
             }
             catch (NullReferenceException)
             {
+                serviceResponse.errors = ERRORS.DataValidationError;
                 return serviceResponse;
             }
 
@@ -311,8 +326,8 @@ namespace ODSApi.BusinessServices
              * Must add a 0 timetobetter in days
              * and a 100% percent survival of probability
              *******************************************/
-            strippedDays.Add(0);
-            strippedSurvival.Add(1);
+            //strippedDays.Add(0);
+            //strippedSurvival.Add(1);
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
@@ -344,8 +359,6 @@ namespace ODSApi.BusinessServices
 
             /******************************************************************
             * Find the max value of array to check if time to 30 is within range
-            *
-            *
             *******************************************************************/
             float max = strippedNumbersArray[0];
             for (var i = 0; i < strippedNumbersArray.Length; i++)
@@ -432,8 +445,8 @@ namespace ODSApi.BusinessServices
              * and a 100% percent survival of probability
              *******************************************/
 
-            strippedDays.Add(0);
-            strippedSurvival.Add(1);
+          /*  strippedDays.Add(0);
+            strippedSurvival.Add(1);*/
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
