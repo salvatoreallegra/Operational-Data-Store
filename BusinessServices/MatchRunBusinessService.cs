@@ -79,14 +79,14 @@ namespace ODSApi.BusinessServices
 
                 if (m.WaitListMortality == null)
                 {
-                    serviceResponse.errors = ERRORS.DataValidationError;
+                    serviceResponse.errors = ERRORS.MissingWaitListMortalityData;
 
                     return serviceResponse;
                 }
 
                 if (m.WaitListMortality.Count == 0)
                 {
-                    serviceResponse.errors = ERRORS.DataValidationError;
+                    serviceResponse.errors = ERRORS.MissingWaitListMortalityData;
 
                     return serviceResponse;
                 }
@@ -147,7 +147,7 @@ namespace ODSApi.BusinessServices
 
                 if (t.TimeToNext30 == null || t.TimeToNext50 == null)
                 {
-                    serviceResponse.errors = ERRORS.DataValidationError;
+                    serviceResponse.errors = ERRORS.MissingTimeToNext30OrTimeToNext50Data;
                     return serviceResponse;
                 }
 
@@ -157,7 +157,7 @@ namespace ODSApi.BusinessServices
                  * ****************************************************/
                 if (t.TimeToNext50.Count == 0 || t.TimeToNext50.Count == 0)
                 {
-                    serviceResponse.errors = ERRORS.DataValidationError;
+                    serviceResponse.errors = ERRORS.MissingTimeToNext30OrTimeToNext50Data;
                     return serviceResponse;
                 }
 
