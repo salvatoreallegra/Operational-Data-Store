@@ -11,6 +11,7 @@ namespace ODSApi.DBServices
     {
 
         private Container _container;
+
         public GraphParamsDBService(
             CosmosClient cosmosDbClient,
             string databaseName,

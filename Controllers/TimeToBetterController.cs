@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/***************************************************
+ * This is a throwaway controller
+ * We are using this i development to create records
+ * and view records for testing and debugging.
+ * *************************************************/
+
+using Microsoft.AspNetCore.Mvc;
 using ODSApi.Entities;
 using ODSApi.Services;
 using System;
