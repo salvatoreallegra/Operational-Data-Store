@@ -260,14 +260,14 @@ namespace ODSApi.BusinessServices
                         return serviceResponse;
                     }
 
-                    x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(waitListMortality, timeToNext30);
-                    x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(waitListMortality, timeToNext50);
+                    x.TimeToNext30["probabilityOfSurvival"] = CalculateProbabilityOfSurvivalTime30(waitListMortality, timeToNext30);
+                    x.TimeToNext50["probabilityOfSurvival"] = CalculateProbabilityOfSurvivalTime50(waitListMortality, timeToNext50);
 
                     x.TimeToNext30["quantile"] = timeToNext30["quantile"];
-                    x.TimeToNext30["quantiletime"] = timeToNext30["quantileTime"];
+                    x.TimeToNext30["quantileTime"] = timeToNext30["quantileTime"];
 
                     x.TimeToNext50["quantile"] = timeToNext50["quantile"];
-                    x.TimeToNext50["quantiletime"] = timeToNext50["quantileTime"];
+                    x.TimeToNext50["quantileTime"] = timeToNext50["quantileTime"];
                 }
             }
             catch (NullReferenceException)
@@ -322,12 +322,6 @@ namespace ODSApi.BusinessServices
             List<float> strippedSurvival = new List<float>();
 
 
-            /*******************************************
-             * Must add a 0 timetobetter in days
-             * and a 100% percent survival of probability
-             *******************************************/
-            //strippedDays.Add(0);
-            //strippedSurvival.Add(1);
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
@@ -377,7 +371,6 @@ namespace ODSApi.BusinessServices
                     break;
                 }
             }
-
 
 
             //Reverse Array to find next lower
@@ -440,13 +433,7 @@ namespace ODSApi.BusinessServices
             List<float> strippedDays = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
-            /*******************************************
-             * Must add a 0 timetobetter in days
-             * and a 100% percent survival of probability
-             *******************************************/
-
-          /*  strippedDays.Add(0);
-            strippedSurvival.Add(1);*/
+           
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {

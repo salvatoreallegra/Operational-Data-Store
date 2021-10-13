@@ -17,10 +17,10 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "matchId")]
         public int MatchId { get; set; }  //predictive model match id from model api
        
-        [JsonProperty(PropertyName = "timestamp")]
+        [JsonProperty(PropertyName = "timeStamp")]
         public DateTime TimeStamp { get; set; }
 
-        [JsonProperty(PropertyName = "modelversion")]
+        [JsonProperty(PropertyName = "modelVersion")]
         public float ModelVersion { get; set; }
 
         [JsonProperty(PropertyName = "waitListMortality")]

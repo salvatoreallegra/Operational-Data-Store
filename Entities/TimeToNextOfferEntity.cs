@@ -26,14 +26,14 @@ namespace ODSApi.Entities
         [JsonProperty(PropertyName = "createdDateTime")]
         public DateTime CreatedDateTime { get; set; }
 
-        [JsonProperty(PropertyName = "modelversionid")]
+        [JsonProperty(PropertyName = "modelVersionId")]
         public float ModelVersionId { get; set; }
 
        
-        [JsonProperty(PropertyName = "timetonext30")]
+        [JsonProperty(PropertyName = "timeToNext30")]
         public Dictionary<string, float> TimeToNext30 { get; set; }
 
-        [JsonProperty(PropertyName = "timetonext50")]
+        [JsonProperty(PropertyName = "timeToNext50")]
         public Dictionary<string, float> TimeToNext50 { get; set; }
 
     }
