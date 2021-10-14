@@ -89,9 +89,14 @@ namespace ODSApi
             {
                 app.UseHsts();
             }
+            app.UseStaticFiles();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
-            app.UseCors(options => options.AllowAnyOrigin());
+            app.UseCors("CorsPolicy");
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
+            });
             app.UseHttpsRedirection();
 
             app.UseRouting();
