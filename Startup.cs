@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ODSApi.BusinessServices;
 using ODSApi.DBServices;
+using ODSApi.Extensions;
 using ODSApi.Middleware;
 using ODSApi.Services;
 using System;
@@ -69,10 +70,7 @@ namespace ODSApi
             services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
             services.AddApplicationInsightsTelemetry();
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-            });
+            services.ConfigureCors();
 
 
         }
@@ -86,6 +84,10 @@ namespace ODSApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
+            }
+            else
+            {
+                app.UseHsts();
             }
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
