@@ -67,10 +67,12 @@ namespace ODSApi.Controllers
             {
                 return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
+
             else if (matchRunRecords.errors == ERRORS.NoTimeToNextOfferRecord)
             {
                 return NotFound("No Time To Next Offer Record Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
+
             else if (matchRunRecords.errors == ERRORS.MissingWaitListMortalityData)
             {
                 return NotFound("Wait List Mortality Data is Missing" + match_id + " and SequenceId " + PtrSequenceNumber);
@@ -86,7 +88,7 @@ namespace ODSApi.Controllers
             }
             else if (matchRunRecords.errors == ERRORS.Duplicates)
             {
-                return BadRequest("Duplicate Records found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                return StatusCode(500,"Duplicate Records found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
 
             List<MatchRunEntity> returnEntity = matchRunRecords.Data;

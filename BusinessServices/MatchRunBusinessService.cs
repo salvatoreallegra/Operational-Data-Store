@@ -202,7 +202,7 @@ namespace ODSApi.BusinessServices
 
                     if (ttn30Field.ttn30Kvp.Key == "median")  // make this >=0      //make sure we are doing this for 50
                     {
-                        if (!(ttn30Field.ttn30Kvp.Value > 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
+                        if (!(ttn30Field.ttn30Kvp.Value >= 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
@@ -222,6 +222,53 @@ namespace ODSApi.BusinessServices
 
                 }
             }
+
+            foreach (var ttnoRecord in timeToBetterRecords.Select((ttnoValue, index) => new { ttnoValue, index }))  //m = timetonextofferentity
+            {
+                foreach (var ttn50Field in ttnoRecord.ttnoValue.TimeToNext50.Select((ttn50Kvp, index2) => new { ttn50Kvp, index2 }))  //w = timetonext30 field value2 = timetonext30 kvp, index2 = timetonext30 kvp index
+                {
+
+                    if (ttn50Field.ttn50Kvp.Key == "quantile")
+                    {
+                        if (ttn50Field.ttn50Kvp.Value < 0.0 || ttn50Field.ttn50Kvp.Value > 1.0 || ttn50Field.ttn50Kvp.Value.GetType() != typeof(float))
+                        {
+                            serviceResponse.errors = ERRORS.DataValidationError;
+                            return serviceResponse;
+                        }
+
+                    }
+
+                    if (ttn50Field.ttn50Kvp.Key == "median")  // make this >=0      //make sure we are doing this for 50
+                    {
+                        if (!(ttn50Field.ttn50Kvp.Value >= 0.0) || ttn50Field.ttn50Kvp.Value.GetType() != typeof(float))
+                        {
+                            serviceResponse.errors = ERRORS.DataValidationError;
+                            return serviceResponse;
+                        }
+
+                    }
+
+                    if (ttn50Field.ttn50Kvp.Key == "quantileTime")  //make this >=0
+                    {
+                        if (!(ttn50Field.ttn50Kvp.Value > 0.0) || ttn50Field.ttn50Kvp.Value.GetType() != typeof(float))
+                        {
+                            serviceResponse.errors = ERRORS.DataValidationError;
+                            return serviceResponse;
+                        }
+
+                    }
+
+                }
+            }
+
+
+
+
+
+
+
+
+
 
             /*******************************************************************
             * Set time to next 30 and 50 to a value to avoid null pointer exception
