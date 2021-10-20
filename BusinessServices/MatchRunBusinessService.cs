@@ -93,17 +93,7 @@ namespace ODSApi.BusinessServices
 
             }
 
-            //We must add a time value of 0 and probability of survival 1(100%)
-            foreach (var m in mortalitySlopeRecords)
-            {
-
-                m.WaitListMortality.Add(new Dictionary<string, float> {
-
-                {"time", 0 },
-                {"probabilityOfSurvival", 1 }
-
-                    });
-            }
+          
 
 
 
