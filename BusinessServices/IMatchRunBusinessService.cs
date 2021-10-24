@@ -1,4 +1,10 @@
-﻿using ODSApi.Entities;
+﻿/**********************************************
+ * Interface for the Match Run Business Service
+ * The Match run business service is where the
+ * business logic is defined when calling
+ * the main get request of the application
+ * **************************************/
+using ODSApi.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +14,7 @@ namespace ODSApi.BusinessServices
 {
     public interface IMatchRunBusinessService
     {
-        //Task<IEnumerable<MatchRunEntity>> GetMultipleAsync(string query);
-        //Task<MatchRunEntity> GetAsync(string id);
-        //Task AddAsync(MatchRunEntity item);
-        Task<ServiceResponseEntity<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber);
-        //Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters();
+         Task<ServiceResponseEntity<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber);
+
     }
 }

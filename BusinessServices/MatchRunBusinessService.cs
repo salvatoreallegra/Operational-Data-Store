@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace ODSApi.BusinessServices
 {
 
-
     public class MatchRunBusinessService : IMatchRunBusinessService
     {
         private readonly IMatchRunDBService _matchRunService;
