@@ -1,4 +1,13 @@
-﻿using ODSApi.DBServices;
+﻿/**********************************************
+ * The Match run business service is where the
+ * business logic is defined when calling
+ * the main get request of the application
+ * This is where probability of survival is calculated,
+ * timetonext 30,50, etc....
+ * This business service will be called by the MatchRun Controller
+ * **************************************/
+
+using ODSApi.DBServices;
 using ODSApi.Entities;
 using ODSApi.Services;
 using System;
@@ -28,12 +37,18 @@ namespace ODSApi.BusinessServices
 
         public async Task<ServiceResponseEntity<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber)
         {
+
             /*******************************************************************
-             * Get all the records from the MatchRun(PassThrough) Cosmos Collection
-             * by matchId and sequenceid
-             * *****************************************************************/
+            * ServiceResponse
+            * *****************************************************************/
 
             ServiceResponseEntity<List<MatchRunEntity>> serviceResponse = new ServiceResponseEntity<List<MatchRunEntity>>();
+
+
+            /*******************************************************************
+            * Get all the records from the MatchRun(PassThrough) Cosmos Collection
+            * by matchId and sequenceid
+            * *****************************************************************/
             var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
 
             /*******************************************************************
@@ -67,10 +82,8 @@ namespace ODSApi.BusinessServices
                 return serviceResponse;
             }
             List<Dictionary<string, float>> waitListMortality = null;
-            
-            
 
-            
+
             /*******************************************************************
             * Validate that mortality slope plot points exist for the retrieved
             * records by matchrun and sequenceid
@@ -89,11 +102,7 @@ namespace ODSApi.BusinessServices
                     serviceResponse.errors = ERRORS.MissingWaitListMortalityData;
                     return serviceResponse;
                 }
-
-            }    
-
-
-
+            }
 
             /*******************************************************************
             * Validate WaitlistMortality from Mortality Slope Collection
@@ -109,11 +118,11 @@ namespace ODSApi.BusinessServices
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
                     }
-                    if(w.value2["time"] < 0.0 || w.value2["time"].GetType() != typeof(float))
+                    if (w.value2["time"] < 0.0 || w.value2["time"].GetType() != typeof(float))
                     {
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
-                    } 
+                    }
 
                 }
             }
@@ -164,7 +173,7 @@ namespace ODSApi.BusinessServices
 
                 timeToNext30 = t.TimeToNext30;
                 timeToNext50 = t.TimeToNext50;
-                
+
             }
 
             /*******************************************
@@ -176,15 +185,15 @@ namespace ODSApi.BusinessServices
             {
                 foreach (var ttn30Field in ttnoRecord.ttnoValue.TimeToNext30.Select((ttn30Kvp, index2) => new { ttn30Kvp, index2 }))  //w = timetonext30 field value2 = timetonext30 kvp, index2 = timetonext30 kvp index
                 {
-                   
+
                     if (ttn30Field.ttn30Kvp.Key == "quantile")
                     {
-                        if (ttn30Field.ttn30Kvp.Value < 0.0 || ttn30Field.ttn30Kvp.Value > 1.0 ||  ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
+                        if (ttn30Field.ttn30Kvp.Value < 0.0 || ttn30Field.ttn30Kvp.Value > 1.0 || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
                         }
-                        
+
                     }
 
                     if (ttn30Field.ttn30Kvp.Key == "median")  // make this >=0      //make sure we are doing this for 50
@@ -242,20 +251,9 @@ namespace ODSApi.BusinessServices
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
                         }
-
                     }
-
                 }
             }
-
-
-
-
-
-
-
-
-
 
             /*******************************************************************
             * Set time to next 30 and 50 to a value to avoid null pointer exception
@@ -331,7 +329,7 @@ namespace ODSApi.BusinessServices
              * Create Log Record
              * ****************************************/
             LogEntity log = new LogEntity();
-            log.Id =  Guid.NewGuid().ToString();
+            log.Id = Guid.NewGuid().ToString();
             log.CreatedDateTime = DateTime.Now;
             log.MatchID = serviceResponse.Data[0].matchId;
             log.SequenceId = serviceResponse.Data[0].SequenceId;
@@ -467,7 +465,7 @@ namespace ODSApi.BusinessServices
             List<float> strippedDays = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
-           
+
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
@@ -678,7 +676,7 @@ namespace ODSApi.BusinessServices
             }
 
             /******************************************************************
-            * use the min value in the sorted array to chick if
+            * use the min value in the sorted array to check if
             * Time50(median) is equal to or lower than the min value
             *******************************************************************/
 
@@ -690,7 +688,6 @@ namespace ODSApi.BusinessServices
 
             return false;
 
-           
         }
     }
 }
