@@ -14,7 +14,7 @@ namespace ODSApi.BusinessServices
 {
     public interface IMatchRunBusinessService
     {
-         Task<ServiceResponseEntity<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber);
+         Task<ServiceResponse<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber);
 
     }
 }

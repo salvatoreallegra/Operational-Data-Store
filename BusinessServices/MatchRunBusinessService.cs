@@ -35,14 +35,14 @@ namespace ODSApi.BusinessServices
             _graphParamsDBService = graphParamsDBService ?? throw new ArgumentNullException(nameof(logDBService));
         }
 
-        public async Task<ServiceResponseEntity<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber)
+        public async Task<ServiceResponse<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber)
         {
 
             /*******************************************************************
             * ServiceResponse
             * *****************************************************************/
 
-            ServiceResponseEntity<List<MatchRunEntity>> serviceResponse = new ServiceResponseEntity<List<MatchRunEntity>>();
+            ServiceResponse<List<MatchRunEntity>> serviceResponse = new ServiceResponse<List<MatchRunEntity>>();
 
 
             /*******************************************************************

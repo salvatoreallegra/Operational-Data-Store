@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/**********************************************
+ * Controller to create a graph params record
+ * and get all graph params records
+ * 
+ * *******************************************/
+using Microsoft.AspNetCore.Mvc;
 using ODSApi.DBServices;
 using ODSApi.DTOs;
 using ODSApi.Entities;
