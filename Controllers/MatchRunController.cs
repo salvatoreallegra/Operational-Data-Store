@@ -24,7 +24,6 @@ namespace ODSApi.Controllers
 
         private readonly IMatchRunBusinessService _matchRunBusinessService;
 
-
         public MatchRunController(IMatchRunDBService matchRunService, IMatchRunBusinessService matchRunBusinessService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));

@@ -40,10 +40,7 @@ namespace ODSApi
         
         public void ConfigureServices(IServiceCollection services)
         {
-
-
-            services.AddControllers();
-           
+            services.AddControllers();           
            
             services.AddSwaggerGen(c =>
             {
@@ -55,7 +52,6 @@ namespace ODSApi
                   options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
               }); 
 
-            //services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
