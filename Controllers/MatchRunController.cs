@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ODSApi.BusinessServices;
 using ODSApi.DBServices;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Controllers
 {
+   // [Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
     [Route("donornet-analytics/v1/matches/")]
     [ApiController]
     public class MatchRunController : ControllerBase

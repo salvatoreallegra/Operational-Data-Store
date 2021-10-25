@@ -1,3 +1,4 @@
+using Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -20,49 +21,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unos.Foundation;
 
 namespace ODSApi
 {
     public class Startup
     {
-        private const string SECRET_KEY = "sldkjfwivkSEGSekfjsleFWAF";
-        public static readonly SymmetricSecurityKey SIGNING_KEY = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
+        //public IConfiguration Configuration { get; }
+        private IConfiguration Configuration;
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = Requires.NotNull(configuration,nameof(configuration));
         }
 
-        public IConfiguration Configuration { get; }
+       
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        // Testing CICD Pipeline
+        
         public void ConfigureServices(IServiceCollection services)
         {
 
 
             services.AddControllers();
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = "JwtBearer";
-                options.DefaultChallengeScheme = "JwtBearer";
-            }).AddJwtBearer("JwtBearer", jwtOptions =>
-            {
-                jwtOptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-                {
-                    IssuerSigningKey = SIGNING_KEY,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = "https://localhost:44317",
-                    ValidAudience = "https://localhost:44317",
-                    ValidateLifetime = true
-                }; 
-
-            });
+           
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ODSApi", Version = "v1" });
             });
-            services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+
+             services.AddApigeeJwtBearerAuthentication(Configuration).AddAuthorization(options =>
+              {
+                  options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
+              }); 
+
+            //services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
