@@ -53,7 +53,7 @@ namespace ODSApi.Controllers
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
 
-        [HttpGet("{match_id}/potential-recepients/{PtrSequenceNumber}")]
+        [HttpGet("{match_id}/potential-recipients/{PtrSequenceNumber}")]
         //[Authorize]
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
