@@ -214,7 +214,7 @@ namespace ODSApi.BusinessServices
 
             /*******************************************
              * Validate Range and type of quantile,
-             * median, and quantileTime             * 
+             * median, and quantileTime   for tt30 and 50 
              * ****************************************/
 
             foreach (var ttnoRecord in timeToBetterRecords.Select((ttnoValue, index) => new { ttnoValue, index }))  //m = timetonextofferentity
@@ -244,7 +244,7 @@ namespace ODSApi.BusinessServices
 
                     if (ttn30Field.ttn30Kvp.Key == "quantileTime")  
                     {
-                        if (!(ttn30Field.ttn30Kvp.Value > 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
+                        if (!(ttn30Field.ttn30Kvp.Value >= 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
@@ -303,10 +303,16 @@ namespace ODSApi.BusinessServices
             /*******************************************************************
            * set timetonext30 and 50 to the values from the timetonextoffer schema
            *******************************************************************/
-            try
-            {
+          
+          
                 foreach (var x in matchRunRecords)
                 {
+
+                    /*************************************
+                     * time to next 30/50 time on MatchRun/Passthrough
+                     * is the same as the median field on 
+                     * ***********************************/
+
 
                     x.TimeToNext30["time"] = timeToNext30["median"];
                     x.TimeToNext50["time"] = timeToNext50["median"];
@@ -337,12 +343,8 @@ namespace ODSApi.BusinessServices
                     x.TimeToNext50["quantile"] = timeToNext50["quantile"];
                     x.TimeToNext50["quantileTime"] = timeToNext50["quantileTime"];
                 }
-            }
-            catch (NullReferenceException)
-            {
-                serviceResponse.errors = ERRORS.DataValidationError;
-                return serviceResponse;
-            }
+          
+          
 
             var graphParamRecords = await _graphParamsDBService.GetMultipleAsync("SELECT * FROM c");
             GraphParamsEntity graphParam = new GraphParamsEntity();
