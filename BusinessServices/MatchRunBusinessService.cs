@@ -35,11 +35,20 @@ namespace ODSApi.BusinessServices
             _graphParamsDBService = graphParamsDBService ?? throw new ArgumentNullException(nameof(logDBService));
         }
 
+
+
+        /************************************
+         * The heart of the business logic
+         * for the ods api 
+         * *********************************/
         public async Task<ServiceResponse<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber)
         {
 
             /*******************************************************************
-            * ServiceResponse
+            * ServiceResponse is a custom wrapper class that will allow some more 
+            * metadata to be returned along with the data we will be sending to
+            * matchruncontroller.  E.G. an Enum or error types are sent back that
+            * the controller can use to display it's error messages/return codes
             * *****************************************************************/
 
             ServiceResponse<List<MatchRunEntity>> serviceResponse = new ServiceResponse<List<MatchRunEntity>>();
@@ -70,6 +79,7 @@ namespace ODSApi.BusinessServices
                 serviceResponse.errors = ERRORS.NoPassThroughRecord;
                 return serviceResponse;
             }
+
             serviceResponse.Data = (List<MatchRunEntity>)matchRunRecords;
 
             /*******************************************************************
@@ -91,6 +101,11 @@ namespace ODSApi.BusinessServices
             foreach (var m in mortalitySlopeRecords)
             {
 
+                /************************************************************
+                 * Can probably remove null check here, left it in for safety
+                 * Null check does not apply to collections
+                 ************************************************************/
+
                 if (m.WaitListMortality == null)
                 {
                     serviceResponse.errors = ERRORS.MissingWaitListMortalityData;
@@ -104,10 +119,11 @@ namespace ODSApi.BusinessServices
                 }
             }
 
-            /*******************************************************************
-            * Validate WaitlistMortality from Mortality Slope Collection
-            * probablity of survival and time fields
-            * ******************************************************************/
+            /**************************************************************************************************
+            * Validate probablity of survival and time fields WaitlistMortality from Mortality Slope Collection
+            * Check if probability of survival is > 1.0 or less than 0.0 and if it's a float
+            * Check if time is less than 0.0 and is a float
+            * ***********************************************************************************************/
 
             foreach (var m in mortalitySlopeRecords.Select((value, index) => new { value, index }))
             {
@@ -127,11 +143,19 @@ namespace ODSApi.BusinessServices
                 }
             }
 
+            /*******************************
+             * Assign the waitListMortality points
+             * to waitList Mortality Variable
+             * ****************************/
             foreach (var m in mortalitySlopeRecords)
             {
                 waitListMortality = m.WaitListMortality;
             }
 
+            /*******************************
+             * Assign the waitListMortality points
+             * to matchrunrecord Mortality Slope Plot Points
+             * ****************************/
             foreach (var x in matchRunRecords)
             {
                 x.MortalitySlopePlotPoints = waitListMortality;
@@ -151,9 +175,19 @@ namespace ODSApi.BusinessServices
 
             Dictionary<string, float> timeToNext30 = null;
             Dictionary<string, float> timeToNext50 = null;
+              
 
+           /*******************************************************************
+           * Check for empty JSON {}
+           * and null time to next 30 and 50
+           *******************************************************************/
             foreach (var t in timeToBetterRecords)
             {
+
+
+                /*****************************************************
+                * Check for null and set service response error               
+                *****************************************************/
 
                 if (t.TimeToNext30 == null || t.TimeToNext50 == null)
                 {
@@ -162,15 +196,17 @@ namespace ODSApi.BusinessServices
                 }
 
                 /*****************************************************
-                 * This will check for {} in timeto30 or timeto50 {}                 * 
-                 * 
-                 * ****************************************************/
+                 * This will check for {} in timeto30 or timeto50 {}                  
+                 *****************************************************/
                 if (t.TimeToNext50.Count == 0 || t.TimeToNext50.Count == 0)
                 {
                     serviceResponse.errors = ERRORS.MissingTimeToNext30OrTimeToNext50Data;
                     return serviceResponse;
                 }
 
+
+
+                //Assign values here to avoid null reference exception
                 timeToNext30 = t.TimeToNext30;
                 timeToNext50 = t.TimeToNext50;
 
@@ -196,7 +232,7 @@ namespace ODSApi.BusinessServices
 
                     }
 
-                    if (ttn30Field.ttn30Kvp.Key == "median")  // make this >=0      //make sure we are doing this for 50
+                    if (ttn30Field.ttn30Kvp.Key == "median")  
                     {
                         if (!(ttn30Field.ttn30Kvp.Value >= 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
@@ -206,7 +242,7 @@ namespace ODSApi.BusinessServices
 
                     }
 
-                    if (ttn30Field.ttn30Kvp.Key == "quantileTime")  //make this >=0
+                    if (ttn30Field.ttn30Kvp.Key == "quantileTime")  
                     {
                         if (!(ttn30Field.ttn30Kvp.Value > 0.0) || ttn30Field.ttn30Kvp.Value.GetType() != typeof(float))
                         {
@@ -234,7 +270,7 @@ namespace ODSApi.BusinessServices
 
                     }
 
-                    if (ttn50Field.ttn50Kvp.Key == "median")  // make this >=0      //make sure we are doing this for 50
+                    if (ttn50Field.ttn50Kvp.Key == "median")  
                     {
                         if (!(ttn50Field.ttn50Kvp.Value >= 0.0) || ttn50Field.ttn50Kvp.Value.GetType() != typeof(float))
                         {
@@ -244,9 +280,9 @@ namespace ODSApi.BusinessServices
 
                     }
 
-                    if (ttn50Field.ttn50Kvp.Key == "quantileTime")  //make this >=0
+                    if (ttn50Field.ttn50Kvp.Key == "quantileTime")  
                     {
-                        if (!(ttn50Field.ttn50Kvp.Value > 0.0) || ttn50Field.ttn50Kvp.Value.GetType() != typeof(float))
+                        if (!(ttn50Field.ttn50Kvp.Value >= 0.0) || ttn50Field.ttn50Kvp.Value.GetType() != typeof(float))
                         {
                             serviceResponse.errors = ERRORS.DataValidationError;
                             return serviceResponse;
