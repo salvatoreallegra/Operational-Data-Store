@@ -18,6 +18,7 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="1.16.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.13.1" />
+    <PackageReference Include="Unos.Foundation.AspNetCore.Authentication" Version="1.0.0-preview.103815" />
   </ItemGroup>
 
   <ItemGroup>
