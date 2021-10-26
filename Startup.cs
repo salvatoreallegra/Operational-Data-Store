@@ -1,25 +1,15 @@
 using Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ODSApi.BusinessServices;
 using ODSApi.DBServices;
 using ODSApi.Extensions;
 using ODSApi.Middleware;
 using ODSApi.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Unos.Foundation;
 
@@ -34,9 +24,6 @@ namespace ODSApi
             Configuration = Requires.NotNull(configuration,nameof(configuration));
         }
 
-       
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         
         public void ConfigureServices(IServiceCollection services)
         {
@@ -60,8 +47,6 @@ namespace ODSApi
             services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
             services.AddApplicationInsightsTelemetry();
             services.ConfigureCors();
-
-
         }
 
 
@@ -101,9 +86,17 @@ namespace ODSApi
                 endpoints.MapControllers();
             });
 
-
-
         }
+        /*********************************
+         * These are the database services
+         * that are injected into the ioc
+         * container.  There are 5 Services
+         * Based on the 5 collections in ODS
+         * The partition key in Cosmos is /matchId
+         * except for the graph params table.  The
+         * partition key in ODS must be a field in
+         * database.
+         * ******************************/
         private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
@@ -142,7 +135,6 @@ namespace ODSApi
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
-
 
             var cosmosDBService = new MatchRunDBService(client, databaseName, containerName);
 

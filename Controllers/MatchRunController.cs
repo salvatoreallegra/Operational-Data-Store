@@ -5,18 +5,14 @@
  * Some endpoints exist for development and testing
  * purposes
  * *******************************************/
-using Auth;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 using ODSApi.BusinessServices;
-using ODSApi.DBServices;
 using ODSApi.DTOs;
 using ODSApi.Entities;
 using ODSApi.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 
