@@ -345,6 +345,10 @@ namespace ODSApi.BusinessServices
                 }
           
           
+            /***************************************************
+             * Get the graph parameter record from Cosmos
+             * and assign it to the field in match run records
+             * *************************************************/
 
             var graphParamRecords = await _graphParamsDBService.GetMultipleAsync("SELECT * FROM c");
             GraphParamsEntity graphParam = new GraphParamsEntity();
@@ -376,6 +380,12 @@ namespace ODSApi.BusinessServices
             return serviceResponse;
         }
 
+
+        /******************************
+         * Calculate the probability of survival
+         * for for time to 30
+         * ***************************/
+
         public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
             // y = survival probability
@@ -392,6 +402,11 @@ namespace ODSApi.BusinessServices
             List<float> strippedSurvival = new List<float>();
 
 
+            /**********************************************
+             * Loop through all mortality slope plot points
+             * and add the days and probability of survival
+             * to a list for future sorting
+             * *************************/
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
@@ -409,7 +424,7 @@ namespace ODSApi.BusinessServices
                     }
                 }
             }
-            float[] strippedNumbersArray = strippedDays.ToArray();
+            float[] strippedDaysArray = strippedDays.ToArray();
             float[] strippedSurvivalArray = strippedSurvival.ToArray();
             float[] unsortedstrippedDaysArray = strippedDays.ToArray();
 
@@ -419,38 +434,38 @@ namespace ODSApi.BusinessServices
             * and the next lowest day
             * *******************************************************************/
 
-            Array.Sort(strippedNumbersArray);
+            Array.Sort(strippedDaysArray);
 
             /******************************************************************
             * Find the max value of array to check if time to 30 is within range
             *******************************************************************/
-            float max = strippedNumbersArray[0];
-            for (var i = 0; i < strippedNumbersArray.Length; i++)
+            float max = strippedDaysArray[0];
+            for (var i = 0; i < strippedDaysArray.Length; i++)
             {
-                if (strippedNumbersArray[i] > max)
+                if (strippedDaysArray[i] > max)
                 {
-                    max = strippedNumbersArray[i];
+                    max = strippedDaysArray[i];
                 }
             }
 
-            for (var i = 0; i < strippedNumbersArray.Length; i++)
+            for (var i = 0; i < strippedDaysArray.Length; i++)
             {
-                if (strippedNumbersArray[i] > time30)
+                if (strippedDaysArray[i] > time30)
                 {
-                    x2 = strippedNumbersArray[i];
+                    x2 = strippedDaysArray[i];
                     break;
                 }
             }
 
 
             //Reverse Array to find next lower
-            Array.Reverse(strippedNumbersArray);
+            Array.Reverse(strippedDaysArray);
 
-            for (var i = 0; i < strippedNumbersArray.Length; i++)
+            for (var i = 0; i < strippedDaysArray.Length; i++)
             {
-                if (strippedNumbersArray[i] < time30)
+                if (strippedDaysArray[i] < time30)
                 {
-                    x1 = strippedNumbersArray[i];
+                    x1 = strippedDaysArray[i];
                     break;
                 }
             }
