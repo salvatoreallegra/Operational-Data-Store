@@ -607,9 +607,7 @@ namespace ODSApi.BusinessServices
 
             List<float> strippedNumbers = new List<float>();
             List<float> strippedSurvival = new List<float>();
-
-            strippedNumbers.Add(0);
-            strippedSurvival.Add(1);
+                     
 
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
@@ -657,7 +655,7 @@ namespace ODSApi.BusinessServices
             }
 
             /******************************************************************
-            * use the min value in the sorted array to chick if
+            * use the min value in the sorted array to check if
             * Time30(median) is equal to or lower than the min value
             *******************************************************************/
 
@@ -677,9 +675,7 @@ namespace ODSApi.BusinessServices
             List<float> strippedNumbers = new List<float>();
             List<float> strippedSurvival = new List<float>();
 
-            strippedNumbers.Add(0);
-            strippedSurvival.Add(1);
-
+           
             foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
             {
                 foreach (var kvp in allPlotPoints)
@@ -699,10 +695,6 @@ namespace ODSApi.BusinessServices
             float[] strippedNumbersArray = strippedNumbers.ToArray();
             float[] strippedSurvivalArray = strippedSurvival.ToArray();
             float[] unsortedstrippedNumbersArray = strippedNumbers.ToArray();
-
-            //need to match the probability of survival with the number of days between the two above arrays
-
-
 
             /*******************************************************************
             * Sort the number of days(timetonextoffer)so we can find the next highest day
