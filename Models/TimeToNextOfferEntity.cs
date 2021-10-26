@@ -3,6 +3,7 @@ Author: Salvatore Allegra
 This class models a collection in CosmosDB,
 It used by Entity Framework for database operations.
 It also enforced data types internally and in post and get requests
+for time to next offer data
 **************************************************/
 using Newtonsoft.Json;
 using System;

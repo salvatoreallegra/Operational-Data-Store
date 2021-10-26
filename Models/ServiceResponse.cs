@@ -1,4 +1,10 @@
-﻿using System;
+﻿/**********************************************
+ * Generic wrapper class that allows the piggy-
+ * backing of a custom error enum type along with
+ * the data that will be returned with the response.
+ * *******************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -1,4 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿/**********************************************
+ * Poco class that models the fields the ods
+ * database will hold for the Mortality Slope Collections
+ * and any other necessary computations related
+ * to Mortality Slope
+ * *******************************************/
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;

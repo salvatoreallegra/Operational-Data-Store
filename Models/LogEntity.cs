@@ -1,4 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿/**********************************************
+ * Poco class that models the fields the ods
+ * database will hold for the Logs Collection
+ * and any other necessary computations related
+ * to Logs
+ * *******************************************/
+
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

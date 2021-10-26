@@ -1,4 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿/**********************************************
+ * Poco class that models the fields the ods
+ * database will hold for the Graph Params Collection
+ * and any other necessary computations related
+ * to Graph Parameters
+ * *******************************************/
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
