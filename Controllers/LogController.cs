@@ -31,6 +31,5 @@ namespace ODSApi.Controllers
             return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM c"));
         }
       
-    }
-      
+    }      
 }

@@ -1,4 +1,11 @@
-﻿using Auth;
+﻿/**********************************************
+ * This is the applications main controller
+ * The Unos Donor Net Front end will Call the Get
+ * Request from here
+ * Some endpoints exist for development and testing
+ * purposes
+ * *******************************************/
+using Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ODSApi.BusinessServices;
@@ -21,7 +28,6 @@ namespace ODSApi.Controllers
     public class MatchRunController : ControllerBase
     {
         private readonly IMatchRunDBService _matchRunService;
-
         private readonly IMatchRunBusinessService _matchRunBusinessService;
 
         public MatchRunController(IMatchRunDBService matchRunService, IMatchRunBusinessService matchRunBusinessService)
@@ -30,7 +36,8 @@ namespace ODSApi.Controllers
             _matchRunBusinessService = matchRunBusinessService ?? throw new ArgumentNullException(nameof(matchRunBusinessService));
         }
 
-        // GET api/items/5
+        // GET by id, this should stay here so when a post is made, we can call this to display what was
+        // created in swagger
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -52,8 +59,16 @@ namespace ODSApi.Controllers
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
         }
 
+         /**********************************************
+         * This is the Only Endpoint that should survive to production
+         * The entire api is based on this endpoint
+         * This endpoint uses the unos auth, validates, return
+         * codes for validation, and calls the matchrun business service
+         * to calculate and return probability of survival
+         * *******************************************/
+
         [HttpGet("{match_id}/potential-recipients/{PtrSequenceNumber}")]
-        //[Authorize]
+        //[Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
 
@@ -96,10 +111,6 @@ namespace ODSApi.Controllers
       
             return Ok(returnEntity);
         }
-
-
-
-
 
     }
 }
