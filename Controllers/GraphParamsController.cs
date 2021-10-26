@@ -1,7 +1,8 @@
 ﻿/**********************************************
  * Controller to create a graph params record
  * and get all graph params records
- * 
+ * TBD how graph params will be added or modified
+ * in the ODS database in future
  * *******************************************/
 using Microsoft.AspNetCore.Mvc;
 using ODSApi.DBServices;

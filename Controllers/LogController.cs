@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/**********************************************
+ * Controller to View Log records in ODS database
+ * during development
+ * *******************************************/
+
+
+using Microsoft.AspNetCore.Mvc;
 using ODSApi.DTOs;
 using ODSApi.Entities;
 using ODSApi.Services;
@@ -24,21 +30,7 @@ namespace ODSApi.Controllers
         {
             return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM c"));
         }
-        // GET api/items/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
-        {
-            return Ok(await _cosmosDbService.GetAsync(id));
-        }
-        // POST api/items
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] LogEntity item)
-        {
-            item.Id = Guid.NewGuid().ToString();
-            await _cosmosDbService.AddAsync(item);
-            return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
-        }
-        
+      
     }
       
 }

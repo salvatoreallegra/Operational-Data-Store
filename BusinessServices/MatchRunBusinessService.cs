@@ -676,7 +676,7 @@ namespace ODSApi.BusinessServices
             List<float> strippedSurvival = new List<float>();
 
            
-            foreach (var allPlotPoints in plotPointsList)  //List of mortality slopes
+            foreach (var allPlotPoints in plotPointsList)
             {
                 foreach (var kvp in allPlotPoints)
                 {
