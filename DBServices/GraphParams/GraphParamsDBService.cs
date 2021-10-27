@@ -1,4 +1,9 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿/****************************************************
+ * Database Service Class
+ * Exposes methods for performing database operations
+ * *************************************************/
+
+using Microsoft.Azure.Cosmos;
 using ODSApi.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,11 +30,9 @@ namespace ODSApi.DBServices
         }
 
         public async Task<GraphParamsEntity> GetAsync(string id)
-        {
-            
+        {            
                 var response = await _container.ReadItemAsync<GraphParamsEntity>(id, new PartitionKey(id));
-                return response.Resource;
-            
+                return response.Resource;            
         }
         public async Task<IEnumerable<GraphParamsEntity>> GetMultipleAsync(string queryString)
         {

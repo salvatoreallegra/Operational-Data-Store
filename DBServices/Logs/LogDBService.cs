@@ -1,11 +1,17 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿/****************************************************
+ * Database Service Class
+ * Exposes methods for performing database operations
+ * on Log Collection
+ * *************************************************/
+
+using Microsoft.Azure.Cosmos;
 using ODSApi.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.Services
+namespace ODSApi.DBServices
 {
     public class LogDBService : ILogDBService
     {
