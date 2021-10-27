@@ -43,7 +43,6 @@ namespace ODSApi.Controllers
         public async Task<IActionResult> List()
         {
             return Ok(await _matchRunService.GetMultipleAsync("SELECT * FROM c"));
-
         }
 
         // POST api/items

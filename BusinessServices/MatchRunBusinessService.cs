@@ -197,12 +197,11 @@ namespace ODSApi.BusinessServices
                 /*****************************************************
                  * This will check for {} in timeto30 or timeto50 {}                  
                  *****************************************************/
-                if (t.TimeToNext50.Count == 0 || t.TimeToNext50.Count == 0)
+                if (t.TimeToNext30.Count == 0 || t.TimeToNext50.Count == 0)
                 {
                     serviceResponse.errors = ERRORS.MissingTimeToNext30OrTimeToNext50Data;
                     return serviceResponse;
                 }
-
 
 
                 //Assign values here to avoid null reference exception
