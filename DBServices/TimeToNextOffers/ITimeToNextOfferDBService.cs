@@ -1,4 +1,4 @@
-﻿using ODSApi.Entities;
+﻿using ODSApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

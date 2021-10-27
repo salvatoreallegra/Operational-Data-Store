@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.Entities
+namespace ODSApi.Models
 {
     public class LogEntity
     {

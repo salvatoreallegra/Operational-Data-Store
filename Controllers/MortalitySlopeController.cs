@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ODSApi.Entities;
+using ODSApi.Models;
 using ODSApi.DBServices;
 using System;
 using System.Threading.Tasks;

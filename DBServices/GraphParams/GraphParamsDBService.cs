@@ -4,8 +4,7 @@
  * *************************************************/
 
 using Microsoft.Azure.Cosmos;
-using ODSApi.Entities;
-using System;
+using ODSApi.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

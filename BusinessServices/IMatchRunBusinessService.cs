@@ -4,9 +4,11 @@
  * business logic is defined when calling
  * the main get request of the application
  * **************************************/
-using ODSApi.Entities;
+
+using ODSApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 
 namespace ODSApi.BusinessServices
 {

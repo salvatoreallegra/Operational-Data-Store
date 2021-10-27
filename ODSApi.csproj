@@ -21,8 +21,4 @@
     <PackageReference Include="Unos.Foundation.AspNetCore.Authentication" Version="1.0.0-preview.103815" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validation\" />
-  </ItemGroup>
-
 </Project>
