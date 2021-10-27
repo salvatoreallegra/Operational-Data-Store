@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ODSApi.Controllers
 {
-   // [Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
+   
     [Route("donornet-analytics/v1/matches/")]
     [ApiController]
     public class MatchRunController : ControllerBase
@@ -33,19 +33,21 @@ namespace ODSApi.Controllers
         }
 
         // GET by id, this should stay here so when a post is made, we can call this to display what was
-        // created in swagger
+        // created in swagger....should get rid of this for production
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             return Ok(await _matchRunService.GetAsync(id));
         }
         [HttpGet]
+
+        //for dev purposes, get rid of for production
         public async Task<IActionResult> List()
         {
             return Ok(await _matchRunService.GetMultipleAsync("SELECT * FROM c"));
         }
 
-        // POST api/items
+        // POST for testing and development only, remove for production
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] MatchRunCreateDto item)
         {
@@ -57,7 +59,7 @@ namespace ODSApi.Controllers
          /**********************************************
          * This is the Only Endpoint that should survive to production
          * The entire api is based on this endpoint
-         * This endpoint uses the unos auth, validates, return
+         * This endpoint uses the unos auth, validates cosmos data and match run calculations, return
          * codes for validation, and calls the matchrun business service
          * to calculate and return probability of survival
          * *******************************************/
@@ -66,9 +68,16 @@ namespace ODSApi.Controllers
         //[Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
         public async Task<IActionResult> GetByMatchSequence(int match_id, int PtrSequenceNumber)
         {
-
+            /************************************************
+             * Main controller gets return value from match
+             * run business service with all the calculations
+             * finished and model populated e.g. time to next offer
+             * and probability of survival, then we check response codes
+             * to see which http code to return
+             * **********************************************/
             var matchRunRecords = await _matchRunBusinessService.getByMatchSequence(match_id, PtrSequenceNumber);
 
+            //add error code here
             if (matchRunRecords.errors == ERRORS.NoPassThroughRecord)
             {
                 return NotFound("No Pass Through Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
@@ -92,7 +101,7 @@ namespace ODSApi.Controllers
             {
                 return NotFound("Time to Next 30 or 50 is missing " + match_id + " and SequenceId " + PtrSequenceNumber);
             }
-
+            //explain data validation
             else if (matchRunRecords.errors == ERRORS.DataValidationError)
             {
                 return StatusCode(500, "Data Validation Error");

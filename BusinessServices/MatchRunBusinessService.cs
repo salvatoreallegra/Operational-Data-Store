@@ -25,6 +25,11 @@ namespace ODSApi.BusinessServices
         private readonly ILogDBService _logDBService;
         private readonly IGraphParamsDBService _graphParamsDBService;
 
+        /**********************************
+         * Constructor for business service
+         * inject all db services we need for our
+         * queries and business logic
+         * **********************************/
         public MatchRunBusinessService(IMatchRunDBService matchRunService, IMortalitySlopeDBService mortalitySlopeService, ITimeToNextOfferDBService timeToNextOfferService, ILogDBService logDBService, IGraphParamsDBService graphParamsDBService)
         {
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
@@ -45,7 +50,7 @@ namespace ODSApi.BusinessServices
 
             /*******************************************************************
             * ServiceResponse is a custom wrapper class that will allow some more 
-            * metadata to be returned along with the data we will be sending to
+            * metadata to be returned along with the data we will be sending to the
             * matchruncontroller.  E.G. an Enum or error types are sent back that
             * the controller can use to display it's error messages/return codes
             * *****************************************************************/
@@ -57,10 +62,12 @@ namespace ODSApi.BusinessServices
             * Get all the records from the MatchRun(PassThrough) Cosmos Collection
             * by matchId and sequenceid
             * *****************************************************************/
+
+            /*todo select top 1 order by timestamp descending*/
             var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
 
             /*******************************************************************
-             * Check for Duplicates, return error code if duplicate records
+             * Check for Duplicates, return error code if duplicate records (remove check for dups) 
              * ******************************************************************/
             if (matchRunRecords.Count() > 1)
             {
@@ -84,12 +91,15 @@ namespace ODSApi.BusinessServices
             /*******************************************************************
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
+
             var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
             if (mortalitySlopeRecords.Count() == 0)
             {
                 serviceResponse.errors = ERRORS.NoMortalitySlopeRecord;
                 return serviceResponse;
             }
+
+            //set to avoid null pointer exception
             List<Dictionary<string, float>> waitListMortality = null;
 
 
@@ -99,12 +109,10 @@ namespace ODSApi.BusinessServices
             * ******************************************************************/
             foreach (var m in mortalitySlopeRecords)
             {
-
-                /************************************************************
-                 * Can probably remove null check here, left it in for safety
-                 * Null check does not apply to collections
-                 ************************************************************/
-
+                /******************************
+                 * check for null or empty
+                 * waitlist mortality data                 * 
+                 * ******************************/
                 if (m.WaitListMortality == null)
                 {
                     serviceResponse.errors = ERRORS.MissingWaitListMortalityData;
@@ -119,7 +127,7 @@ namespace ODSApi.BusinessServices
             }
 
             /**************************************************************************************************
-            * Validate probablity of survival and time fields WaitlistMortality from Mortality Slope Collection
+            * Validate the probablity of survival and time fields in WaitlistMortality from the Mortality Slope Collection
             * Check if probability of survival is > 1.0 or less than 0.0 and if it's a float
             * Check if time is less than 0.0 and is a float
             * ***********************************************************************************************/
@@ -138,7 +146,6 @@ namespace ODSApi.BusinessServices
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
                     }
-
                 }
             }
 
@@ -165,6 +172,7 @@ namespace ODSApi.BusinessServices
             * Validate that a Time to Next Offer exists
             * by matchrun and sequenceid
             *******************************************************************/
+            //top 1 here as well query
             var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
             if (timeToBetterRecords.Count() == 0)
             {
@@ -172,6 +180,7 @@ namespace ODSApi.BusinessServices
                 return serviceResponse;
             }
 
+            //store time to next 30 and 50 in these variables
             Dictionary<string, float> timeToNext30 = null;
             Dictionary<string, float> timeToNext50 = null;
               
@@ -597,7 +606,10 @@ namespace ODSApi.BusinessServices
 
             return probabilityOfSurvival;
         }
-
+        /***************************************
+         * Check if the Median is in range
+         * of the mortality slope plot points
+         * ************************************/
         public static bool ValidatePlotPointRangeTimeToBetter30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
 
@@ -666,6 +678,10 @@ namespace ODSApi.BusinessServices
             return false;
 
         }
+        /***************************************
+         * Check if the Median is in range
+         * of the mortality slope plot points
+         * ************************************/
         public static bool ValidatePlotPointRangeTimeToBetter50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
             var time50 = timeToBetter["median"];

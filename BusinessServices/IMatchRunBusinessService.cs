@@ -3,6 +3,7 @@
  * The Match run business service is where the
  * business logic is defined when calling
  * the main get request of the application
+ * the main method will be to get by matchid and sequenceid
  * **************************************/
 
 using ODSApi.Models;

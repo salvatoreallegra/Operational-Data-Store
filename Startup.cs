@@ -16,13 +16,11 @@ namespace ODSApi
 {
     public class Startup
     {
-        //public IConfiguration Configuration { get; }
         private IConfiguration Configuration;
         public Startup(IConfiguration configuration)
         {
             Configuration = Requires.NotNull(configuration,nameof(configuration));
         }
-
         
         public void ConfigureServices(IServiceCollection services)
         {
@@ -33,10 +31,18 @@ namespace ODSApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ODSApi", Version = "v1" });
             });
 
-             services.AddApigeeJwtBearerAuthentication(Configuration).AddAuthorization(options =>
-              {
-                  options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
-              }); 
+            //Add unos auth services
+            services.AddApigeeJwtBearerAuthentication(Configuration).AddAuthorization(options =>
+            {
+               options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
+            }); 
+
+            
+            
+            /******************
+             * Inject db services
+             * as singleton 
+             * ****************/
 
             services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
