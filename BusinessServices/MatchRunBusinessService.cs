@@ -679,7 +679,7 @@ namespace ODSApi.BusinessServices
 
         }
         /***************************************
-         * Check if the Median is in range
+         * Check if the Median from ttn30 is in range
          * of the mortality slope plot points
          * ************************************/
         public static bool ValidatePlotPointRangeTimeToBetter50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
