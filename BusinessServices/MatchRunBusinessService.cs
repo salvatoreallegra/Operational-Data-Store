@@ -57,14 +57,14 @@ namespace ODSApi.BusinessServices
 
             ServiceResponse<List<MatchRunEntity>> serviceResponse = new ServiceResponse<List<MatchRunEntity>>();
 
-
             /*******************************************************************
             * Get all the records from the MatchRun(PassThrough) Cosmos Collection
             * by matchId and sequenceid
             * *****************************************************************/
 
             /*todo select top 1 order by timestamp descending*/
-            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
+            //var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT TOP 1 * FROM c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber + " ORDER BY c.createddatetime DESC");
 
             /*******************************************************************
              * Check for Duplicates, return error code if duplicate records (remove check for dups) 
@@ -92,7 +92,7 @@ namespace ODSApi.BusinessServices
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
 
-            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
+            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT TOP 1 * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber + " ORDER BY c.timestamp DESC");
             if (mortalitySlopeRecords.Count() == 0)
             {
                 serviceResponse.errors = ERRORS.NoMortalitySlopeRecord;
@@ -173,7 +173,7 @@ namespace ODSApi.BusinessServices
             * by matchrun and sequenceid
             *******************************************************************/
             //top 1 here as well query
-            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber);
+            var timeToBetterRecords = await _timeToBetterService.getByMatchSequence("SELECT TOP 1 * FROM c WHERE c.matchId = " + match_id + " and c.sequenceId = " + PtrSequenceNumber + " ORDER BY c.createdDateTime DESC");
             if (timeToBetterRecords.Count() == 0)
             {
                 serviceResponse.errors = ERRORS.NoTimeToNextOfferRecord;
@@ -191,7 +191,6 @@ namespace ODSApi.BusinessServices
            *******************************************************************/
             foreach (var t in timeToBetterRecords)
             {
-
 
                 /*****************************************************
                 * Check for null and set service response error               
@@ -211,7 +210,6 @@ namespace ODSApi.BusinessServices
                     serviceResponse.errors = ERRORS.MissingTimeToNext30OrTimeToNext50Data;
                     return serviceResponse;
                 }
-
 
                 //Assign values here to avoid null reference exception
                 timeToNext30 = t.TimeToNext30;
@@ -491,6 +489,8 @@ namespace ODSApi.BusinessServices
                     }
                 }
             }
+
+            //more comments on the logic in here
             for (var i = 0; i < unsortedstrippedDaysArray.Length; i++)
             {
                 if (unsortedstrippedDaysArray[i] == x1)

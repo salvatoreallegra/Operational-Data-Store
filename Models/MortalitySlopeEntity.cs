@@ -8,8 +8,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace ODSApi.Models
 {
@@ -32,10 +31,6 @@ namespace ODSApi.Models
 
         [JsonProperty(PropertyName = "waitListMortality")]
         public List<Dictionary<string,float>> WaitListMortality { get; set; }
-        
-         
-
-
 
     }
 }
