@@ -25,8 +25,8 @@ namespace ODSApi.Models
         DataValidationError,
         MissingWaitListMortalityData,
         MissingTimeToNext30OrTimeToNext50Data,  
-        Ok,
-        Duplicates
+        Ok
+       
         
     }
 }

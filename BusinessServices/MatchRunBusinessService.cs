@@ -66,14 +66,7 @@ namespace ODSApi.BusinessServices
             //var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber);
             var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT TOP 1 * FROM c WHERE c.matchId = " + match_id + " and c.sequenceid = " + PtrSequenceNumber + " ORDER BY c.createddatetime DESC");
 
-            /*******************************************************************
-             * Check for Duplicates, return error code if duplicate records (remove check for dups) 
-             * ******************************************************************/
-            if (matchRunRecords.Count() > 1)
-            {
-                serviceResponse.errors = ERRORS.Duplicates;
-                return serviceResponse;
-            }
+            
 
             /*******************************************************************
              * Need to check if the list count is 0.  Null check does not work

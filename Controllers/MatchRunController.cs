@@ -109,11 +109,7 @@ namespace ODSApi.Controllers
             {
                 return StatusCode(500, "Data Validation Error");
             }
-            else if (matchRunRecords.errors == ERRORS.Duplicates)
-            {
-                return StatusCode(500,"Duplicate Records found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-            }
-
+           
             List<MatchRunEntity> returnEntity = matchRunRecords.Data;
       
             return Ok(returnEntity);
