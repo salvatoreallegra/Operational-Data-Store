@@ -14,13 +14,15 @@ using ODSApi.DBServices;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authorization;
+using Auth;
 
 namespace ODSApi.Controllers
 {
    
     [Route("donornet-analytics/v1/matches/")]
     [ApiController]
+    [Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
     public class MatchRunController : ControllerBase
     {
         private readonly IMatchRunDBService _matchRunService;
@@ -113,6 +115,14 @@ namespace ODSApi.Controllers
             List<MatchRunEntity> returnEntity = matchRunRecords.Data;
       
             return Ok(returnEntity);
+        }
+
+        [HttpGet("echo/test")]        
+        public async Task<IActionResult> Echo()
+        {
+            string message = "Hi There, I'm authenticated";
+
+            return Ok(message);
         }
 
     }
