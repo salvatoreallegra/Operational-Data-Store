@@ -141,11 +141,11 @@ namespace ODSApi.Controllers
         }
 
         [HttpGet("echo/test")]        
-        public async Task<IActionResult> Echo()
+        public String Echo()
         {
             string message = "Hi There, I'm authenticated";
 
-            return Ok(message);
+            return message;
         }
 
     }
