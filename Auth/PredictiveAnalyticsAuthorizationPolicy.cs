@@ -11,7 +11,7 @@ namespace Auth
         public const string Name = "PredictiveAnalytics";
 
         public static AuthorizationPolicy Policy =>
-            new AuthorizationPolicyBuilder().RequireClaim("http://schemas.microsoft.com/identity/claims/scope", "api.predictiveanalytics").Build();
+            new AuthorizationPolicyBuilder().RequireClaim("http://schemas.microsoft.com/identity/claims/scope", "auth.predictiveanalytics").Build();
     }
 }
 
