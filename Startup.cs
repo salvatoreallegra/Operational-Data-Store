@@ -78,9 +78,20 @@ namespace ODSApi
             });
             app.UseHttpsRedirection();
 
-            app.UseRouting();
+            /*      app
+
+          .UseAuthentication()
+
+          .UseRouting()
+
+          .UseAuthorization()
+
+          .UseMiddleware(typeof(ExceptionHandlingMiddleware))
+
+          .UseEndpoints(endpoints => endpoints.MapControllers());*/
 
             app.UseAuthentication();
+            app.UseRouting();           
             app.UseAuthorization();
 
             //Use this Middleware prior to app.UseEndpoints....
