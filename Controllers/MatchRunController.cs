@@ -20,7 +20,7 @@ using Auth;
 namespace ODSApi.Controllers
 {
    
-    [Route("donornet-analytics/v1/matches/")]
+    [Route("predictive-analytics/v1/matches/")]
     [ApiController]
     [Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
     public class MatchRunController : ControllerBase
@@ -82,6 +82,27 @@ namespace ODSApi.Controllers
             //Switch statement here for readability
             var matchRunRecords = await _matchRunBusinessService.getByMatchSequence(match_id, PtrSequenceNumber);
 
+
+           /* switch (matchRunRecords.errors)
+            {
+                case ERRORS.NoPassThroughRecord:
+                    return NotFound("No Pass Through Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                    
+                case ERRORS.NoMortalitySlopeRecord:
+                  
+                    return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                case ERRORS.NoTimeToNextOfferRecord:
+                    
+                    return NotFound("No Time To Next Offer Record Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                    
+                case ERRORS.MissingWaitListMortalityData:
+                    // code block
+                    break;
+                default:
+                    // code block
+                    break;
+            }
+*/
             //add error code here
             if (matchRunRecords.errors == ERRORS.NoPassThroughRecord)
             {

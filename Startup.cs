@@ -63,6 +63,19 @@ namespace ODSApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
+                app.UseAuthentication();
+
+                //Use this Middleware prior to app.UseEndpoints....
+               /* app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
+                app.UseRouting();
+                app.UseAuthorization();
+
+               
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });*/
             }
             else
             {
@@ -90,17 +103,22 @@ namespace ODSApi
 
           .UseEndpoints(endpoints => endpoints.MapControllers());*/
 
+            //Use this Middleware prior to app.UseEndpoints....
+
             app.UseAuthentication();
-            app.UseRouting();           
+            app.UseRouting();
+
             app.UseAuthorization();
 
-            //Use this Middleware prior to app.UseEndpoints....
-            app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
+           
 
+
+            app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
 
         }
         /*********************************
