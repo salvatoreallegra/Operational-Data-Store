@@ -64,26 +64,18 @@ namespace ODSApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
 
-                app.UseAuthentication();
+              /*app.UseAuthentication();
                 app.UseRouting();
-
                 app.UseAuthorization();
-
-
-
-
-                app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
-                app.UseEndpoints(endpoints =>
+                app.UseMiddleware(typeof(ExceptionHandlingMiddleware));*/
+               /* app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
-                });
+                });*/
                 //Use this Middleware prior to app.UseEndpoints....
                 /* app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
                  app.UseRouting();
                  app.UseAuthorization();
-
-
-
                  app.UseEndpoints(endpoints =>
                  {
                      endpoints.MapControllers();
@@ -97,11 +89,11 @@ namespace ODSApi
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
             app.UseCors("CorsPolicy");
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            /*app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
             });
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection();*/
 
             /*      app
 
@@ -116,21 +108,16 @@ namespace ODSApi
           .UseEndpoints(endpoints => endpoints.MapControllers());*/
 
             //Use this Middleware prior to app.UseEndpoints....
-/*
+
             app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
-
-           
-
-
             app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });*/
-            
+            });
+
 
         }
         /*********************************
