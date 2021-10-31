@@ -22,7 +22,7 @@ namespace ODSApi.Controllers
    
     [Route("predictive-analytics/v1/matches/")]
     [ApiController]
-    [Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
+    //[Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
     public class MatchRunController : ControllerBase
     {
         private readonly IMatchRunDBService _matchRunService;
@@ -83,57 +83,36 @@ namespace ODSApi.Controllers
             var matchRunRecords = await _matchRunBusinessService.getByMatchSequence(match_id, PtrSequenceNumber);
 
 
-           /* switch (matchRunRecords.errors)
+            switch (matchRunRecords.errors)
             {
                 case ERRORS.NoPassThroughRecord:
                     return NotFound("No Pass Through Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-                    
+
                 case ERRORS.NoMortalitySlopeRecord:
-                  
+
                     return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
                 case ERRORS.NoTimeToNextOfferRecord:
-                    
+
                     return NotFound("No Time To Next Offer Record Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-                    
+
                 case ERRORS.MissingWaitListMortalityData:
                     // code block
-                    break;
+                    return NotFound("Wait List Mortality Data is Missing" + match_id + " and SequenceId " + PtrSequenceNumber);
+
+
+                case ERRORS.MissingTimeToNext30OrTimeToNext50Data:
+                    // code block
+                    return NotFound("Time to Next 30 or 50 is missing " + match_id + " and SequenceId " + PtrSequenceNumber);
+
+                case ERRORS.DataValidationError:
+                    // code block
+                    return StatusCode(500, "Data Validation Error");
+
                 default:
                     // code block
                     break;
             }
-*/
-            //add error code here
 
-
-            if (matchRunRecords.errors == ERRORS.NoPassThroughRecord)
-            {
-                return NotFound("No Pass Through Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-            }
-
-            else if (matchRunRecords.errors == ERRORS.NoMortalitySlopeRecord)
-            {
-                return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-            }
-
-            else if (matchRunRecords.errors == ERRORS.NoTimeToNextOfferRecord)
-            {
-                return NotFound("No Time To Next Offer Record Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
-            }
-
-            else if (matchRunRecords.errors == ERRORS.MissingWaitListMortalityData)
-            {
-                return NotFound("Wait List Mortality Data is Missing" + match_id + " and SequenceId " + PtrSequenceNumber);
-            }
-            else if (matchRunRecords.errors == ERRORS.MissingTimeToNext30OrTimeToNext50Data)
-            {
-                return NotFound("Time to Next 30 or 50 is missing " + match_id + " and SequenceId " + PtrSequenceNumber);
-            }
-            //explain data validation
-            else if (matchRunRecords.errors == ERRORS.DataValidationError)
-            {
-                return StatusCode(500, "Data Validation Error");
-            }
            
             List<MatchRunEntity> returnEntity = matchRunRecords.Data;
       
