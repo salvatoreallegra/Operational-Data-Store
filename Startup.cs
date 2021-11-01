@@ -9,6 +9,7 @@ using ODSApi.BusinessServices;
 using ODSApi.DBServices;
 using ODSApi.Extensions;
 using ODSApi.Middleware;
+using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Unos.Foundation;
@@ -33,13 +34,19 @@ namespace ODSApi
             });
 
             //Add unos auth services
-            services.AddApigeeJwtBearerAuthentication(Configuration,StoreLocation.CurrentUser).AddAuthorization(options =>
+            /*services.AddApigeeJwtBearerAuthentication(Configuration,StoreLocation.CurrentUser).AddAuthorization(options =>
             {
                options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
             }); 
+*/
+            services.AddApigeeJwtBearerAuthentication(Configuration).AddAuthorization(options =>
 
-            
-            
+            {
+
+                options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
+
+            });
+
             /******************
              * Inject db services
              * as singleton 
