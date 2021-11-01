@@ -18,7 +18,7 @@ namespace Auth
 
 
 
-        /*public const string Name = "PredictiveAnalytics";
+       // public const string Name = "PredictiveAnalytics";
 
         private readonly static IEnumerable<string> scopeClaimTypes = new List<string>
         {
@@ -28,7 +28,7 @@ namespace Auth
 
         };
 
-        public static AuthorizationPolicy Policy =>
+       /* public static AuthorizationPolicy Policy =>
            new AuthorizationPolicyBuilder().RequireAssertion((context) =>
                context.User.Claims
                    .Where(x => scopeClaimTypes.Contains(x.Type))
