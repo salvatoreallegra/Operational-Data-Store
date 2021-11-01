@@ -20,13 +20,13 @@ namespace Auth
 
        // public const string Name = "PredictiveAnalytics";
 
-        private readonly static IEnumerable<string> scopeClaimTypes = new List<string>
+       /* private readonly static IEnumerable<string> scopeClaimTypes = new List<string>
         {
 
            { "http://schemas.microsoft.com/identity/claims/scope" },
            { "scp" }
 
-        };
+        };*/
 
        /* public static AuthorizationPolicy Policy =>
            new AuthorizationPolicyBuilder().RequireAssertion((context) =>
