@@ -3,6 +3,9 @@
 ********************************************************/
 
 using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Auth
 {
@@ -10,8 +13,24 @@ namespace Auth
     {
         public const string Name = "PredictiveAnalytics";
 
+        private readonly static IEnumerable<string> scopeClaimTypes = new List<string>
+        {
+
+           { "http://schemas.microsoft.com/identity/claims/scope" },
+           { "scp" }
+
+        };
+
         public static AuthorizationPolicy Policy =>
-            new AuthorizationPolicyBuilder().RequireClaim("http://schemas.microsoft.com/identity/claims/scope", "auth.predictiveanalytics").Build();
+           new AuthorizationPolicyBuilder().RequireAssertion((context) =>
+               context.User.Claims
+                   .Where(x => scopeClaimTypes.Contains(x.Type))
+                   .SelectMany(x => x.Value.Split(" "))
+                   .Any(x => x.Equals("auth.predictiveanalytics", StringComparison.OrdinalIgnoreCase)))
+           .Build();
+
+        /*public static AuthorizationPolicy Policy =>
+            new AuthorizationPolicyBuilder().RequireClaim("http://schemas.microsoft.com/identity/claims/scope", "auth.predictiveanalytics").Build();*/
     }
 }
 
