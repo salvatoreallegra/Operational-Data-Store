@@ -22,7 +22,7 @@ namespace ODSApi.Controllers
    
     [Route("predictive-analytics/v1/matches/")]
     [ApiController]
-    //[Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
+    [Authorize(PredictiveAnalyticsAuthorizationPolicy.Name)]
     public class MatchRunController : ControllerBase
     {
         private readonly IMatchRunDBService _matchRunService;
