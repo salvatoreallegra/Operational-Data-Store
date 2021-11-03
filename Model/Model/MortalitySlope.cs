@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace Model.Model
 {
-    public class MortalitySlopeEntity
+    public class MortalitySlope
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

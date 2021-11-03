@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model.Model
 {
-    public class GraphParamsEntity
+    public class GraphParams
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

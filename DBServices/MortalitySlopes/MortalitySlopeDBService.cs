@@ -17,16 +17,16 @@ namespace ODSApi.DBServices
         {
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
         }
-        public async Task AddAsync(MortalitySlopeEntity item)
+        public async Task AddAsync(MortalitySlope item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.MatchId));
         }
 
-        public async Task<MortalitySlopeEntity> GetAsync(string id)
+        public async Task<MortalitySlope> GetAsync(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<MortalitySlopeEntity>(id, new PartitionKey(id));
+                var response = await _container.ReadItemAsync<MortalitySlope>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch (CosmosException) //For handling item not found and other exceptions
@@ -34,10 +34,10 @@ namespace ODSApi.DBServices
                 return null;
             }
         }
-        public async Task<IEnumerable<MortalitySlopeEntity>> GetMultipleAsync(string queryString)
+        public async Task<IEnumerable<MortalitySlope>> GetMultipleAsync(string queryString)
         {
-            var query = _container.GetItemQueryIterator<MortalitySlopeEntity>(new QueryDefinition(queryString));
-            var results = new List<MortalitySlopeEntity>();
+            var query = _container.GetItemQueryIterator<MortalitySlope>(new QueryDefinition(queryString));
+            var results = new List<MortalitySlope>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -46,11 +46,11 @@ namespace ODSApi.DBServices
             return results;
         }
 
-        public async Task<IEnumerable<MortalitySlopeEntity>> getByMatchSequence(string queryString)
+        public async Task<IEnumerable<MortalitySlope>> getByMatchSequence(string queryString)
         {
 
-            var query = _container.GetItemQueryIterator<MortalitySlopeEntity>(new QueryDefinition(queryString));
-            var results = new List<MortalitySlopeEntity>();
+            var query = _container.GetItemQueryIterator<MortalitySlope>(new QueryDefinition(queryString));
+            var results = new List<MortalitySlope>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();

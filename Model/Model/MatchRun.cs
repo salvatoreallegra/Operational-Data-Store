@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Model.Model
 {
-    public class MatchRunEntity
+    public class MatchRun
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }  //Id for record 
@@ -41,7 +41,7 @@ namespace Model.Model
 
         //Add graph params
         [JsonProperty(PropertyName = "graphparams")]
-        public GraphParamsEntity GraphParam { get; set; }
+        public GraphParams GraphParam { get; set; }
 
         [JsonProperty(PropertyName = "createddatetime")]
         public DateTime CreatedDateTime { get; set; }

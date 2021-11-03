@@ -114,7 +114,7 @@ namespace ODSApi.Controllers
             }
 
            
-            List<MatchRunEntity> returnEntity = matchRunRecords.Data;
+            List<MatchRun> returnEntity = matchRunRecords.Data;
       
             return Ok(returnEntity);
         }

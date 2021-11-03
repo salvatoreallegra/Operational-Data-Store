@@ -8,9 +8,9 @@ namespace ODSApi.DBServices
 {
     public interface IGraphParamsDBService
     {
-        Task<IEnumerable<GraphParamsEntity>> GetMultipleAsync(string query);
-        Task<GraphParamsEntity> GetAsync(string id);
-        Task AddAsync(GraphParamsEntity item);
-        Task<IEnumerable<GraphParamsEntity>> getByMatchSequence(string query);
+        Task<IEnumerable<GraphParams>> GetMultipleAsync(string query);
+        Task<GraphParams> GetAsync(string id);
+        Task AddAsync(GraphParams item);
+        Task<IEnumerable<GraphParams>> getByMatchSequence(string query);
     }
 }

@@ -29,7 +29,7 @@ namespace ODSApi.Controllers
         }
         // POST api/items
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] MortalitySlopeEntity item)
+        public async Task<IActionResult> Create([FromBody] MortalitySlope item)
         {
             item.Id = Guid.NewGuid().ToString();
             await _cosmosDbService.AddAsync(item);

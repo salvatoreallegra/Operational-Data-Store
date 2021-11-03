@@ -23,20 +23,20 @@ namespace ODSApi.DBServices
         {
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
         }
-        public async Task AddAsync(GraphParamsEntity item)
+        public async Task AddAsync(GraphParams item)
         {
              await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
 
-        public async Task<GraphParamsEntity> GetAsync(string id)
+        public async Task<GraphParams> GetAsync(string id)
         {            
-                var response = await _container.ReadItemAsync<GraphParamsEntity>(id, new PartitionKey(id));
+                var response = await _container.ReadItemAsync<GraphParams>(id, new PartitionKey(id));
                 return response.Resource;            
         }
-        public async Task<IEnumerable<GraphParamsEntity>> GetMultipleAsync(string queryString)
+        public async Task<IEnumerable<GraphParams>> GetMultipleAsync(string queryString)
         {
-            var query = _container.GetItemQueryIterator<GraphParamsEntity>(new QueryDefinition(queryString));
-            var results = new List<GraphParamsEntity>();
+            var query = _container.GetItemQueryIterator<GraphParams>(new QueryDefinition(queryString));
+            var results = new List<GraphParams>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -45,11 +45,11 @@ namespace ODSApi.DBServices
             return results;
         }
 
-        public async Task<IEnumerable<GraphParamsEntity>> getByMatchSequence(string queryString)
+        public async Task<IEnumerable<GraphParams>> getByMatchSequence(string queryString)
         {
-                var query = _container.GetItemQueryIterator<GraphParamsEntity>(new QueryDefinition(queryString));
+                var query = _container.GetItemQueryIterator<GraphParams>(new QueryDefinition(queryString));
 
-                var results = new List<GraphParamsEntity>();
+                var results = new List<GraphParams>();
 
                 while (query.HasMoreResults)
                 {

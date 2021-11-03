@@ -9,10 +9,10 @@ namespace ODSApi.DBServices
 {
     public interface IMatchRunDBService
     {
-        Task<IEnumerable<MatchRunEntity>> GetMultipleAsync(string query);
-        Task<MatchRunEntity> GetAsync(string id);
+        Task<IEnumerable<MatchRun>> GetMultipleAsync(string query);
+        Task<MatchRun> GetAsync(string id);
         Task AddAsync(MatchRunCreateDto item);
-        Task<IEnumerable<MatchRunEntity>> getByMatchSequence(string query);
+        Task<IEnumerable<MatchRun>> getByMatchSequence(string query);
 
 
     }

@@ -45,7 +45,7 @@ namespace ODSApi.BusinessServices
          * The heart of the business logic
          * for the ods api 
          * *********************************/
-        public async Task<ServiceResponse<List<MatchRunEntity>>> getByMatchSequence(int match_id, int PtrSequenceNumber)
+        public async Task<ServiceResponse<List<MatchRun>>> getByMatchSequence(int match_id, int PtrSequenceNumber)
         {
 
             /*******************************************************************
@@ -55,7 +55,7 @@ namespace ODSApi.BusinessServices
             * the controller can use to display it's error messages/return codes
             * *****************************************************************/
 
-            ServiceResponse<List<MatchRunEntity>> serviceResponse = new ServiceResponse<List<MatchRunEntity>>();
+            ServiceResponse<List<MatchRun>> serviceResponse = new ServiceResponse<List<MatchRun>>();
 
             /*******************************************************************
             * Get all the records from the MatchRun(PassThrough) Cosmos Collection
@@ -79,7 +79,7 @@ namespace ODSApi.BusinessServices
                 return serviceResponse;
             }
 
-            serviceResponse.Data = (List<MatchRunEntity>)matchRunRecords;
+            serviceResponse.Data = (List<MatchRun>)matchRunRecords;
 
             /*******************************************************************
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
@@ -349,7 +349,7 @@ namespace ODSApi.BusinessServices
              * *************************************************/
 
             var graphParamRecords = await _graphParamsDBService.GetMultipleAsync("SELECT * FROM c");
-            GraphParamsEntity graphParam = new GraphParamsEntity();
+            GraphParams graphParam = new GraphParams();
             foreach (var g in graphParamRecords)
             {
                 graphParam = g;
@@ -359,7 +359,7 @@ namespace ODSApi.BusinessServices
             {
                 m.GraphParam = graphParam;
             }
-            serviceResponse.Data = (List<MatchRunEntity>)matchRunRecords;
+            serviceResponse.Data = (List<MatchRun>)matchRunRecords;
 
             /*Reset service response here, or else controller will always think there is an error */
             serviceResponse.errors = ERRORS.Ok;
@@ -368,7 +368,7 @@ namespace ODSApi.BusinessServices
             /*******************************************
              * Create Log Record
              * ****************************************/
-            LogEntity log = new LogEntity();
+            Log log = new Log();
             log.Id = Guid.NewGuid().ToString();
             log.CreatedDateTime = DateTime.Now;
             log.MatchID = serviceResponse.Data[0].matchId;

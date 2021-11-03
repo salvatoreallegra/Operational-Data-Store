@@ -26,15 +26,15 @@ namespace ODSApi.DBServices
 
         }
 
-        public async Task<MatchRunEntity> GetAsync(string id)
+        public async Task<MatchRun> GetAsync(string id)
         {
             try
             {
                 //get mortality slope by match id and sequence id 
                 //
-                MortalitySlopeEntity mortalitySlope = await _container.ReadItemAsync<MortalitySlopeEntity>(id, new PartitionKey(id));
+                MortalitySlope mortalitySlope = await _container.ReadItemAsync<MortalitySlope>(id, new PartitionKey(id));
                 List<Dictionary<string, float>> mortalitySlopePoints = mortalitySlope.WaitListMortality;
-                MatchRunEntity MatchRun = await _container.ReadItemAsync<MatchRunEntity>(id, new PartitionKey(id));
+                MatchRun MatchRun = await _container.ReadItemAsync<MatchRun>(id, new PartitionKey(id));
                 MatchRun.MortalitySlopePlotPoints = mortalitySlopePoints;
                 return MatchRun;
                 //return response.Resource;
@@ -45,12 +45,12 @@ namespace ODSApi.DBServices
             }
         }
 
-        public async Task<IEnumerable<MatchRunEntity>> getByMatchSequence(string queryString)
+        public async Task<IEnumerable<MatchRun>> getByMatchSequence(string queryString)
         {
                         
-                var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
+                var query = _container.GetItemQueryIterator<MatchRun>(new QueryDefinition(queryString));
                 
-                var results = new List<MatchRunEntity>();
+                var results = new List<MatchRun>();
 
                 while (query.HasMoreResults)
                 {
@@ -61,13 +61,13 @@ namespace ODSApi.DBServices
               
             
         }
-        public async Task<IEnumerable<MatchRunEntity>> GetMultipleAsync(string queryString)
+        public async Task<IEnumerable<MatchRun>> GetMultipleAsync(string queryString)
         {
             try
             {
-                var query = _container.GetItemQueryIterator<MatchRunEntity>(new QueryDefinition(queryString));
+                var query = _container.GetItemQueryIterator<MatchRun>(new QueryDefinition(queryString));
 
-                var results = new List<MatchRunEntity>();
+                var results = new List<MatchRun>();
                 while (query.HasMoreResults)
                 {
                     var response = await query.ReadNextAsync();

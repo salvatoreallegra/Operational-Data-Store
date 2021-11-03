@@ -8,9 +8,9 @@ namespace ODSApi.DBServices
 {
     public interface ILogDBService
     {
-        Task<IEnumerable<LogEntity>> GetMultipleAsync(string query);
-        Task<LogEntity> GetAsync(string id);
-        Task AddAsync(LogEntity item);
+        Task<IEnumerable<Log>> GetMultipleAsync(string query);
+        Task<Log> GetAsync(string id);
+        Task AddAsync(Log item);
         
         
     }

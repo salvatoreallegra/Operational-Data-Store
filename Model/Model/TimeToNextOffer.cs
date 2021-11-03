@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Model.Model
 {
-    public class TimeToNextOfferEntity
+    public class TimeToNextOffer
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

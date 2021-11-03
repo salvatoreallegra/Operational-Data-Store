@@ -6,11 +6,11 @@ namespace ODSApi.DBServices
 {
     public interface IMortalitySlopeDBService
     {
-        Task<IEnumerable<MortalitySlopeEntity>> GetMultipleAsync(string query);
-        Task<MortalitySlopeEntity> GetAsync(string id);
-        Task AddAsync(MortalitySlopeEntity item);
+        Task<IEnumerable<MortalitySlope>> GetMultipleAsync(string query);
+        Task<MortalitySlope> GetAsync(string id);
+        Task AddAsync(MortalitySlope item);
 
-        Task<IEnumerable<MortalitySlopeEntity>> getByMatchSequence(string query);
+        Task<IEnumerable<MortalitySlope>> getByMatchSequence(string query);
 
 
     }

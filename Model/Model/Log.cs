@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Model.Model
 {
-    public class LogEntity
+    public class Log
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
