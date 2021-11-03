@@ -1,6 +1,6 @@
-﻿using ODSApi.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Model.Model;
 
 namespace ODSApi.DBServices
 {

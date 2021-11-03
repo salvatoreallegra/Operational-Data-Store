@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.Models
+namespace Model.Model
 {
     public class MatchRunEntity
     {
@@ -28,7 +28,7 @@ namespace ODSApi.Models
 
         [JsonProperty(PropertyName = "offerDate")]
         public DateTime OfferDate { get; set; }
-        
+
         [JsonProperty(PropertyName = "mortalitySlopePlotPoints")]
         public List<Dictionary<string, float>> MortalitySlopePlotPoints { get; set; }  //This is wait list mortality from Mortality Slope Collection
 
@@ -45,9 +45,5 @@ namespace ODSApi.Models
 
         [JsonProperty(PropertyName = "createddatetime")]
         public DateTime CreatedDateTime { get; set; }
-
-
     }
-    
-    
 }

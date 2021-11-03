@@ -6,7 +6,7 @@
  * *******************************************/
 using Microsoft.AspNetCore.Mvc;
 using ODSApi.DBServices;
-using ODSApi.Models;
+using Model.Model;
 using System;
 using System.Threading.Tasks;
 

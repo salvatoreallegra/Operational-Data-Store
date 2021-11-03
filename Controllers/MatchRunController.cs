@@ -9,7 +9,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ODSApi.BusinessServices;
 using ODSApi.DTOs;
-using ODSApi.Models;
+using Model.Model;
 using ODSApi.DBServices;
 using System;
 using System.Collections.Generic;

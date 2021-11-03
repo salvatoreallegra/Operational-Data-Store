@@ -6,7 +6,7 @@
  * the main method will be to get by matchid and sequenceid
  * **************************************/
 
-using ODSApi.Models;
+using Model.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

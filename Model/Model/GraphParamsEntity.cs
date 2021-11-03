@@ -1,16 +1,10 @@
-﻿/**********************************************
- * Poco class that models the fields the ods
- * database will hold for the Graph Params Collection
- * and any other necessary computations related
- * to Graph Parameters
- * *******************************************/
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.Models
+namespace Model.Model
 {
     public class GraphParamsEntity
     {
@@ -37,6 +31,5 @@ namespace ODSApi.Models
 
         [JsonProperty(PropertyName = "createddatetime")]
         public DateTime createdDateTime { get; set; }
-
     }
 }

@@ -13,13 +13,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.Models
+namespace Model.Model
 {
     public class LogEntity
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
-                
+
         [JsonProperty(PropertyName = "matchId")]
         public int MatchID { get; set; }
 

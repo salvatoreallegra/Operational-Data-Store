@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace ODSApi.Models
+namespace Model.Model
 {
     public class MortalitySlopeEntity
     {
@@ -22,7 +22,7 @@ namespace ODSApi.Models
 
         [JsonProperty(PropertyName = "matchId")]
         public int MatchId { get; set; }  //predictive model match id from model api
-       
+
         [JsonProperty(PropertyName = "timeStamp")]
         public DateTime TimeStamp { get; set; }
 
@@ -30,7 +30,7 @@ namespace ODSApi.Models
         public float ModelVersion { get; set; }
 
         [JsonProperty(PropertyName = "waitListMortality")]
-        public List<Dictionary<string,float>> WaitListMortality { get; set; }
+        public List<Dictionary<string, float>> WaitListMortality { get; set; }
 
     }
 }

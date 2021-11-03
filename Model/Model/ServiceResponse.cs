@@ -1,15 +1,10 @@
-﻿/**********************************************
- * Generic wrapper class that allows the piggy-
- * backing of a custom error enum type along with
- * the data that will be returned with the response.
- * *******************************************/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace ODSApi.Models
+namespace Model.Model
 {
     public class ServiceResponse<T>
     {
@@ -24,9 +19,8 @@ namespace ODSApi.Models
         NoTimeToNextOfferRecord,
         DataValidationError,
         MissingWaitListMortalityData,
-        MissingTimeToNext30OrTimeToNext50Data,  
+        MissingTimeToNext30OrTimeToNext50Data,
         Ok
-       
-        
+
     }
 }

@@ -11,11 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.Models
+namespace Model.Model
 {
     public class TimeToNextOfferEntity
     {
-        [JsonProperty(PropertyName = "id")] 
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "matchId")]
@@ -30,7 +30,7 @@ namespace ODSApi.Models
         [JsonProperty(PropertyName = "modelVersionId")]
         public float ModelVersionId { get; set; }
 
-       
+
         [JsonProperty(PropertyName = "timeToNext30")]
         public Dictionary<string, float> TimeToNext30 { get; set; }
 
