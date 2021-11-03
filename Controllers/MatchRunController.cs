@@ -8,9 +8,9 @@
 
 using Microsoft.AspNetCore.Mvc;
 using ODSApi.BusinessServices;
-using ODSApi.DTOs;
+using Model.DTOs;
 using Model.Model;
-using ODSApi.DBServices;
+using ODSDatabase.DBServices;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.DBServices
+namespace ODSDatabase.DBServices
 {
     public class LogDBService : ILogDBService
     {

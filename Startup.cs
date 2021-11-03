@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ODSApi.BusinessServices;
-using ODSApi.DBServices;
+using ODSDatabase.DBServices;
 using ODSApi.Extensions;
 using ODSApi.Middleware;
 using System.Configuration;

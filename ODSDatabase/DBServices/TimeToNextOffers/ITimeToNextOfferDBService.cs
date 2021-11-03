@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Model.Model;
 
-namespace ODSApi.DBServices
+namespace ODSDatabase.DBServices
 {
     public interface ITimeToNextOfferDBService
     {

@@ -1,11 +1,11 @@
-﻿using ODSApi.DTOs;
+﻿using Model.DTOs;
 using Model.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ODSApi.DBServices
+namespace ODSDatabase.DBServices
 {
     public interface IMatchRunDBService
     {
