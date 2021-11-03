@@ -17,17 +17,17 @@ namespace Model.Model
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "sequenceId")]
-        public int SequenceId { get; set; }
+        [JsonProperty(PropertyName = "sequenceNumber")]
+        public int SequenceNumber { get; set; }
 
         [JsonProperty(PropertyName = "matchId")]
         public int MatchId { get; set; }  //predictive model match id from model api
 
-        [JsonProperty(PropertyName = "timeStamp")]
-        public DateTime TimeStamp { get; set; }
+        [JsonProperty(PropertyName = "offerDate")]
+        public DateTime OfferDate { get; set; }
 
         [JsonProperty(PropertyName = "modelVersion")]
-        public float ModelVersion { get; set; }
+        public string ModelVersion { get; set; }
 
         [JsonProperty(PropertyName = "waitListMortality")]
         public List<Dictionary<string, float>> WaitListMortality { get; set; }

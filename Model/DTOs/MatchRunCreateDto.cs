@@ -14,8 +14,8 @@ namespace Model.DTOs
         [JsonProperty(PropertyName = "matchId")]
         public int MatchId { get; set; }  //predictive model match id from model api
 
-        [JsonProperty(PropertyName = "sequenceId")]
-        public int SequenceId { get; set; } //identifier of patient from model api
+        [JsonProperty(PropertyName = "sequenceNumber")]
+        public int sequenceNumber { get; set; } //identifier of patient from model api
 
         [JsonProperty(PropertyName = "offerdate")]
         public DateTime OfferDate { get; set; }

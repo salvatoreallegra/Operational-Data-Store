@@ -21,10 +21,10 @@ namespace Model.Model
         public string Id { get; set; }  //Id for record 
 
         [JsonProperty(PropertyName = "matchId")]
-        public int matchId { get; set; }  //predictive model match id from model api
+        public int MatchId { get; set; }  //predictive model match id from model api
 
-        [JsonProperty(PropertyName = "sequenceId")]
-        public int SequenceId { get; set; } //identifier of patient from model api
+        [JsonProperty(PropertyName = "sequenceNumber")]
+        public int SequenceNumber { get; set; } //identifier of patient from model api
 
         [JsonProperty(PropertyName = "offerDate")]
         public DateTime OfferDate { get; set; }
@@ -43,7 +43,7 @@ namespace Model.Model
         [JsonProperty(PropertyName = "graphparams")]
         public GraphParams GraphParam { get; set; }
 
-        [JsonProperty(PropertyName = "createddatetime")]
+        [JsonProperty(PropertyName = "createdDateTime")]
         public DateTime CreatedDateTime { get; set; }
     }
 }

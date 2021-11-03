@@ -23,8 +23,8 @@ namespace Model.Model
         [JsonProperty(PropertyName = "matchId")]
         public int MatchID { get; set; }
 
-        [JsonProperty(PropertyName = "sequenceId")]
-        public int SequenceId { get; set; }
+        [JsonProperty(PropertyName = "sequenceNumber")]
+        public int SequenceNumber { get; set; }
 
         [JsonProperty(PropertyName = "createdDateTime")]
         public DateTime CreatedDateTime { get; set; }

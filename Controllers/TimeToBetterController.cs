@@ -35,7 +35,7 @@ namespace ODSApi.Controllers
         public async Task<IActionResult> Get(string id)
         {
             TimeToNextOffer returnEntity = await _cosmosDbService.GetAsync(id);
-             if(returnEntity.SequenceId == 0)
+             if(returnEntity.sequenceNumber == 0)
              {
                 return StatusCode(209);
              }

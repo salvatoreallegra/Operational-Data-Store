@@ -86,23 +86,23 @@ namespace ODSApi.Controllers
             switch (matchRunRecords.errors)
             {
                 case ERRORS.NoPassThroughRecord:
-                    return NotFound("No Pass Through Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                    return NotFound("No Pass Through Records Found for matchId " + match_id + " and sequenceNumber " + PtrSequenceNumber);
 
                 case ERRORS.NoMortalitySlopeRecord:
 
-                    return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                    return NotFound("No Mortality Slope Records Found for matchId " + match_id + " and sequenceNumber " + PtrSequenceNumber);
                 case ERRORS.NoTimeToNextOfferRecord:
 
-                    return NotFound("No Time To Next Offer Record Found for matchId " + match_id + " and SequenceId " + PtrSequenceNumber);
+                    return NotFound("No Time To Next Offer Record Found for matchId " + match_id + " and sequenceNumber " + PtrSequenceNumber);
 
                 case ERRORS.MissingWaitListMortalityData:
                     // code block
-                    return NotFound("Wait List Mortality Data is Missing" + match_id + " and SequenceId " + PtrSequenceNumber);
+                    return NotFound("Wait List Mortality Data is Missing" + match_id + " and sequenceNumber " + PtrSequenceNumber);
 
 
                 case ERRORS.MissingTimeToNext30OrTimeToNext50Data:
                     // code block
-                    return NotFound("Time to Next 30 or 50 is missing " + match_id + " and SequenceId " + PtrSequenceNumber);
+                    return NotFound("Time to Next 30 or 50 is missing " + match_id + " and sequenceNumber " + PtrSequenceNumber);
 
                 case ERRORS.DataValidationError:
                     // code block
