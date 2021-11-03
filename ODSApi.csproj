@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Model\**" />
+    <Compile Remove="ODSDatabase\**" />
     <Content Remove="Model\**" />
+    <Content Remove="ODSDatabase\**" />
     <EmbeddedResource Remove="Model\**" />
+    <EmbeddedResource Remove="ODSDatabase\**" />
     <None Remove="Model\**" />
+    <None Remove="ODSDatabase\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="Model\Model.csproj" />
+    <ProjectReference Include="Model\ODSModels.csproj" />
     <ProjectReference Include="ODSDatabase\ODSDatabase.csproj" />
   </ItemGroup>
 
