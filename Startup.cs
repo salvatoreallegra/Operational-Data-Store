@@ -34,13 +34,7 @@ namespace ODSApi
             });
 
             //Add unos auth services
-            /*services.AddApigeeJwtBearerAuthentication(Configuration,StoreLocation.CurrentUser).AddAuthorization(options =>
-            {
-               options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
-            }); 
-*/
             services.AddApigeeJwtBearerAuthentication(Configuration).AddAuthorization(options =>
-
             {
 
                 options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
