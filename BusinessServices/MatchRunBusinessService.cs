@@ -129,7 +129,7 @@ namespace ODSApi.BusinessServices
             {
                 foreach (var w in m.value.WaitListMortality.Select((value2, index2) => new { value2, index2 }))
                 {
-                    if (w.value2["probabilityOfSurvival"] > 1.0 || w.value2["probabilityOfSurvival"] < 0.0 || w.value2["probabilityOfSurvival"].GetType() != typeof(float))
+                    if (w.value2["probabilityofsurvival"] > 1.0 || w.value2["probabilityofsurvival"] < 0.0 || w.value2["probabilityofsurvival"].GetType() != typeof(float))
                     {
                         serviceResponse.errors = ERRORS.DataValidationError;
                         return serviceResponse;
@@ -332,8 +332,8 @@ namespace ODSApi.BusinessServices
                         return serviceResponse;
                     }
 
-                    x.TimeToNext30["probabilityOfSurvival"] = CalculateProbabilityOfSurvivalTime30(waitListMortality, timeToNext30);
-                    x.TimeToNext50["probabilityOfSurvival"] = CalculateProbabilityOfSurvivalTime50(waitListMortality, timeToNext50);
+                    x.TimeToNext30["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime30(waitListMortality, timeToNext30);
+                    x.TimeToNext50["probabilityofsurvival"] = CalculateProbabilityOfSurvivalTime50(waitListMortality, timeToNext50);
 
                     x.TimeToNext30["quantile"] = timeToNext30["quantile"];
                     x.TimeToNext30["quantileTime"] = timeToNext30["quantileTime"];
@@ -416,7 +416,7 @@ namespace ODSApi.BusinessServices
                     {
                         strippedDays.Add(value);
                     }
-                    if (key == "probabilityOfSurvival")
+                    if (key == "probabilityofsurvival")
                     {
                         strippedSurvival.Add(value);
                     }
@@ -530,7 +530,7 @@ namespace ODSApi.BusinessServices
                     {
                         strippedDays.Add(value);
                     }
-                    if (key == "probabilityOfSurvival")
+                    if (key == "probabilityofsurvival")
                     {
                         strippedSurvival.Add(value);
                     }
@@ -622,7 +622,7 @@ namespace ODSApi.BusinessServices
                     {
                         strippedNumbers.Add(value);
                     }
-                    if (key == "probabilityOfSurvival")
+                    if (key == "probabilityofsurvival")
                     {
                         strippedSurvival.Add(value);
                     }
@@ -693,7 +693,7 @@ namespace ODSApi.BusinessServices
                     {
                         strippedNumbers.Add(value);
                     }
-                    if (key == "probabilityOfSurvival")
+                    if (key == "probabilityofsurvival")
                     {
                         strippedSurvival.Add(value);
                     }
