@@ -8,12 +8,16 @@
 
   <ItemGroup>
     <Compile Remove="Model\**" />
+    <Compile Remove="ODSApiCore\**" />
     <Compile Remove="ODSDatabase\**" />
     <Content Remove="Model\**" />
+    <Content Remove="ODSApiCore\**" />
     <Content Remove="ODSDatabase\**" />
     <EmbeddedResource Remove="Model\**" />
+    <EmbeddedResource Remove="ODSApiCore\**" />
     <EmbeddedResource Remove="ODSDatabase\**" />
     <None Remove="Model\**" />
+    <None Remove="ODSApiCore\**" />
     <None Remove="ODSDatabase\**" />
   </ItemGroup>
 
@@ -32,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="Model\ODSModels.csproj" />
+    <ProjectReference Include="ODSApiCore\ODSApiCore.csproj" />
     <ProjectReference Include="ODSDatabase\ODSDatabase.csproj" />
   </ItemGroup>
 

@@ -32,7 +32,6 @@ namespace Model.Model
         [JsonProperty(PropertyName = "mortalitySlopePlotPoints")]
         public List<Dictionary<string, float>> MortalitySlopePlotPoints { get; set; }  //This is wait list mortality from Mortality Slope Collection
 
-
         [JsonProperty(PropertyName = "timeToNext30")]
         public Dictionary<string, float> TimeToNext30 { get; set; }
 
