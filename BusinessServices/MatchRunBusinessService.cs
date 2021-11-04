@@ -61,12 +61,9 @@ namespace ODSApi.BusinessServices
             * Get all the records from the MatchRun(PassThrough) Cosmos Collection
             * by matchId and sequenceNumber
             * *****************************************************************/
-
-            /*todo select top 1 order by timestamp descending*/
-            //var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT * FROM  c WHERE c.matchId = " + match_id + " and c.sequenceNumber = " + PtrSequenceNumber);
-            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT TOP 1 * FROM c WHERE c.matchId = " + match_id + " and c.sequenceNumber = " + PtrSequenceNumber + " ORDER BY c.createddatetime DESC");
-
-            
+                        
+            var matchRunRecords = await _matchRunService.getByMatchSequence("SELECT TOP 1 * FROM c WHERE c.matchId = " + match_id + " and c.sequenceNumber = " + PtrSequenceNumber + " ORDER BY c.createdDateTime DESC");
+                        
 
             /*******************************************************************
              * Need to check if the list count is 0.  Null check does not work
@@ -85,7 +82,7 @@ namespace ODSApi.BusinessServices
             * Get all Mortality Slope records from Cosmos Mortality Slope Collection
             * ******************************************************************/
 
-            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT TOP 1 * FROM c WHERE c.matchId = " + match_id + " and c.sequenceNumber = " + PtrSequenceNumber + " ORDER BY c.timestamp DESC");
+            var mortalitySlopeRecords = await _mortalitySlopeService.getByMatchSequence("SELECT TOP 1 * FROM c WHERE c.matchId = " + match_id + " and c.sequenceNumber = " + PtrSequenceNumber + " ORDER BY c.createdDateTime DESC");
             if (mortalitySlopeRecords.Count() == 0)
             {
                 serviceResponse.errors = ERRORS.NoMortalitySlopeRecord;

@@ -58,19 +58,6 @@ namespace ODSDatabase.DBServices
             return results;
 
         }
-        //public async Task<TimeToBetterEntity> getByMatchSequenceLinq(int matchId, int sequenceNumber)
-        //{
-
-        //   var person = await _container.GetItemLinqQueryable<TimeToBetterEntity>(true)
-        //                        .Where(p => p.MatchId == matchId && p.sequenceNumber == sequenceNumber)
-        //                        .ToList().First();
-
-        //    return person;
-        //}
-
-
-
-
-            
+                  
     }
 }

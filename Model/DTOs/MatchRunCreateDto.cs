@@ -26,7 +26,7 @@ namespace Model.DTOs
         [JsonProperty(PropertyName = "donorauditid")]
         public int DonorAuditId { get; set; } //Audit id sent from mobile client
 
-        [JsonProperty(PropertyName = "createddatetime")]
+        [JsonProperty(PropertyName = "createdDateTime")]
         public DateTime createdDateTime { get; set; } //Audit id sent from mobile client
 
         [JsonProperty(PropertyName = "logid")]

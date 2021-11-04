@@ -26,6 +26,9 @@ namespace Model.Model
         [JsonProperty(PropertyName = "offerDate")]
         public DateTime OfferDate { get; set; }
 
+        [JsonProperty(PropertyName = "createdDateTime")]
+        public DateTime CreatedDateTime { get; set; }
+
         [JsonProperty(PropertyName = "modelVersion")]
         public string ModelVersion { get; set; }
 
