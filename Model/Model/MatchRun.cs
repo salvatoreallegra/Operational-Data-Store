@@ -21,10 +21,10 @@ namespace Model.Model
         public string Id { get; set; }  //Id for record 
 
         [JsonProperty(PropertyName = "matchId")]
-        public int MatchId { get; set; }  //predictive model match id from model api
+        public double MatchId { get; set; }  //predictive model match id from model api
 
         [JsonProperty(PropertyName = "sequenceNumber")]
-        public int SequenceNumber { get; set; } //identifier of patient from model api
+        public double SequenceNumber { get; set; } //identifier of patient from model api
 
         [JsonProperty(PropertyName = "offerDate")]
         public DateTime OfferDate { get; set; }

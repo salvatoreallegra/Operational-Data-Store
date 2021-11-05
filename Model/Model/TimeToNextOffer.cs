@@ -19,10 +19,10 @@ namespace Model.Model
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "matchId")]
-        public int MatchId { get; set; }
+        public double MatchId { get; set; }
 
         [JsonProperty(PropertyName = "sequenceNumber")]
-        public int sequenceNumber { get; set; }
+        public double sequenceNumber { get; set; }
 
         [JsonProperty(PropertyName = "createdDateTime")]
         public DateTime CreatedDateTime { get; set; }
