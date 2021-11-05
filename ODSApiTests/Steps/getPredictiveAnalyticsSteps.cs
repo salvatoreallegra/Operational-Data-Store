@@ -19,7 +19,7 @@ namespace OdsApiSpecFlowTests.Steps
     public class GetPredictiveAnalyticsSteps
     {
 
-        private const string DEV_BASE_URL = "https://zoe1-webapp-donornet-analytics-dev.azurewebsites.net/";
+        private const string DEV_BASE_URL = "https://api-dev.unos.org/";
         private MatchRun _matchRunResponse;
         private readonly int apiVersion = 1;
         private IRestResponse response;
@@ -61,9 +61,11 @@ namespace OdsApiSpecFlowTests.Steps
             var client = new RestClient(DEV_BASE_URL);
             var matchId = _scenarioContext["matchId"];
             var ptrSequenceNo = _scenarioContext["ptrSequenceNo"];
-            var request = new RestRequest("donornet-analytics/v1/matches/" + matchId + "/potential-recepients/" + ptrSequenceNo, Method.GET);
+            var request = new RestRequest("predictive-analytics/v1/matches/" + matchId + "/potential-recepients/" + ptrSequenceNo, Method.GET);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "Bearer " + "NQ25UcAlifWUvgNksXzmdAG8Yze7");
             IRestResponse response = client.Execute(request);
-            Assert.AreEqual(response.ContentType, "application/json; charset=utf-8");
+            //Assert.AreEqual(response.ContentType, "application/json; charset=utf-8");
         }
 
         [When(@"Send a GET request to the URI v(.*)/matches/@@match-id@@/potential-recipients/@@PtrSequenceNumber@@")]
@@ -73,7 +75,7 @@ namespace OdsApiSpecFlowTests.Steps
             var client = new RestClient(DEV_BASE_URL);
             var matchId = _scenarioContext["matchId"];
             var ptrSequenceNo = _scenarioContext["ptrSequenceNo"];
-            var request = new RestRequest("donornet-analytics/v1/matches/" + matchId + "/potential-recepients/" + ptrSequenceNo, Method.GET);
+            var request = new RestRequest("predictive-analytics/v1/matches/" + matchId + "/potential-recepients/" + ptrSequenceNo, Method.GET);
             this.response = client.Execute(request);
         }
 

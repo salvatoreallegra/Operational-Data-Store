@@ -70,13 +70,13 @@ namespace ODSApi.ODSApiTests.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Get Predictive Analytics for Potential Match Recipient", SourceLine=7)]
+        [TechTalk.SpecRun.ScenarioAttribute("Get Predictive Analytics for Potential Match Recipient", SourceLine=4)]
         public virtual void GetPredictiveAnalyticsForPotentialMatchRecipient()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Predictive Analytics for Potential Match Recipient", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 8
+#line 5
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -96,26 +96,26 @@ namespace ODSApi.ODSApiTests.Features
             else
             {
                 this.ScenarioStart();
+#line 6
+  testRunner.Given("Get predictive analytics for a potential match recipient with a matchId of 777", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+  testRunner.And("a ptrSequenceNo of 777", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 9
-  testRunner.Given("Get predictive analytics for a potential match recipient with a matchId of 209", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 10
-  testRunner.And("a ptrSequenceNo of 209", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 12
   testRunner.And("Establish the expected model for the get predictive analytics api response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
+#line 11
   testRunner.And("Valid Default Headers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 12
   testRunner.When("Send a GET request to the URI v1/matches/@@match-id@@/potential-recipients/@@PtrS" +
                         "equenceNumber@@", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 16
+#line 13
   testRunner.Then("Verify response status code is 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 17
+#line 14
   testRunner.And("Validate Output Model for get predictive analytics api response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
