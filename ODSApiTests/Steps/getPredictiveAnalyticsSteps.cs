@@ -61,9 +61,9 @@ namespace OdsApiSpecFlowTests.Steps
             var client = new RestClient(DEV_BASE_URL);
             var matchId = _scenarioContext["matchId"];
             var ptrSequenceNo = _scenarioContext["ptrSequenceNo"];
-            var request = new RestRequest("predictive-analytics/v1/matches/" + matchId + "/potential-recepients/" + ptrSequenceNo, Method.GET);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Authorization", "Bearer " + "NQ25UcAlifWUvgNksXzmdAG8Yze7");
+            var request = new RestRequest("predictive-analytics/v1/matches/" + matchId + "/potential-recipients/" + ptrSequenceNo, Method.GET);
+            //request.AddHeader("Content-Type", "application/json");
+            //request.AddHeader("Authorization", "Bearer " + "yVqi6JcekN999hJmIlEY8p04QnnM");
             IRestResponse response = client.Execute(request);
             //Assert.AreEqual(response.ContentType, "application/json; charset=utf-8");
         }
@@ -75,7 +75,7 @@ namespace OdsApiSpecFlowTests.Steps
             var client = new RestClient(DEV_BASE_URL);
             var matchId = _scenarioContext["matchId"];
             var ptrSequenceNo = _scenarioContext["ptrSequenceNo"];
-            var request = new RestRequest("predictive-analytics/v1/matches/" + matchId + "/potential-recepients/" + ptrSequenceNo, Method.GET);
+            var request = new RestRequest("predictive-analytics/v1/matches/" + matchId + "/potential-recipients/" + ptrSequenceNo, Method.GET);
             this.response = client.Execute(request);
         }
 

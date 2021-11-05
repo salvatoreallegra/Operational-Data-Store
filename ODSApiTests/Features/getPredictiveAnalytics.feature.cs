@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace ODSApi.ODSApiTests.Features
+namespace ODSApiTests.Features
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace ODSApi.ODSApiTests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("getPredictiveAnalytics", SourceFile="ODSApiTests\\Features\\getPredictiveAnalytics.feature", SourceLine=0)]
+    [TechTalk.SpecRun.FeatureAttribute("getPredictiveAnalytics", SourceFile="Features\\getPredictiveAnalytics.feature", SourceLine=0)]
     public partial class GetPredictiveAnalyticsFeature
     {
         
@@ -34,7 +34,7 @@ namespace ODSApi.ODSApiTests.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ODSApiTests/Features", "getPredictiveAnalytics", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "getPredictiveAnalytics", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
