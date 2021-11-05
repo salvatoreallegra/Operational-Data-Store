@@ -19,30 +19,22 @@ namespace ODSApi.ODSApiTests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("Calculator", Description=@"![Calculator](https://specflow.org/wp-content/uploads/2020/09/calculator.png)
-Simple calculator for adding **two** numbers
-
-Link to a feature: [Calculator](ODSApiTests/Features/Calculator.feature)
-***Further read***: **[Learn more about how to generate Living Documentation](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/LivingDocGenerator/Generating-Documentation.html)**", SourceFile="ODSApiTests\\Features\\Calculator.feature", SourceLine=0)]
-    public partial class CalculatorFeature
+    [TechTalk.SpecRun.FeatureAttribute("getPredictiveAnalytics", SourceFile="ODSApiTests\\Features\\getPredictiveAnalytics.feature", SourceLine=0)]
+    public partial class GetPredictiveAnalyticsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "Calculator.feature"
+#line 1 "getPredictiveAnalytics.feature"
 #line hidden
         
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ODSApiTests/Features", "Calculator", @"![Calculator](https://specflow.org/wp-content/uploads/2020/09/calculator.png)
-Simple calculator for adding **two** numbers
-
-Link to a feature: [Calculator](ODSApiTests/Features/Calculator.feature)
-***Further read***: **[Learn more about how to generate Living Documentation](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/LivingDocGenerator/Generating-Documentation.html)**", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ODSApiTests/Features", "getPredictiveAnalytics", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,16 +70,14 @@ Link to a feature: [Calculator](ODSApiTests/Features/Calculator.feature)
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Add two numbers", new string[] {
-                "mytag"}, SourceLine=8)]
-        public virtual void AddTwoNumbers()
+        [TechTalk.SpecRun.ScenarioAttribute("Get Predictive Analytics for Potential Match Recipient", SourceLine=7)]
+        public virtual void GetPredictiveAnalyticsForPotentialMatchRecipient()
         {
-            string[] tagsOfScenario = new string[] {
-                    "mytag"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add two numbers", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 9
-this.ScenarioInitialize(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Predictive Analytics for Potential Match Recipient", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 8
+  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -106,17 +96,27 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
- testRunner.Given("the first number is 50", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
+  testRunner.Given("Get predictive analytics for a potential match recipient with a matchId of 209", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 11
- testRunner.And("the second number is 70", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
+  testRunner.And("a ptrSequenceNo of 209", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
- testRunner.When("the two numbers are added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("Establish the expected model for the get predictive analytics api response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 13
- testRunner.Then("the result should be 120", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+  testRunner.And("Valid Default Headers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 15
+  testRunner.When("Send a GET request to the URI v1/matches/@@match-id@@/potential-recipients/@@PtrS" +
+                        "equenceNumber@@", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 16
+  testRunner.Then("Verify response status code is 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 17
+  testRunner.And("Validate Output Model for get predictive analytics api response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
