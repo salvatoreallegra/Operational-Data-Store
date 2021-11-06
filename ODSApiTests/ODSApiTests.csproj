@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Model\ODSModels.csproj" />
+    <ProjectReference Include="..\ODSApi.csproj" />
   </ItemGroup>
 
 </Project>

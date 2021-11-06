@@ -19,7 +19,9 @@ namespace OdsApiSpecFlowTests.Steps
     public class GetPredictiveAnalyticsSteps
     {
 
-        private const string DEV_BASE_URL = "https://api-dev.unos.org/";
+        private const string DEV_BASE_URL = "https://zoe1-webapp-donornet-analytics-dev.azurewebsites.net/";
+        //private const string DEV_BASE_URL = "https://api-dev.unos.org/";
+
         private MatchRun _matchRunResponse;
         private readonly int apiVersion = 1;
         private IRestResponse response;
@@ -62,7 +64,7 @@ namespace OdsApiSpecFlowTests.Steps
             var matchId = _scenarioContext["matchId"];
             var ptrSequenceNo = _scenarioContext["ptrSequenceNo"];
             var request = new RestRequest("predictive-analytics/v1/matches/" + matchId + "/potential-recipients/" + ptrSequenceNo, Method.GET);
-            //request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Content-Type", "application/json");
             //request.AddHeader("Authorization", "Bearer " + "yVqi6JcekN999hJmIlEY8p04QnnM");
             IRestResponse response = client.Execute(request);
             //Assert.AreEqual(response.ContentType, "application/json; charset=utf-8");
