@@ -62,26 +62,11 @@ namespace ODSApi
         {
             if (env.IsDevelopment())
             {
+                
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
 
-              /*app.UseAuthentication();
-                app.UseRouting();
-                app.UseAuthorization();
-                app.UseMiddleware(typeof(ExceptionHandlingMiddleware));*/
-               /* app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });*/
-                //Use this Middleware prior to app.UseEndpoints....
-                /* app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
-                 app.UseRouting();
-                 app.UseAuthorization();
-                 app.UseEndpoints(endpoints =>
-                 {
-                     endpoints.MapControllers();
-                 });*/
             }
             else
             {
@@ -91,23 +76,7 @@ namespace ODSApi
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ODSApi v1"));
             app.UseCors("CorsPolicy");
-            /*app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
-            });
-            app.UseHttpsRedirection();*/
-
-            /*      app
-
-          .UseAuthentication()
-
-          .UseRouting()
-
-          .UseAuthorization()
-
-          .UseMiddleware(typeof(ExceptionHandlingMiddleware))
-
-          .UseEndpoints(endpoints => endpoints.MapControllers());*/
+           
 
             //Use this Middleware prior to app.UseEndpoints....
 
