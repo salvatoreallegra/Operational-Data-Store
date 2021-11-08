@@ -135,7 +135,7 @@ namespace ODSApi
         private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = configurationSection["ContainerName"];
+            var containerName = configurationSection["logContainerName"];
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
@@ -149,7 +149,7 @@ namespace ODSApi
         private static async Task<TimeToNextOfferDBService> InitializeCosmosClientInstanceAsyncTimeToNextOffer(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "TimeToNextOfferData";
+            var containerName = configurationSection["ttnoContainerName"];
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
@@ -163,7 +163,7 @@ namespace ODSApi
         private static async Task<IMatchRunDBService> InitializeCosmosClientInstanceAsyncMatchRun(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "PassThroughData";
+            var containerName = configurationSection["passThroughContainerName"];
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
@@ -178,7 +178,7 @@ namespace ODSApi
         private static async Task<IMortalitySlopeDBService> InitializeCosmosClientInstanceAsyncMortalitySlope(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "MortalitySlopeData";
+            var containerName = configurationSection["mortalitySlopeContainerName"];
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
@@ -192,7 +192,7 @@ namespace ODSApi
         private static async Task<IGraphParamsDBService> InitializeCosmosClientInstanceAsyncGraphParams(IConfigurationSection configurationSection)
         {
             var databaseName = configurationSection["DatabaseName"];
-            var containerName = "GraphParamsData";
+            var containerName = configurationSection["graphParamsContainerName"];
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
 
