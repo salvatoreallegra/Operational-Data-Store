@@ -105,7 +105,7 @@ namespace ODSApi.Controllers
                     return NotFound("Time to Next 30 or 50 is missing " + match_id + " and sequenceNumber " + PtrSequenceNumber);
 
                 case ERRORS.DataValidationError:
-                    // code block
+                    // code block 
                     return StatusCode(500, "Data Validation Error");
 
                 default:
