@@ -119,14 +119,14 @@ namespace ODSApi
 
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["logContainerName"];
+
+#if DEBUG
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
-            /*#if DEBUG
-
-            #else*/
-           // var account = Environment.GetEnvironmentVariable("cosmos_dev_url");
-            //var key = Environment.GetEnvironmentVariable("cosmos_dev_key");
-//#endif
+#else
+            var account = Environment.GetEnvironmentVariable("cosmos_dev_url");
+            var key = Environment.GetEnvironmentVariable("cosmos_dev_key");
+#endif
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
