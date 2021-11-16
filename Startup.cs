@@ -54,7 +54,6 @@ namespace ODSApi
                 services.AddApplicationInsightsTelemetry();
                 services.ConfigureCors();
 
-                //Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME");
 
             /******************
              * Inject db services
