@@ -13,12 +13,14 @@ using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Unos.Foundation;
+using System;
 
 namespace ODSApi
 {
     public class Startup
     {
         private IConfiguration Configuration;
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = Requires.NotNull(configuration,nameof(configuration));
@@ -40,19 +42,8 @@ namespace ODSApi
                 options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
 
             });
-
-           /* if (env.IsStaging())
-            {
-
-                services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddSingleton<IMatchRunDBService>(InitializeCosmosClientInstanceAsyncMatchRun(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddSingleton<IMortalitySlopeDBService>(InitializeCosmosClientInstanceAsyncMortalitySlope(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-                services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
-                services.AddApplicationInsightsTelemetry();
-                services.ConfigureCors();
-            }*/
+            
+           
            
                 services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
                 services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
@@ -63,14 +54,14 @@ namespace ODSApi
                 services.AddApplicationInsightsTelemetry();
                 services.ConfigureCors();
 
-           
+                //Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME");
 
             /******************
              * Inject db services
              * as singleton 
              * ****************/
 
-           
+
         }
 
 
@@ -122,18 +113,25 @@ namespace ODSApi
          * partition key in ODS must be a field in
          * database.
          * ******************************/
+        
         private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
+
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["logContainerName"];
+#if DEBUG
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
-
+#else
+            var account = Environment.GetEnvironmentVariable("cosmos_dev_url");
+            var key = Environment.GetEnvironmentVariable("cosmos_dev_key");
+#endif
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
 
             var cosmosDbService = new LogDBService(client, databaseName, containerName);
+            
             return cosmosDbService;
         }
         private static async Task<TimeToNextOfferDBService> InitializeCosmosClientInstanceAsyncTimeToNextOffer(IConfigurationSection configurationSection)
