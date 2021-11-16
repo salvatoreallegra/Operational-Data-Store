@@ -118,8 +118,6 @@ namespace ODSApi
 
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["logContainerName"];
-
-
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
