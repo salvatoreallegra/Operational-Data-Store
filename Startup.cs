@@ -53,12 +53,7 @@ namespace ODSApi
                 services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
                 services.AddApplicationInsightsTelemetry();
                 services.ConfigureCors();
-
-
-            /******************
-             * Inject db services
-             * as singleton 
-             * ****************/
+                
 
 
         }
