@@ -42,8 +42,7 @@ namespace ODSApi
                 options.AddPolicy(PredictiveAnalyticsAuthorizationPolicy.Name, PredictiveAnalyticsAuthorizationPolicy.Policy);
 
             });
-            
-           
+                      
            
                 services.AddSingleton<ILogDBService>(InitializeCosmosClientInstanceAsyncLogs(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
                 services.AddSingleton<ITimeToNextOfferDBService>(InitializeCosmosClientInstanceAsyncTimeToNextOffer(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
