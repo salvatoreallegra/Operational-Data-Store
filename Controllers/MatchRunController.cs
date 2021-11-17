@@ -77,11 +77,8 @@ namespace ODSApi.Controllers
              * and probability of survival, then we check response codes
              * to see which http code to return
              * **********************************************/
-
-
-            //Switch statement here for readability
+            
             var matchRunRecords = await _matchRunBusinessService.getByMatchSequence(match_id, PtrSequenceNumber);
-
 
             switch (matchRunRecords.errors)
             {
