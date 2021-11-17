@@ -109,11 +109,16 @@ namespace ODSApi
         
         private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
+          
+      
 
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["logContainerName"];
-            //var account = configurationSection["Account"];
-            var account = Environment.GetEnvironmentVariable("test_cosmos_uri");
+            
+            //     account = configurationSection["Account"];
+            
+            
+            var account = Environment.GetEnvironmentVariable("cosmos_dev_uri");
             var key = configurationSection["Key"];  
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
