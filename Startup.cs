@@ -115,7 +115,7 @@ namespace ODSApi
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["logContainerName"];
             
-            //     account = configurationSection["Account"]; 
+             //var account = configurationSection["Account"]; 
             
             var account = Environment.GetEnvironmentVariable("cosmos_uri");
             // var key = configurationSection["Key"];  
