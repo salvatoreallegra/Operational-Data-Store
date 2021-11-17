@@ -96,7 +96,6 @@ namespace ODSApi.Controllers
                     // code block
                     return NotFound("Wait List Mortality Data is Missing" + match_id + " and sequenceNumber " + PtrSequenceNumber);
 
-
                 case ERRORS.MissingTimeToNext30OrTimeToNext50Data:
                     // code block
                     return NotFound("Time to Next 30 or 50 is missing " + match_id + " and sequenceNumber " + PtrSequenceNumber);
