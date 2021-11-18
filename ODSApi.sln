@@ -26,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ODSApiCore", "ODSApiCore\OD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validation", "Validation", "{44969E3F-1059-4885-A8EF-22CDEFEAFE16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODSValidations", "ODSValidations\ODSValidations.csproj", "{FC7FEB09-1F23-452D-8ADA-EF4E7248B59E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ODSValidations", "ODSValidations\ODSValidations.csproj", "{FC7FEB09-1F23-452D-8ADA-EF4E7248B59E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
