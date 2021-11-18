@@ -11,25 +11,25 @@ namespace Model.Model
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "xupper")]
+        [JsonProperty(PropertyName = "xUpper")]
         public int XUpper { get; set; }
 
-        [JsonProperty(PropertyName = "xlower")]
+        [JsonProperty(PropertyName = "xLower")]
         public int XLower { get; set; }
 
-        [JsonProperty(PropertyName = "yupper")]
+        [JsonProperty(PropertyName = "yUpper")]
         public int YUpper { get; set; }
 
-        [JsonProperty(PropertyName = "ylower")]
+        [JsonProperty(PropertyName = "yLower")]
         public int YLower { get; set; }
 
-        [JsonProperty(PropertyName = "timeunits")]
+        [JsonProperty(PropertyName = "timeUnits")]
         public String TimeUnits { get; set; }
 
-        [JsonProperty(PropertyName = "displayUnite")]
+        [JsonProperty(PropertyName = "displayUnits")]
         public String DisplayUnits { get; set; }
 
-        [JsonProperty(PropertyName = "createddatetime")]
+        [JsonProperty(PropertyName = "createdDateTime")]
         public DateTime createdDateTime { get; set; }
     }
 }

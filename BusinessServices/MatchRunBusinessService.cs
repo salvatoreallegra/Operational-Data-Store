@@ -39,6 +39,12 @@ namespace ODSApi.BusinessServices
             _graphParamsDBService = graphParamsDBService ?? throw new ArgumentNullException(nameof(logDBService));
         }
 
+        //Basic constructor.  This constructor is necessary for the unit testing project
+        public MatchRunBusinessService()
+        {
+
+        }
+
 
 
         /************************************
@@ -381,7 +387,7 @@ namespace ODSApi.BusinessServices
          * for for time to 30
          * ***************************/
 
-        public static float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
+        public float CalculateProbabilityOfSurvivalTime30(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
             // y = survival probability
             // x = number of days
