@@ -4,7 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute> 
-    <GenerateProgramFile>false</GenerateProgramFile>
+    <GenerateProgramFile>false</GenerateProgramFile> 
+    <UserSecretsId>e5eaf304-6974-4712-ab87-1fde96669ac5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

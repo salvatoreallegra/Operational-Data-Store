@@ -19,7 +19,7 @@ namespace ODSApi
 {
     public class Startup
     {
-        private IConfiguration Configuration;
+        private IConfiguration Configuration; 
         
         public Startup(IConfiguration configuration)
         {
@@ -28,6 +28,7 @@ namespace ODSApi
         
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllers();           
            
             services.AddSwaggerGen(c =>
@@ -106,8 +107,9 @@ namespace ODSApi
          * database.
          * ******************************/
         
-        private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
+        private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection) //used to be IConfigurationSection
         {
+            
           
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["logContainerName"];
@@ -117,12 +119,12 @@ namespace ODSApi
             {
                  account = Environment.GetEnvironmentVariable("cosmos_uri");
                  key = Environment.GetEnvironmentVariable("cosmos_key");
-            }
-            /*var account = configurationSection["Account"]; */
+            }          
             else
             {
-                 account = configurationSection["Account"];
-                 key = configurationSection["Key"];
+                account = configurationSection["Account"];
+                key = configurationSection["Key"];
+
             }
             //var account = Environment.GetEnvironmentVariable("cosmos_uri");
             //var key = configurationSection["Key"];  
