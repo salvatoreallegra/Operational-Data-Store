@@ -51,8 +51,7 @@ namespace ODSApi
                 services.AddSingleton<IGraphParamsDBService>(InitializeCosmosClientInstanceAsyncGraphParams(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
                 services.AddScoped<IMatchRunBusinessService, MatchRunBusinessService>();
                 services.AddApplicationInsightsTelemetry();
-                services.ConfigureCors();
-                
+                services.ConfigureCors();     
 
 
         }
@@ -110,16 +109,14 @@ namespace ODSApi
         private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection)
         {
           
-      
-
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["logContainerName"];
             
-             //var account = configurationSection["Account"]; 
+            var account = configurationSection["Account"]; 
             
-            var account = Environment.GetEnvironmentVariable("cosmos_uri");
-            // var key = configurationSection["Key"];  
-            var key = Environment.GetEnvironmentVariable("cosmos_key");
+            //var account = Environment.GetEnvironmentVariable("cosmos_uri");
+             var key = configurationSection["Key"];  
+            //var key = Environment.GetEnvironmentVariable("cosmos_key");
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");

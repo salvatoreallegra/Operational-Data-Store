@@ -495,8 +495,20 @@ namespace ODSApi.BusinessServices
                     }
                 }
             }
+            /*****************************************************************************
+             * to calculate the + b portion of this....probabilityOfSurvival = mortalitySlope * time30 + b;
+             * y = mx + b;
+             * m = mortality slope
+             * x = x2 or x1
+             * y = y2 or y1
+             * b = y - mx
+             * 
+             * 
+             ***************************************************************/
+           
             mortalitySlope = (y2 - y1) / (x2 - x1);
-            probabilityOfSurvival = mortalitySlope * time30 + 1;
+            var b = y2 - mortalitySlope * x2;
+            probabilityOfSurvival = mortalitySlope * time30 + b;
 
             return probabilityOfSurvival;
 
@@ -591,8 +603,20 @@ namespace ODSApi.BusinessServices
                     }
                 }
             }
+            /*****************************************************************************
+             * to calculate the + b portion of this....probabilityOfSurvival = mortalitySlope * time30 + b;
+             * y = mx + b;
+             * m = mortality slope
+             * x = x2 or x1
+             * y = y2 or y1
+             * b = y - mx
+             * 
+             * 
+             ***************************************************************/
             mortalitySlope = (y2 - y1) / (x2 - x1);
-            probabilityOfSurvival = mortalitySlope * time50 + 1;
+            var b = y2 - mortalitySlope * x2;
+            probabilityOfSurvival = mortalitySlope * time50 + b;
+            
 
             return probabilityOfSurvival;
         }
