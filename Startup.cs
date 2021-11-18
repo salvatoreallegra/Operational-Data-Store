@@ -108,8 +108,7 @@ namespace ODSApi
          * ******************************/
         
         private static async Task<LogDBService> InitializeCosmosClientInstanceAsyncLogs(IConfigurationSection configurationSection) //used to be IConfigurationSection
-        {
-            
+        {            
           
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["logContainerName"];
@@ -126,9 +125,7 @@ namespace ODSApi
                 key = configurationSection["Key"];
 
             }
-            //var account = Environment.GetEnvironmentVariable("cosmos_uri");
-            //var key = configurationSection["Key"];  
-            //var key = Environment.GetEnvironmentVariable("cosmos_key");
+           
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
@@ -139,8 +136,22 @@ namespace ODSApi
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["ttnoContainerName"];
-            var account = configurationSection["Account"];
-            var key = configurationSection["Key"];
+            var account = "";
+            var key = "";
+
+            if (Environment.GetEnvironmentVariable("ENVIRONMENT") == "DEV")
+            {
+                account = Environment.GetEnvironmentVariable("cosmos_uri");
+                key = Environment.GetEnvironmentVariable("cosmos_key");
+            }
+            else
+            {
+                account = configurationSection["Account"];
+                key = configurationSection["Key"];
+
+            }
+
+
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
@@ -151,11 +162,26 @@ namespace ODSApi
         }
         private static async Task<IMatchRunDBService> InitializeCosmosClientInstanceAsyncMatchRun(IConfigurationSection configurationSection)
         {
+           
+
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["passThroughContainerName"];
-            var account = configurationSection["Account"];
-            var key = configurationSection["Key"];
 
+            var account = "";
+            var key = "";
+            if (Environment.GetEnvironmentVariable("ENVIRONMENT") == "DEV")
+            {
+                account = Environment.GetEnvironmentVariable("cosmos_uri");
+                key = Environment.GetEnvironmentVariable("cosmos_key");
+            }
+            else
+            {
+                account = configurationSection["Account"];
+                key = configurationSection["Key"];
+
+            }
+
+            
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/matchId");
@@ -168,8 +194,23 @@ namespace ODSApi
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["mortalitySlopeContainerName"];
-            var account = configurationSection["Account"];
-            var key = configurationSection["Key"];
+
+            var account = "";
+            var key = "";
+
+            if (Environment.GetEnvironmentVariable("ENVIRONMENT") == "DEV")
+            {
+                account = Environment.GetEnvironmentVariable("cosmos_uri");
+                key = Environment.GetEnvironmentVariable("cosmos_key");
+            }
+            else
+            {
+                account = configurationSection["Account"];
+                key = configurationSection["Key"];
+
+            }
+
+            
 
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
@@ -182,9 +223,22 @@ namespace ODSApi
         {
             var databaseName = configurationSection["DatabaseName"];
             var containerName = configurationSection["graphParamsContainerName"];
-            var account = configurationSection["Account"];
-            var key = configurationSection["Key"];
 
+            var account = "";
+            var key = "";
+
+            if (Environment.GetEnvironmentVariable("ENVIRONMENT") == "DEV")
+            {
+                account = Environment.GetEnvironmentVariable("cosmos_uri");
+                key = Environment.GetEnvironmentVariable("cosmos_key");
+            }
+            else
+            {
+                account = configurationSection["Account"];
+                key = configurationSection["Key"];
+
+            }
+            
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
