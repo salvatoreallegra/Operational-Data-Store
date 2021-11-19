@@ -121,9 +121,11 @@ namespace ODSApi
             }          
             else
             {
-                account = configurationSection["Account"];
+                /*account = configurationSection["Account"];
                 key = configurationSection["Key"];
-
+                 */
+                account = Environment.GetEnvironmentVariable("COSMOS_ACCOUNT");
+                key = Environment.GetEnvironmentVariable("COSMOS_KEY");
             }
            
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
@@ -146,8 +148,8 @@ namespace ODSApi
             }
             else
             {
-                account = configurationSection["Account"];
-                key = configurationSection["Key"];
+                account = Environment.GetEnvironmentVariable("COSMOS_ACCOUNT");
+                key = Environment.GetEnvironmentVariable("COSMOS_KEY");
 
             }
 
@@ -176,8 +178,8 @@ namespace ODSApi
             }
             else
             {
-                account = configurationSection["Account"];
-                key = configurationSection["Key"];
+                account = Environment.GetEnvironmentVariable("COSMOS_ACCOUNT");
+                key = Environment.GetEnvironmentVariable("COSMOS_KEY");
 
             }
 
@@ -205,8 +207,8 @@ namespace ODSApi
             }
             else
             {
-                account = configurationSection["Account"];
-                key = configurationSection["Key"];
+                account = Environment.GetEnvironmentVariable("COSMOS_ACCOUNT");
+                key = Environment.GetEnvironmentVariable("COSMOS_KEY");
 
             }            
 
@@ -232,8 +234,8 @@ namespace ODSApi
             }
             else
             {
-                account = configurationSection["Account"];
-                key = configurationSection["Key"];
+                account = Environment.GetEnvironmentVariable("COSMOS_ACCOUNT");
+                key = Environment.GetEnvironmentVariable("COSMOS_KEY");
 
             }
             

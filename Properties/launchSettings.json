@@ -14,6 +14,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "COSMOS_ACCOUNT": "https://zoe1-cosmos-donornet-analytics-dev.documents.azure.com:443/",
+        "COSMOS_KEY": "em3LVHMxJHuEgMB25bPtMWMw39Idu2yGu9xh99ZpRt1MILzcSNkp1QiaEYPPBIeXfG0QjDnlmSFLPdm9E8ozCg==",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
