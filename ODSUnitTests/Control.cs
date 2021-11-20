@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System;
 using ODSApi.Controllers;
 using ODSDatabase.DBServices;
+using System.Threading.Tasks;
 
 namespace ODSUnitTests
 {
@@ -24,7 +25,7 @@ namespace ODSUnitTests
         }
         [TestMethod]
         [TestCategory("Controller")]
-        public async void TestMatchRunResponse()
+        public async Task TestMatchRunResponse()
         {
             //Match Run DB Service
             var databaseName = "PredictiveAnalyticsODS";
