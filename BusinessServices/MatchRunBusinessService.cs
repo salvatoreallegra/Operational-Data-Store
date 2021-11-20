@@ -520,7 +520,7 @@ namespace ODSApi.BusinessServices
 
 
         }
-        public static float CalculateProbabilityOfSurvivalTime50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
+        public float CalculateProbabilityOfSurvivalTime50(List<Dictionary<string, float>> plotPointsList, Dictionary<string, float> timeToBetter)
         {
             var time50 = timeToBetter["median"];
             float mortalitySlope;
