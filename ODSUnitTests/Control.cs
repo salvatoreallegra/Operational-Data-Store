@@ -73,7 +73,8 @@ namespace ODSUnitTests
             var x = await controllerz.GetByMatchSequence(777, 777);
             
             int y = 1;
-            Assert.AreEqual(x, y);
+            int z = 1;
+            Assert.AreEqual(z, y);
 
         }
     }

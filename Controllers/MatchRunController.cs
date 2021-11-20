@@ -33,7 +33,7 @@ namespace ODSApi.Controllers
             _matchRunService = matchRunService ?? throw new ArgumentNullException(nameof(matchRunService));
             _matchRunBusinessService = matchRunBusinessService ?? throw new ArgumentNullException(nameof(matchRunBusinessService));
         }
-        public MatchRunController() { }
+
 
         // GET by id, this should stay here so when a post is made, we can call this to display what was
         // created in swagger....should get rid of this for production
